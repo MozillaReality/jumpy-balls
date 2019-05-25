@@ -1,4 +1,4 @@
-import {World} from 'http://192.168.1.135:8080/build/ecsy.module.js';
+import {World} from 'http://192.168.1.129:8080/build/ecsy.module.js';
 import {Geometry, Transform, Draggable, ThreeContext, VRController, Target, GameState, Active, Object3D, BallGenerator, RigidBody} from './components.mjs';
 import {TargetSystem, GeometrySystem, FloorCollisionSystem, PhysicsSystem, BallGeneratorSystem, BallSystem} from './systems.mjs';
 

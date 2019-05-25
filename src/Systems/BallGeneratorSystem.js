@@ -1,4 +1,4 @@
-import { ReactiveSystem, System } from 'http://192.168.1.135:8080/build/ecsy.module.js';
+import { System } from 'http://192.168.1.129:8080/build/ecsy.module.js';
 import {
   Ball,
   Active,
@@ -7,16 +7,26 @@ import {
   BallGenerator
 } from '../components.mjs';
 
-export class BallGeneratorSystem extends ReactiveSystem {
+export class BallGeneratorSystem extends System {
   init() {
     return {
-      entities: [BallGenerator, Active]
+      queries: {
+        entities: {
+          components: [BallGenerator, Active],
+          events: {
+            added: {
+              event: "EntityAdded"
+            }
+          }
+        }
+      }
     }
   }
 
-  onEntitiesAdded() {
-    var scene = this.world.components.threeContext.scene;
-    var entities = this.queries.entities.added;
+  execute() {
+    if (this.events.entities.added.length === 0) return;
+
+    var entities = this.events.entities.added;
     entities.forEach(entity => {
       var component = entity.getComponent(BallGenerator);
 

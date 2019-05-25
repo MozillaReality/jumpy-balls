@@ -1,4 +1,4 @@
-import { ReactiveSystem, System } from 'http://192.168.1.135:8080/build/ecsy.module.js';
+import { System } from 'http://192.168.1.129:8080/build/ecsy.module.js';
 import {
   Geometry,
   Object3D,
@@ -8,15 +8,24 @@ import {
 /**
  * Create a Mesh based on the [Geometry] component and attach it to the entity using a [Object3D] component
  */
-export class GeometrySystem extends ReactiveSystem {
+export class GeometrySystem extends System {
   init() {
     return {
-      entities: [Geometry] // @todo Transform: As optional, how to define it?
-    }
+      queries: {
+        entities: {
+          components: [Geometry], // @todo Transform: As optional, how to define it?
+          events: {
+            added: {
+              event: "EntityAdded"
+            }
+          }
+        }
+      }
+    };
   }
 
-  onEntitiesAdded() {
-    this.queries.entities.added.forEach(entity => {
+  execute() {
+    this.events.entities.added.forEach(entity => {
       var component = entity.getComponent(Geometry);
 
       var geometry;

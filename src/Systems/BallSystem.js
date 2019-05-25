@@ -1,4 +1,4 @@
-import { ReactiveSystem, System } from 'http://192.168.1.135:8080/build/ecsy.module.js';
+import { System } from 'http://192.168.1.129:8080/build/ecsy.module.js';
 import {
   Ball,
   Geometry,
@@ -8,16 +8,24 @@ import {
 /**
  * Process [Ball] components and adds geometry and rigidbody for the simulation
  */
-export class BallSystem extends ReactiveSystem {
+export class BallSystem extends System {
   init() {
     return {
-      entities: [Ball]
+      queries: {
+        entities: {
+          components: [Ball],
+          events: {
+            added: {
+              event: "EntityAdded"
+            }
+          }
+        },
+      }
     }
   }
 
-   onEntitiesAdded() {
-    var scene = this.world.components.threeContext.scene;
-    var entities = this.queries.entities.added;
+  execute() {
+    var entities = this.events.entities.added;
     entities.forEach(entity => {
       entity
         .addComponent(Geometry, {

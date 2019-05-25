@@ -1,9 +1,9 @@
-import { ReactiveSystem, System } from 'http://192.168.1.135:8080/build/ecsy.module.js';
+import { System } from 'http://192.168.1.129:8080/build/ecsy.module.js';
 import {
   VRController
 } from '../components.mjs';
 
-export class VRControllerSystem extends ReactiveSystem {
+export class VRControllerSystem extends System {
   init() {
     return {
       entities: [VRController]

@@ -1,4 +1,4 @@
-import { ReactiveSystem, System } from 'http://192.168.1.135:8080/build/ecsy.module.js';
+import { System } from 'http://192.168.1.129:8080/build/ecsy.module.js';
 import {
   Ball,
   Active,
@@ -15,12 +15,14 @@ var worldPos = new THREE.Vector3();
 export class TargetSystem extends System {
   init() {
     return {
-      targets: [Target],
-      balls:  [Ball, Active]
-    }
+      queries: {
+        targets: { components: [Target] },
+        balls:  { components: [Ball, Active] }
+      }
+    };
   }
 
-  execute(delta, time) {
+  execute() {
     var balls = this.queries.balls;
     var targets = this.queries.targets;
 

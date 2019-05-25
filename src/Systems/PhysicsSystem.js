@@ -1,4 +1,4 @@
-import { ReactiveSystem, System } from 'http://192.168.1.135:8080/build/ecsy.module.js';
+import { System } from 'http://192.168.1.129:8080/build/ecsy.module.js';
 import {
   Geometry,
   Object3D,
@@ -11,8 +11,10 @@ export class PhysicsSystem extends System {
     this._transform = new Ammo.btTransform();
     this._quaternion = new Ammo.btQuaternion(0, 0, 0, 1);
     return {
-      entities: [RigidBody, Geometry]
-    }
+      queries: {
+        entities: { components: [RigidBody, Geometry] }
+      }
+    };
   }
 
   _createWorld() {
@@ -32,7 +34,6 @@ export class PhysicsSystem extends System {
       return new Ammo.btBoxShape(new Ammo.btVector3(geometry.width / 2, geometry.height / 2, geometry.depth / 2));
     }
     if (geometry.primitive === 'sphere') {
-      console.log(geometry);
       return new Ammo.btSphereShape(geometry.radius);
     }
     return new Ammo.btBoxShape(new Ammo.btVector3(1.0, 1.0, 1.0));

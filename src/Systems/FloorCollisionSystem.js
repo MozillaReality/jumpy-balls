@@ -1,4 +1,4 @@
-import { ReactiveSystem, System } from 'http://192.168.1.135:8080/build/ecsy.module.js';
+import { System } from 'http://192.168.1.129:8080/build/ecsy.module.js';
 import {
   Ball,
   Active,
@@ -11,8 +11,10 @@ import {
 export class FloorCollisionSystem extends System {
   init() {
     return {
-      balls:  [Ball, Active]
-    }
+      queries: {
+        balls:  { components: [Ball, Active] }
+      }
+    };
   }
 
   execute(delta, time) {
@@ -31,8 +33,6 @@ export class FloorCollisionSystem extends System {
         ball.removeComponent(Active);
 
         // @todo emit event so this is handled in the gamestate system
-        this.world.entityManager.eventDispatcher.dispatchEvent('FLOOR_COLLIDED', ball);
-
         this.world.components.threeContext.scene.background.set( 0xff0000 );
         this.world.components.gameState.numBallsFailed++;
         console.log('Failed!, number of balls:', this.world.components.gameState.numBallsFailed);
