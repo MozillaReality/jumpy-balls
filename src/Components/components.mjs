@@ -1,6 +1,6 @@
 export class Geometry {
   constructor() {
-    this.primitive = 'box';
+    this.primitive = "box";
   }
 }
 
@@ -70,10 +70,12 @@ export class BallGenerator {
 export class Ball {
   constructor() {
     this.position = new THREE.Vector3();
+    this.radius = 0.4;
   }
 
   copy(src) {
     this.position.copy(src.position);
+    this.radius = src.radius;
   }
 }
 
@@ -95,6 +97,6 @@ export class RigidBody {
     this.friction = 1;
     this.linearDamping = 0;
     this.angularDamping = 0;
-    this.linearVelocity = {x: 0, y: 0, z: 0};
+    this.linearVelocity = { x: 0, y: 0, z: 0 };
   }
 }

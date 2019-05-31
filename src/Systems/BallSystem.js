@@ -1,9 +1,6 @@
-import { System } from 'http://192.168.1.129:8080/build/ecsy.module.js';
-import {
-  Ball,
-  Geometry,
-  RigidBody,
-} from '../components.mjs';
+/* global THREE */
+import { System } from "http://192.168.1.129:8080/build/ecsy.module.js";
+import { Ball, Geometry, RigidBody } from "../Components/components.mjs";
 
 /**
  * Process [Ball] components and adds geometry and rigidbody for the simulation
@@ -19,18 +16,20 @@ export class BallSystem extends System {
               event: "EntityAdded"
             }
           }
-        },
+        }
       }
-    }
+    };
   }
 
   execute() {
     var entities = this.events.entities.added;
     entities.forEach(entity => {
+      var radius = entity.getComponent(Ball).radius;
+      console.log(entity.getComponent(Ball), radius);
       entity
         .addComponent(Geometry, {
-          primitive: 'sphere',
-          radius: 0.4
+          primitive: "sphere",
+          radius: radius
         })
         .addComponent(RigidBody, {
           weight: 10.0,
@@ -38,7 +37,7 @@ export class BallSystem extends System {
           friction: 0.5,
           linearDamping: 0.0,
           angularDamping: 0.0,
-          linearVelocity: new THREE.Vector3(-5,15,0)
+          linearVelocity: new THREE.Vector3(-5, 15, 0)
         });
     });
   }

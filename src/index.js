@@ -1,38 +1,75 @@
-import {World} from 'http://192.168.1.129:8080/build/ecsy.module.js';
-import {Geometry, Transform, Draggable, ThreeContext, VRController, Target, GameState, Active, Object3D, BallGenerator, RigidBody} from './components.mjs';
-import {TargetSystem, GeometrySystem, FloorCollisionSystem, PhysicsSystem, BallGeneratorSystem, BallSystem} from './systems.mjs';
+/* global Ammo THREE WEBVR */
+import { World } from "http://192.168.1.129:8080/build/ecsy.module.js";
+import {
+  Geometry,
+  Transform,
+  Draggable,
+  ThreeContext,
+  VRController,
+  Target,
+  GameState,
+  Active,
+  Object3D,
+  BallGenerator,
+  RigidBody
+} from "./Components/components.mjs";
+import {
+  VRControllerSystem,
+  TargetSystem,
+  GeometrySystem,
+  FloorCollisionSystem,
+  PhysicsSystem,
+  BallGeneratorSystem,
+  GameStateSystem,
+  BallSystem
+} from "./Systems/systems.mjs";
 
-Ammo().then(_ => {
-  const world = new World();
+Ammo().then(() => {
+  const world = (window.world = new World());
 
   var group = new THREE.Group();
-  var raycaster, controller1, controller2;
-  var tempMatrix = new THREE.Matrix4();
+  var controller1, controller2;
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color( 0x808080 );
-  const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+  scene.background = new THREE.Color(0x808080);
+  const camera = new THREE.PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
 
   world
+    .registerSystem(GeometrySystem)
     .registerSystem(BallGeneratorSystem)
     .registerSystem(BallSystem)
-    //.registerSystem(VRControllerSystem)
-    .registerSystem(GeometrySystem)
-    .registerSystem(TargetSystem)
+    .registerSystem(VRControllerSystem)
+    .registerSystem(GameStateSystem)
+    .registerSystem(PhysicsSystem)
     .registerSystem(FloorCollisionSystem)
-    .registerSystem(PhysicsSystem);
+    .registerSystem(TargetSystem);
   world
     .registerSingletonComponent(ThreeContext)
     .registerSingletonComponent(GameState);
 
-  var gen = world.createEntity().addComponent(BallGenerator, {position: {x: 1, y: 4, z: 0}}).addComponent(Active);
+  world
+    .createEntity()
+    .addComponent(BallGenerator, { position: { x: 1, y: 2.5, z: 0 } })
+    .addComponent(Active);
+  world
+    .createEntity()
+    .addComponent(Geometry, { primitive: "sphere", radius: 0.3 })
+    .addComponent(Transform, {
+      position: { x: 1, y: 2.5, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 }
+    });
 
   var cameraRig = new THREE.Group();
   cameraRig.add(camera);
-  cameraRig.position.set(2,2,5);
+  cameraRig.position.set(2, 2, 7);
   scene.add(cameraRig);
 
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
 
   world.components.threeContext.renderer = renderer;
   world.components.threeContext.scene = scene;
@@ -42,167 +79,127 @@ Ammo().then(_ => {
   renderer.gammaInput = true;
   renderer.gammaOutput = true;
   renderer.shadowMap.enabled = true;
-  //renderer.vr.enabled = true;
+  renderer.vr.enabled = true;
   document.body.appendChild(renderer.domElement);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(WEBVR.createButton(renderer));
-  window.addEventListener('resize', onWindowResize, false);
+  window.addEventListener("resize", onWindowResize, false);
   const clock = new THREE.Clock();
 
   init();
   function init() {
+    scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
 
-      scene.add( new THREE.HemisphereLight( 0x808080, 0x606060 ) );
+    var light = new THREE.DirectionalLight(0xffffff);
+    light.position.set(0, 6, 0);
+    light.castShadow = true;
+    light.shadow.camera.top = 2;
+    light.shadow.camera.bottom = -2;
+    light.shadow.camera.right = 2;
+    light.shadow.camera.left = -2;
+    light.shadow.mapSize.set(4096, 4096);
+    scene.add(light);
 
-      var light = new THREE.DirectionalLight( 0xffffff );
-      light.position.set( 0, 6, 0 );
-      light.castShadow = true;
-      light.shadow.camera.top = 2;
-      light.shadow.camera.bottom = - 2;
-      light.shadow.camera.right = 2;
-      light.shadow.camera.left = - 2;
-      light.shadow.mapSize.set( 4096, 4096 );
-      scene.add( light );
+    scene.add(group);
 
-      scene.add(group);
+    // controllers
 
-      // controllers
+    controller1 = renderer.vr.getController(0);
+    cameraRig.add(controller1);
 
-      controller1 = renderer.vr.getController( 0 );
-      controller1.addEventListener( 'selectstart', onSelectStart );
-      controller1.addEventListener( 'selectend', onSelectEnd );
-      cameraRig.add( controller1 );
+    controller2 = renderer.vr.getController(1);
+    cameraRig.add(controller2);
 
-      controller2 = renderer.vr.getController( 1 );
-      controller2.addEventListener( 'selectstart', onSelectStart );
-      controller2.addEventListener( 'selectend', onSelectEnd );
-      cameraRig.add( controller2 );
+    world
+      .createEntity()
+      .addComponent(VRController, { id: 0 })
+      .addComponent(Object3D, { object: controller1 });
+    world
+      .createEntity()
+      .addComponent(VRController, { id: 1 })
+      .addComponent(Object3D, { object: controller2 });
 
-      var vrc1 = world.createEntity().addComponent(VRController, {id: 0});
-      var vrc2 = world.createEntity().addComponent(VRController, {id: 1});
+    //
 
-      //
+    var geometry = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, 0, -1)
+    ]);
 
-      var geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, - 1 ) ] );
+    var line = new THREE.Line(geometry);
+    line.name = "line";
+    line.scale.z = 5;
 
-      var line = new THREE.Line( geometry );
-      line.name = 'line';
-      line.scale.z = 5;
+    controller1.add(line.clone());
+    controller2.add(line.clone());
 
-      controller1.add( line.clone() );
-      controller2.add( line.clone() );
+    createGround();
+    createBox().addComponent(Transform, {
+      position: { x: -1, y: 1.5, z: 0 },
+      rotation: { x: 0, y: 0, z: 6 }
+    });
+    createBox().addComponent(Transform, {
+      position: { x: 0, y: 1, z: 0 },
+      rotation: { x: 0, y: 0, z: -0.3 }
+    });
+    createBox().addComponent(Transform, {
+      position: { x: 2.5, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0.1 }
+    });
+    createBox().addComponent(Transform, {
+      position: { x: 1.5, y: 0, z: 0 },
+      rotation: { x: 0, y: 0, z: 0.1 }
+    });
+    //createBox().addComponent(Transform, {position: {x: 2.5, y: 0.2, z:0}, rotation: {x:0,y:0, z: 0.1}});
+    //createBox().addComponent(Transform, {position: {x: 3.5, y: 0.2, z:0}, rotation: {x:0,y:0, z: 0.1}});
 
-      raycaster = new THREE.Raycaster();
+    createTarget();
 
-      createGround();
-      createBox().addComponent(Transform, {position: {x: -1, y: 2, z:0}, rotation: {x:0,y:0, z: 6}});
-      createBox().addComponent(Transform, {position: {x: 1, y: 1, z:0}, rotation: {x:0,y:0, z: 0}});
-      createBox().addComponent(Transform, {position: {x: 3.2, y: 0, z:0}, rotation: {x:0,y:0, z: 0}});
-
-      createTarget();
-
-      function createTarget() {
-        world.createEntity()
-          .addComponent(Target)
-          .addComponent(Geometry, {primitive: 'sphere', radius: 0.8})
-          .addComponent(Transform, {position: {x: 5, y: 0.8, z: 0}, rotation: {x:0,y:0,z:0}});
-      }
-
-      function reposition(object) {
-        const initialTransform = new Ammo.btTransform();
-        initialTransform.setIdentity();
-        initialTransform.setOrigin(new Ammo.btVector3(object.position.x, object.position.y, object.position.z));
-        initialTransform.setRotation( new Ammo.btQuaternion( object.quaternion.x, object.quaternion.y, object.quaternion.z, object.quaternion.w ) );
-
-        object.userData.body.setWorldTransform(initialTransform);
-      }
-
-      function createBox() {
-        var s = 0.5;
-        const entity = world.createEntity();
-        entity
-          .addComponent(Geometry, {
-            primitive: 'box',
-            width: 3 * s,
-            height: s,
-            depth: s
-          })
-          .addComponent(Draggable)
-          .addComponent(RigidBody, {
-            weight: 0.0,
-            restitution: 1,
-            friction: 1.0,
-            linearDamping: 0.0,
-            angularDamping: 0.0
-          });
-        return entity;
-      }
-  }
-
-  function onSelectStart( event ) {
-
-    var controller = event.target;
-
-    var intersections = getIntersections( controller );
-
-    if ( intersections.length > 0 ) {
-
-      var intersection = intersections[ 0 ];
-
-      tempMatrix.getInverse( controller.matrixWorld );
-
-      var object = intersection.object;
-      object.matrix.premultiply( tempMatrix );
-      object.matrix.decompose( object.position, object.quaternion, object.scale );
-      object.material.emissive.b = 1;
-      controller.add( object );
-
-      reposition(object);
-
-      controller.userData.selected = object;
-
+    function createTarget() {
+      world
+        .createEntity()
+        .addComponent(Target)
+        .addComponent(Geometry, { primitive: "sphere", radius: 0.8 })
+        .addComponent(Transform, {
+          position: { x: 3, y: 0.8, z: 0 },
+          rotation: { x: 0, y: 0, z: 0 }
+        });
     }
 
-  }
-
-  function onSelectEnd( event ) {
-
-    var controller = event.target;
-
-    if ( controller.userData.selected !== undefined ) {
-
-      var object = controller.userData.selected;
-      object.matrix.premultiply( controller.matrixWorld );
-      object.matrix.decompose( object.position, object.quaternion, object.scale );
-      object.material.emissive.b = 0;
-      group.add( object );
-      reposition(object);
-
-      controller.userData.selected = undefined;
-
+    function createBox() {
+      var s = 0.2;
+      const entity = world.createEntity();
+      entity
+        .addComponent(Geometry, {
+          primitive: "box",
+          width: 3 * s,
+          height: s / 2,
+          depth: 3 * s
+        })
+        .addComponent(Draggable)
+        .addComponent(RigidBody, {
+          weight: 0.0,
+          restitution: 1,
+          friction: 1.0,
+          linearDamping: 0.0,
+          angularDamping: 0.0
+        });
+      return entity;
     }
-
-
-  }
-
-  function getIntersections( controller ) {
-
-    tempMatrix.identity().extractRotation( controller.matrixWorld );
-
-    raycaster.ray.origin.setFromMatrixPosition( controller.matrixWorld );
-    raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( tempMatrix );
-
-    return raycaster.intersectObjects( group.children );
-
   }
 
   function createGround() {
-    world.createEntity()
+    world
+      .createEntity()
       .addComponent(Geometry, {
-            primitive: 'box',
-            width: 500,
-            height: 0.1,
-            depth: 500
+        primitive: "box",
+        width: 500,
+        height: 0.1,
+        depth: 500
+      })
+      .addComponent(Transform, {
+        position: { x: 0, y: -0.1, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 }
       })
       .addComponent(RigidBody, {
         weight: 0.0,
