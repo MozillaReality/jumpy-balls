@@ -1,6 +1,5 @@
 /* global Ammo THREE */
-import { Matrix4 } from "https://cdnjs.cloudflare.com/ajax/libs/three.js/105/three.module.js";
-import { System } from "http://192.168.1.129:8080/build/ecsy.module.js";
+import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
 import {
   VRController,
   Draggable,
@@ -8,7 +7,7 @@ import {
 } from "../Components/components.mjs";
 
 var raycaster = new THREE.Raycaster();
-var tempMatrix = new Matrix4();
+var tempMatrix = new THREE.Matrix4();
 var intersected = [];
 
 export class VRControllerSystem extends System {

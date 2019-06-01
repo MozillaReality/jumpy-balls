@@ -1,5 +1,5 @@
 /* global Ammo */
-import { System } from "http://192.168.1.129:8080/build/ecsy.module.js";
+import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
 import { Geometry, Object3D, RigidBody } from "../Components/components.mjs";
 
 export class PhysicsSystem extends System {

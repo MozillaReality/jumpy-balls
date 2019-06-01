@@ -1,5 +1,5 @@
 /* global THREE */
-import { System } from "http://192.168.1.129:8080/build/ecsy.module.js";
+import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
 import { Ball, Geometry, RigidBody } from "../Components/components.mjs";
 
 /**

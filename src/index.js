@@ -1,5 +1,5 @@
 /* global Ammo THREE WEBVR */
-import { World } from "http://192.168.1.129:8080/build/ecsy.module.js";
+import { World } from "../../node_modules/ecsy/build/ecsy.module.js";
 import {
   Geometry,
   Transform,
