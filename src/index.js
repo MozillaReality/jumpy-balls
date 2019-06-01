@@ -5,18 +5,19 @@ import {
   Transform,
   Draggable,
   ThreeContext,
-  VRController,
   Target,
   GameState,
   Active,
-  Object3D,
+  CameraRig,
   BallGenerator,
   RigidBody
 } from "./Components/components.mjs";
 import {
   VRControllerSystem,
   TargetSystem,
+  RendererSystem,
   GeometrySystem,
+  CameraRigSystem,
   FloorCollisionSystem,
   PhysicsSystem,
   BallGeneratorSystem,
@@ -26,48 +27,22 @@ import {
 
 Ammo().then(() => {
   const world = (window.world = new World());
-
-  var group = new THREE.Group();
-  var controller1, controller2;
-
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x808080);
-  const camera = new THREE.PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
 
   world
     .registerSystem(GeometrySystem)
+    .registerSystem(CameraRigSystem)
     .registerSystem(BallGeneratorSystem)
     .registerSystem(BallSystem)
     .registerSystem(VRControllerSystem)
     .registerSystem(GameStateSystem)
     .registerSystem(PhysicsSystem)
     .registerSystem(FloorCollisionSystem)
-    .registerSystem(TargetSystem);
-  world
+    .registerSystem(TargetSystem)
+    .registerSystem(RendererSystem)
     .registerSingletonComponent(ThreeContext)
     .registerSingletonComponent(GameState);
-
-  world
-    .createEntity()
-    .addComponent(BallGenerator, { position: { x: 1, y: 2.5, z: 0 } })
-    .addComponent(Active);
-  world
-    .createEntity()
-    .addComponent(Geometry, { primitive: "sphere", radius: 0.3 })
-    .addComponent(Transform, {
-      position: { x: 1, y: 2.5, z: 0 },
-      rotation: { x: 0, y: 0, z: 0 }
-    });
-
-  var cameraRig = new THREE.Group();
-  cameraRig.add(camera);
-  cameraRig.position.set(2, 2, 7);
-  scene.add(cameraRig);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true });
 
@@ -83,7 +58,6 @@ Ammo().then(() => {
   document.body.appendChild(renderer.domElement);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(WEBVR.createButton(renderer));
-  window.addEventListener("resize", onWindowResize, false);
   const clock = new THREE.Clock();
 
   init();
@@ -100,38 +74,24 @@ Ammo().then(() => {
     light.shadow.mapSize.set(4096, 4096);
     scene.add(light);
 
-    scene.add(group);
-
-    // controllers
-
-    controller1 = renderer.vr.getController(0);
-    cameraRig.add(controller1);
-
-    controller2 = renderer.vr.getController(1);
-    cameraRig.add(controller2);
+    // Ball generator
+    world
+      .createEntity()
+      .addComponent(BallGenerator, { position: { x: 1, y: 2.5, z: 0 } })
+      .addComponent(Active);
 
     world
       .createEntity()
-      .addComponent(VRController, { id: 0 })
-      .addComponent(Object3D, { object: controller1 });
-    world
-      .createEntity()
-      .addComponent(VRController, { id: 1 })
-      .addComponent(Object3D, { object: controller2 });
+      .addComponent(Geometry, { primitive: "sphere", radius: 0.3 })
+      .addComponent(Transform, {
+        position: { x: 1, y: 2.5, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 }
+      });
+
+    // camera rig & controllers
+    world.createEntity().addComponent(CameraRig);
 
     //
-
-    var geometry = new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(0, 0, -1)
-    ]);
-
-    var line = new THREE.Line(geometry);
-    line.name = "line";
-    line.scale.z = 5;
-
-    controller1.add(line.clone());
-    controller2.add(line.clone());
 
     createGround();
     createBox().addComponent(Transform, {
@@ -147,11 +107,9 @@ Ammo().then(() => {
       rotation: { x: 0, y: 0, z: 0.1 }
     });
     createBox().addComponent(Transform, {
-      position: { x: 1.5, y: 0, z: 0 },
+      position: { x: 1.5, y: 1, z: 0 },
       rotation: { x: 0, y: 0, z: 0.1 }
     });
-    //createBox().addComponent(Transform, {position: {x: 2.5, y: 0.2, z:0}, rotation: {x:0,y:0, z: 0.1}});
-    //createBox().addComponent(Transform, {position: {x: 3.5, y: 0.2, z:0}, rotation: {x:0,y:0, z: 0.1}});
 
     createTarget();
 
@@ -210,14 +168,7 @@ Ammo().then(() => {
       });
   }
 
-  function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-
   function animate() {
     world.execute(clock.getDelta(), clock.elapsedTime);
-    renderer.render(scene, camera);
   }
 });

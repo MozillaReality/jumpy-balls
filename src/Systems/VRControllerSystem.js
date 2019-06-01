@@ -82,10 +82,26 @@ export class VRControllerSystem extends System {
   }
 
   execute() {
-    this.events.controllers.added.forEach(c => {
-      var controller = c.getComponent(Object3D).object;
+    this.events.controllers.added.forEach(entity => {
+      var renderer = this.world.components.threeContext.renderer;
+      var controller = renderer.vr.getController(
+        entity.getComponent(VRController).id
+      );
+
+      entity.addComponent(Object3D, { object: controller });
       controller.addEventListener("selectstart", this.onSelectStart.bind(this));
       controller.addEventListener("selectend", this.onSelectEnd.bind(this));
+
+      var geometry = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(0, 0, -1)
+      ]);
+
+      var line = new THREE.Line(geometry);
+      line.name = "line";
+      line.scale.z = 5;
+
+      controller.add(line.clone());
     });
 
     this.cleanIntersected();

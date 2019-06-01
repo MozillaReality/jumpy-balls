@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "start": "http-server -c-1 -p 8080 --cors"
   },
   "repository": {
     "type": "git",

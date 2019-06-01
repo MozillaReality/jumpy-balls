@@ -1,6 +1,21 @@
+/* global THREE */
 export class Geometry {
   constructor() {
     this.primitive = "box";
+  }
+}
+
+export class Parent {
+  constructor() {
+    this.parent = null;
+  }
+}
+
+export class CameraRig {
+  constructor() {
+    this.leftHand = null;
+    this.rightHand = null;
+    this.camera = null;
   }
 }
 
