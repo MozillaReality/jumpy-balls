@@ -25,16 +25,28 @@ export class GeometrySystem extends System {
   }
 
   execute() {
+    // Removed
     this.events.entities.removed.forEach(entity => {
       var object = entity.getComponent(Object3D).object;
       object.parent.remove(object);
     });
 
+    // Added
     this.events.entities.added.forEach(entity => {
       var component = entity.getComponent(Geometry);
 
       var geometry;
       switch (component.primitive) {
+        case "torus":
+          {
+            geometry = new THREE.TorusBufferGeometry(
+              component.radius,
+              component.tube,
+              component.radialSegments,
+              component.tubularSegments
+            );
+          }
+          break;
         case "sphere":
           {
             geometry = new THREE.IcosahedronBufferGeometry(component.radius, 1);

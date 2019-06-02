@@ -113,16 +113,21 @@ Ammo().then(() => {
       rotation: { x: 0, y: 0, z: 0.1 }
     });
 
-    createTarget();
+    createTarget().addComponent(Transform, {
+      position: { x: 3, y: 0.8, z: 0 },
+      rotation: { x: 0, y: Math.PI / 2, z: 0 }
+    });
 
     function createTarget() {
-      world
+      return world
         .createEntity()
         .addComponent(Target)
-        .addComponent(Geometry, { primitive: "sphere", radius: 0.8 })
-        .addComponent(Transform, {
-          position: { x: 3, y: 0.8, z: 0 },
-          rotation: { x: 0, y: 0, z: 0 }
+        .addComponent(Geometry, {
+          primitive: "torus",
+          radius: 0.5,
+          tube: 0.1,
+          radialSegments: 8,
+          tubularSegments: 15
         });
     }
 

@@ -30,7 +30,7 @@ export class DissolveSystem extends System {
       dissolve.value -= delta * dissolve.speed;
       if (dissolve.value <= 0) {
         entity.removeComponent(Dissolve);
-        entity.removeComponent(Object3D);
+        //entity.removeComponent(Object3D);
       }
     }
   }

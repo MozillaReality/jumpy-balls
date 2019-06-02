@@ -9,7 +9,17 @@ export class PhysicsSystem extends System {
     this._quaternion = new Ammo.btQuaternion(0, 0, 0, 1);
     return {
       queries: {
-        entities: { components: [RigidBody, Geometry, Object3D] }
+        entities: {
+          components: [RigidBody, Geometry, Object3D],
+          events: {
+            added: {
+              event: "EntityAdded"
+            },
+            removed: {
+              event: "EntityRemoved"
+            }
+          }
+        }
       }
     };
   }
@@ -95,27 +105,23 @@ export class PhysicsSystem extends System {
   }
 
   execute(delta) {
-    const entities = this.queries.entities;
+    this.events.entities.added.forEach(entity => {
+      var object = entity.getComponent(Object3D).object;
+      const body = this._setupRigidBody(this._createRigidBody(entity), entity);
+      body.object3D = object;
+      object.userData.body = body;
+      this._physicsWorld.addRigidBody(body);
+    });
 
-    // @TODO: Move to ENTITY_ADD event handler
-    for (let i = 0, il = entities.length; i < il; i++) {
-      const entity = entities[i];
-      const object = entity.getComponent(Object3D).object;
+    this.events.entities.removed.forEach(entity => {
+      var object = entity.getComponent(Object3D).object;
+      var body = object.userData.body;
+      console.log("removed", entity, object, body);
+    });
 
-      if (!object.userData.body) {
-        const body = this._setupRigidBody(
-          this._createRigidBody(entity),
-          entity
-        );
-        body.object3D = object;
-        object.userData.body = body;
-        this._physicsWorld.addRigidBody(body);
-      }
-    }
-
-    //this._physicsWorld.stepSimulation(delta, 2, 1 / 60);
     this._physicsWorld.stepSimulation(delta, 2);
 
+    const entities = this.queries.entities;
     for (let i = 0, il = entities.length; i < il; i++) {
       const entity = entities[i];
       const rigidBody = entity.getComponent(RigidBody);
@@ -124,12 +130,12 @@ export class PhysicsSystem extends System {
 
       const object = entity.getComponent(Object3D).object;
       const body = object.userData.body;
-      const form = this._transform;
+      const transform = this._transform;
       const q = this._quaternion;
 
-      body.getMotionState().getWorldTransform(form);
-      const o = form.getOrigin();
-      form.getBasis().getRotation(q);
+      body.getMotionState().getWorldTransform(transform);
+      const o = transform.getOrigin();
+      transform.getBasis().getRotation(q);
 
       // Update instance's position and quaternion
       object.position.set(o.x(), o.y(), o.z());
