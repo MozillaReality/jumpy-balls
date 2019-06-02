@@ -38,9 +38,7 @@ export class FloorCollisionSystem extends System {
         );
 
         // Wait a bit before spawning a new bullet from the generator
-        setTimeout(() => {
-          this.world.emitEvent("floorCollided", ball);
-        }, 2000);
+        this.world.emitEvent("floorCollided", ball);
       }
     }
   }

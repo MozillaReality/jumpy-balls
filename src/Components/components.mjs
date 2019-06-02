@@ -5,6 +5,18 @@ export class Geometry {
   }
 }
 
+export class Dissolve {
+  constructor() {
+    this.value = 1;
+    this.speed = 1;
+  }
+
+  copy(src) {
+    this.value = src.value;
+    this.speed = src.speed;
+  }
+}
+
 export class Parent {
   constructor() {
     this.parent = null;

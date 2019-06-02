@@ -14,6 +14,9 @@ export class GeometrySystem extends System {
           events: {
             added: {
               event: "EntityAdded"
+            },
+            removed: {
+              event: "EntityRemoved"
             }
           }
         }
@@ -22,6 +25,11 @@ export class GeometrySystem extends System {
   }
 
   execute() {
+    this.events.entities.removed.forEach(entity => {
+      var object = entity.getComponent(Object3D).object;
+      object.parent.remove(object);
+    });
+
     this.events.entities.added.forEach(entity => {
       var component = entity.getComponent(Geometry);
 

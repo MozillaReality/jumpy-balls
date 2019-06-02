@@ -1,5 +1,10 @@
 import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { BallGenerator, Active } from "../Components/components.mjs";
+import {
+  BallGenerator,
+  Dissolve,
+  Object3D,
+  Active
+} from "../Components/components.mjs";
 
 export class GameStateSystem extends System {
   init() {
@@ -16,11 +21,18 @@ export class GameStateSystem extends System {
 
   execute() {
     // If a ball collided with the floor, reactivate the generator to throw another ball
-    this.events.floorCollided.forEach(() => {
+    this.events.floorCollided.forEach(ball => {
       // @todo here we should just activate the collided ball's generator
-      this.queries.entities.forEach(generator => {
-        generator.addComponent(Active);
-      });
+      // Wait 2s before reactivating the ball generator
+      setTimeout(() => {
+        this.queries.entities.forEach(generator => {
+          generator.addComponent(Active);
+        });
+      }, 2000);
+
+      setTimeout(() => {
+        ball.addComponent(Dissolve);
+      }, 4000);
     });
 
     this.events.levelCleared.forEach(() => {

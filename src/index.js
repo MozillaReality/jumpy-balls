@@ -16,6 +16,7 @@ import {
   VRControllerSystem,
   TargetSystem,
   RendererSystem,
+  DissolveSystem,
   GeometrySystem,
   CameraRigSystem,
   FloorCollisionSystem,
@@ -40,6 +41,7 @@ Ammo().then(() => {
     .registerSystem(PhysicsSystem)
     .registerSystem(FloorCollisionSystem)
     .registerSystem(TargetSystem)
+    .registerSystem(DissolveSystem)
     .registerSystem(RendererSystem)
     .registerSingletonComponent(ThreeContext)
     .registerSingletonComponent(GameState);

@@ -25,7 +25,6 @@ export class BallSystem extends System {
     var entities = this.events.entities.added;
     entities.forEach(entity => {
       var radius = entity.getComponent(Ball).radius;
-      console.log(entity.getComponent(Ball), radius);
       entity
         .addComponent(Geometry, {
           primitive: "sphere",

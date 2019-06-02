@@ -8,3 +8,4 @@ export { BallGeneratorSystem } from "./BallGeneratorSystem.js";
 export { PhysicsSystem } from "./PhysicsSystem.js";
 export { GeometrySystem } from "./GeometrySystem.js";
 export { RendererSystem } from "./RendererSystem.js";
+export { DissolveSystem } from "./DissolveSystem.js";
