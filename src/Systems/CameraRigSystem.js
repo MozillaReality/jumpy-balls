@@ -38,7 +38,7 @@ export class CameraRigSystem extends System {
       entity.addComponent(Object3D, { object: cameraRig });
       cameraRig.add(camera);
       cameraRig.position.set(0, 0, 1);
-      //cameraRig.position.set(0, 0, 5);
+      cameraRig.position.set(0, 0, 5);
 
       // Controllers
       this.world

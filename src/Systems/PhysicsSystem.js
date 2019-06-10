@@ -5,7 +5,7 @@ import { Geometry, Object3D, RigidBody } from "../Components/components.mjs";
 export class PhysicsSystem extends System {
   init() {
     this._physicsWorld = this._createWorld();
-    
+
     this._transform = new Ammo.btTransform();
     this._quaternion = new Ammo.btQuaternion(0, 0, 0, 1);
     return {

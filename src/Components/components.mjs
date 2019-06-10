@@ -9,6 +9,12 @@ export class Sky {
   constructor() {}
 }
 
+export class Visible {
+  constructor() {
+    this.value = false;
+  }
+}
+
 export class Rotating {
   constructor() {
     this.speed = new THREE.Vector3(0, 0, 0);

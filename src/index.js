@@ -10,6 +10,7 @@ import {
   Active,
   CameraRig,
   Sky,
+  Visible,
   Environment,
   BallGenerator,
   RigidBody
@@ -19,6 +20,7 @@ import {
   TargetSystem,
   RendererSystem,
   DissolveSystem,
+  VisibilitySystem,
   GeometrySystem,
   SkySystem,
   EnvironmentSystem,
@@ -55,6 +57,7 @@ Ammo().then(() => {
     .registerSystem(VRControllerSystem)
     .registerSystem(GameStateSystem)
     .registerSystem(PhysicsSystem)
+    .registerSystem(VisibilitySystem)
     .registerSystem(FloorCollisionSystem)
     .registerSystem(TargetSystem)
     .registerSystem(SkySystem)
@@ -78,14 +81,15 @@ Ammo().then(() => {
     scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
 
     var light = new THREE.DirectionalLight(0xffffff);
-    light.position.set(0, 6, 0);
+    light.position.set(0, 4, 0);
     light.castShadow = true;
-    light.shadow.camera.top = 2;
-    light.shadow.camera.bottom = -2;
-    light.shadow.camera.right = 2;
-    light.shadow.camera.left = -2;
+    light.shadow.camera.top = 1;
+    light.shadow.camera.bottom = -1;
+    light.shadow.camera.right = 10;
+    light.shadow.camera.left = -10;
     light.shadow.mapSize.set(4096, 4096);
     scene.add(light);
+    //scene.add( new THREE.CameraHelper( light.shadow.camera ) );
 
     world.createEntity().addComponent(Sky);
 
@@ -108,7 +112,7 @@ Ammo().then(() => {
 
     //
 
-    createGround();
+    createFloor();
     createBox().addComponent(Transform, {
       position: { x: -0.75, y: 1.5, z: 0 },
       rotation: { x: 0, y: 0, z: 6 }
@@ -168,7 +172,7 @@ Ammo().then(() => {
     }
   }
 
-  function createGround() {
+  function createFloor() {
     world
       .createEntity()
       .addComponent(Geometry, {
@@ -177,8 +181,9 @@ Ammo().then(() => {
         height: 0.1,
         depth: 100
       })
+      .addComponent(Visible, { value: false })
       .addComponent(Transform, {
-        position: { x: 0, y: -0.1, z: 0 },
+        position: { x: 0, y: -0.05, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       })
       .addComponent(RigidBody, {

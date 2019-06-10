@@ -23,11 +23,11 @@ export class GameStateSystem extends System {
         this.queries.entities.forEach(generator => {
           generator.addComponent(Active);
         });
-      }, 2000);
+      }, 1000);
 
       setTimeout(() => {
         ball.addComponent(Dissolve);
-      }, 4000);
+      }, 2000);
     });
 
     this.events.levelCleared.forEach(() => {
