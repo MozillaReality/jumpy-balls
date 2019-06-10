@@ -28,7 +28,7 @@ export class BallGeneratorSystem extends System {
     entities.forEach(entity => {
       var component = entity.getComponent(BallGenerator);
 
-      var radius = 0.3;
+      var radius = 0.1;
 
       // Ball dispatcher object
       var ball = this.world.createEntity();

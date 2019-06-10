@@ -1,6 +1,12 @@
 /* global THREE */
 import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Ball, Active, Target, Object3D } from "../Components/components.mjs";
+import {
+  Rotating,
+  Ball,
+  Active,
+  Target,
+  Object3D
+} from "../Components/components.mjs";
 
 // Aux position
 var worldPos = new THREE.Vector3();
@@ -47,6 +53,7 @@ export class TargetSystem extends System {
         ) {
           ball.removeComponent(Active);
           this.world.emitEvent("levelCleared");
+          target.addComponent(Rotating, { speed: { x: 5, y: 13, z: 0 } });
         }
       }
     }

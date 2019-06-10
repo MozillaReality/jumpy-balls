@@ -1,10 +1,5 @@
 import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import {
-  BallGenerator,
-  Dissolve,
-  Object3D,
-  Active
-} from "../Components/components.mjs";
+import { BallGenerator, Dissolve, Active } from "../Components/components.mjs";
 
 export class GameStateSystem extends System {
   init() {

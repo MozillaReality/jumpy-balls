@@ -3,6 +3,7 @@ import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
 import {
   VRController,
   Draggable,
+  Parent,
   Object3D
 } from "../Components/components.mjs";
 
@@ -48,8 +49,13 @@ export class VRControllerSystem extends System {
       line.name = "line";
       line.scale.z = 5;
 
-      controller.add(line.clone());
-      scene.add(controller);
+      controller.add(line);
+
+      if (entity.hasComponent(Parent)) {
+        entity.getComponent(Parent).parent.add(controller);
+      } else {
+        scene.add(controller);
+      }
     });
 
     this.cleanIntersected();
@@ -58,7 +64,6 @@ export class VRControllerSystem extends System {
       this.intersectObjects(controller.getComponent(Object3D).object);
     });
   }
-
 
   onSelectStart(event) {
     var controller = event.target;

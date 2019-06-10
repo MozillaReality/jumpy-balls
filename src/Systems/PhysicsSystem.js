@@ -24,6 +24,47 @@ export class PhysicsSystem extends System {
     };
   }
 
+  execute(delta) {
+    this.events.entities.added.forEach(entity => {
+      var object = entity.getComponent(Object3D).object;
+      const body = this._setupRigidBody(this._createRigidBody(entity), entity);
+      body.object3D = object;
+      object.userData.body = body;
+      this._physicsWorld.addRigidBody(body);
+    });
+
+    this.events.entities.removed.forEach(entity => {
+      var object = entity.getComponent(Object3D).object;
+      var body = object.userData.body;
+      console.log("removed", entity, object, body);
+    });
+
+    //this._physicsWorld.stepSimulation(delta, 2);
+    //this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
+    this._physicsWorld.stepSimulation(delta / 2, 4, 1 / 80);
+
+    const entities = this.queries.entities;
+    for (let i = 0, il = entities.length; i < il; i++) {
+      const entity = entities[i];
+      const rigidBody = entity.getComponent(RigidBody);
+
+      if (rigidBody.weight === 0.0) continue;
+
+      const object = entity.getComponent(Object3D).object;
+      const body = object.userData.body;
+      const transform = this._transform;
+      const q = this._quaternion;
+
+      body.getMotionState().getWorldTransform(transform);
+      const o = transform.getOrigin();
+      transform.getBasis().getRotation(q);
+
+      // Update instance's position and quaternion
+      object.position.set(o.x(), o.y(), o.z());
+      object.quaternion.set(q.x(), q.y(), q.z(), q.w());
+    }
+  }
+
   _createWorld() {
     const config = new Ammo.btDefaultCollisionConfiguration();
     const dispatcher = new Ammo.btCollisionDispatcher(config);
@@ -35,7 +76,6 @@ export class PhysicsSystem extends System {
       solver,
       config
     );
-    window._world = world;
     world.setGravity(new Ammo.btVector3(0, -9.8 * 10, 0));
     return world;
   }
@@ -102,44 +142,5 @@ export class PhysicsSystem extends System {
       new Ammo.btVector3(linearVelocity.x, linearVelocity.y, linearVelocity.z)
     );
     return body;
-  }
-
-  execute(delta) {
-    this.events.entities.added.forEach(entity => {
-      var object = entity.getComponent(Object3D).object;
-      const body = this._setupRigidBody(this._createRigidBody(entity), entity);
-      body.object3D = object;
-      object.userData.body = body;
-      this._physicsWorld.addRigidBody(body);
-    });
-
-    this.events.entities.removed.forEach(entity => {
-      var object = entity.getComponent(Object3D).object;
-      var body = object.userData.body;
-      console.log("removed", entity, object, body);
-    });
-
-    this._physicsWorld.stepSimulation(delta, 2);
-
-    const entities = this.queries.entities;
-    for (let i = 0, il = entities.length; i < il; i++) {
-      const entity = entities[i];
-      const rigidBody = entity.getComponent(RigidBody);
-
-      if (rigidBody.weight === 0.0) continue;
-
-      const object = entity.getComponent(Object3D).object;
-      const body = object.userData.body;
-      const transform = this._transform;
-      const q = this._quaternion;
-
-      body.getMotionState().getWorldTransform(transform);
-      const o = transform.getOrigin();
-      transform.getBasis().getRotation(q);
-
-      // Update instance's position and quaternion
-      object.position.set(o.x(), o.y(), o.z());
-      object.quaternion.set(q.x(), q.y(), q.z(), q.w());
-    }
   }
 }

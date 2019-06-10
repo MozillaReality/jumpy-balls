@@ -37,17 +37,18 @@ export class CameraRigSystem extends System {
       cameraRig.add(camera);
       entity.addComponent(Object3D, { object: cameraRig });
       cameraRig.add(camera);
-      //cameraRig.position.set(2, 2, 7);
+      cameraRig.position.set(0, 0, 1);
+      //cameraRig.position.set(0, 0, 5);
 
       // Controllers
       this.world
         .createEntity()
         .addComponent(VRController, { id: 0 })
-        .addComponent(Parent, { parent: entity });
+        .addComponent(Parent, { parent: cameraRig });
       this.world
         .createEntity()
         .addComponent(VRController, { id: 1 })
-        .addComponent(Parent, { parent: entity });
+        .addComponent(Parent, { parent: cameraRig });
 
       this.world.components.threeContext.scene.add(cameraRig);
     });

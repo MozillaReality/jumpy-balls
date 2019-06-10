@@ -9,3 +9,7 @@ export { PhysicsSystem } from "./PhysicsSystem.js";
 export { GeometrySystem } from "./GeometrySystem.js";
 export { RendererSystem } from "./RendererSystem.js";
 export { DissolveSystem } from "./DissolveSystem.js";
+export { EnvironmentSystem } from "./EnvironmentSystem.js";
+export { SkySystem } from "./SkySystem.js";
+export { RotatingSystem } from "./RotatingSystem.js";
+export { ExplosiveMeshSystem } from "./ExplosiveMeshSystem.js";

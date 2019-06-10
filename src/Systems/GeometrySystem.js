@@ -63,8 +63,10 @@ export class GeometrySystem extends System {
           break;
       }
 
+      var color = component.primitive === 'torus' ? 0x999900 : Math.random() * 0xffffff;
+
       var material = new THREE.MeshStandardMaterial({
-        color: Math.random() * 0xffffff,
+        color: color,
         roughness: 0.7,
         metalness: 0.0,
         flatShading: true

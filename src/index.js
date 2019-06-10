@@ -8,7 +8,10 @@ import {
   Target,
   GameState,
   Active,
+  ExplosiveMesh,
   CameraRig,
+  Sky,
+  Environment,
   BallGenerator,
   RigidBody
 } from "./Components/components.mjs";
@@ -18,20 +21,34 @@ import {
   RendererSystem,
   DissolveSystem,
   GeometrySystem,
+  SkySystem,
+  EnvironmentSystem,
   CameraRigSystem,
   FloorCollisionSystem,
   PhysicsSystem,
   BallGeneratorSystem,
+  RotatingSystem,
   GameStateSystem,
+  ExplosiveMeshSystem,
   BallSystem
 } from "./Systems/systems.mjs";
 
 Ammo().then(() => {
   const world = (window.world = new World());
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x808080);
 
   world
+    .registerSingletonComponent(Environment)
+    .registerSingletonComponent(ThreeContext)
+    .registerSingletonComponent(GameState);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+
+  world.components.threeContext.renderer = renderer;
+  world.components.threeContext.scene = scene;
+
+  world
+    .registerSystem(EnvironmentSystem)
     .registerSystem(GeometrySystem)
     .registerSystem(CameraRigSystem)
     .registerSystem(BallGeneratorSystem)
@@ -41,15 +58,11 @@ Ammo().then(() => {
     .registerSystem(PhysicsSystem)
     .registerSystem(FloorCollisionSystem)
     .registerSystem(TargetSystem)
+    .registerSystem(SkySystem)
     .registerSystem(DissolveSystem)
-    .registerSystem(RendererSystem)
-    .registerSingletonComponent(ThreeContext)
-    .registerSingletonComponent(GameState);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
-
-  world.components.threeContext.renderer = renderer;
-  world.components.threeContext.scene = scene;
+    .registerSystem(RotatingSystem)
+    //.registerSystem(ExplosiveMeshSystem)
+    .registerSystem(RendererSystem);
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -76,6 +89,8 @@ Ammo().then(() => {
     light.shadow.mapSize.set(4096, 4096);
     scene.add(light);
 
+    world.createEntity().addComponent(Sky);
+
     // Ball generator
     world
       .createEntity()
@@ -84,7 +99,7 @@ Ammo().then(() => {
 
     world
       .createEntity()
-      .addComponent(Geometry, { primitive: "sphere", radius: 0.3 })
+      .addComponent(Geometry, { primitive: "sphere", radius: 0.15 })
       .addComponent(Transform, {
         position: { x: 1, y: 2.5, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
@@ -97,24 +112,27 @@ Ammo().then(() => {
 
     createGround();
     createBox().addComponent(Transform, {
-      position: { x: -1, y: 1.5, z: 0 },
+      position: { x: -0.75, y: 1.5, z: 0 },
       rotation: { x: 0, y: 0, z: 6 }
     });
+    /*
     createBox().addComponent(Transform, {
       position: { x: 0, y: 1, z: 0 },
       rotation: { x: 0, y: 0, z: -0.3 }
     });
+
     createBox().addComponent(Transform, {
-      position: { x: 2.5, y: 0, z: 0 },
+      position: { x: 0.5, y: 0, z: 0 },
       rotation: { x: 0, y: 0, z: 0.1 }
     });
+    */
     createBox().addComponent(Transform, {
-      position: { x: 1.5, y: 1, z: 0 },
+      position: { x: 1, y: 1, z: 0 },
       rotation: { x: 0, y: 0, z: 0.1 }
     });
 
     createTarget().addComponent(Transform, {
-      position: { x: 3, y: 0.8, z: 0 },
+      position: { x: 1.5, y: 0.8, z: 0 },
       rotation: { x: 0, y: Math.PI / 2, z: 0 }
     });
 
@@ -124,28 +142,27 @@ Ammo().then(() => {
         .addComponent(Target)
         .addComponent(Geometry, {
           primitive: "torus",
-          radius: 0.5,
-          tube: 0.1,
+          radius: 0.3,
+          tube: 0.02,
           radialSegments: 8,
-          tubularSegments: 15
+          tubularSegments: 30
         });
     }
 
     function createBox() {
-      var s = 0.2;
       const entity = world.createEntity();
       entity
         .addComponent(Geometry, {
           primitive: "box",
-          width: 3 * s,
-          height: s / 2,
-          depth: 3 * s
+          width: 0.3,
+          height: 0.03,
+          depth: 0.15
         })
         .addComponent(Draggable)
         .addComponent(RigidBody, {
           weight: 0.0,
           restitution: 1,
-          friction: 1.0,
+          friction: 0,
           linearDamping: 0.0,
           angularDamping: 0.0
         });
@@ -158,9 +175,9 @@ Ammo().then(() => {
       .createEntity()
       .addComponent(Geometry, {
         primitive: "box",
-        width: 500,
+        width: 100,
         height: 0.1,
-        depth: 500
+        depth: 100
       })
       .addComponent(Transform, {
         position: { x: 0, y: -0.1, z: 0 },

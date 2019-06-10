@@ -30,7 +30,6 @@ export class FloorCollisionSystem extends System {
         ball.removeComponent(Active);
 
         // @todo emit event so this is handled in the gamestate system
-        this.world.components.threeContext.scene.background.set(0xff0000);
         this.world.components.gameState.numBallsFailed++;
         console.log(
           "Failed!, number of balls:",
