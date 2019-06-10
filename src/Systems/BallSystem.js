@@ -36,7 +36,7 @@ export class BallSystem extends System {
           friction: 0.5,
           linearDamping: 0.0,
           angularDamping: 0.0,
-          linearVelocity: new THREE.Vector3(-5, 15, 0)
+          linearVelocity: new THREE.Vector3(-2, 3.5, 0)
         });
     });
   }

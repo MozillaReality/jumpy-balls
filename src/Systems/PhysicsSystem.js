@@ -5,6 +5,7 @@ import { Geometry, Object3D, RigidBody } from "../Components/components.mjs";
 export class PhysicsSystem extends System {
   init() {
     this._physicsWorld = this._createWorld();
+    
     this._transform = new Ammo.btTransform();
     this._quaternion = new Ammo.btQuaternion(0, 0, 0, 1);
     return {
@@ -33,15 +34,9 @@ export class PhysicsSystem extends System {
       this._physicsWorld.addRigidBody(body);
     });
 
-    this.events.entities.removed.forEach(entity => {
-      var object = entity.getComponent(Object3D).object;
-      var body = object.userData.body;
-      console.log("removed", entity, object, body);
-    });
-
     //this._physicsWorld.stepSimulation(delta, 2);
     //this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
-    this._physicsWorld.stepSimulation(delta / 2, 4, 1 / 80);
+    this._physicsWorld.stepSimulation(delta, 4, 1 / 80);
 
     const entities = this.queries.entities;
     for (let i = 0, il = entities.length; i < il; i++) {
@@ -63,6 +58,18 @@ export class PhysicsSystem extends System {
       object.position.set(o.x(), o.y(), o.z());
       object.quaternion.set(q.x(), q.y(), q.z(), q.w());
     }
+
+    this.events.entities.removed.forEach(entity => {
+      this._removeRigidBody(entity);
+    });
+  }
+
+  _removeRigidBody(entity) {
+    var object = entity.getComponent(Object3D).object;
+    var body = object.userData.body;
+    this._physicsWorld.removeRigidBody(body);
+    Ammo.destroy(body);
+    delete object.userData.body;
   }
 
   _createWorld() {
@@ -76,7 +83,9 @@ export class PhysicsSystem extends System {
       solver,
       config
     );
-    world.setGravity(new Ammo.btVector3(0, -9.8 * 10, 0));
+    world.setGravity(new Ammo.btVector3(0, -9.8, 0));
+    // world.getSolverInfo().set_m_numIterations(10);
+
     return world;
   }
 

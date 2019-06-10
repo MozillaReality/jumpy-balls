@@ -8,7 +8,6 @@ import {
   Target,
   GameState,
   Active,
-  ExplosiveMesh,
   CameraRig,
   Sky,
   Environment,
@@ -29,7 +28,6 @@ import {
   BallGeneratorSystem,
   RotatingSystem,
   GameStateSystem,
-  ExplosiveMeshSystem,
   BallSystem
 } from "./Systems/systems.mjs";
 
@@ -49,6 +47,7 @@ Ammo().then(() => {
 
   world
     .registerSystem(EnvironmentSystem)
+    .registerSystem(DissolveSystem)
     .registerSystem(GeometrySystem)
     .registerSystem(CameraRigSystem)
     .registerSystem(BallGeneratorSystem)
@@ -59,7 +58,6 @@ Ammo().then(() => {
     .registerSystem(FloorCollisionSystem)
     .registerSystem(TargetSystem)
     .registerSystem(SkySystem)
-    .registerSystem(DissolveSystem)
     .registerSystem(RotatingSystem)
     //.registerSystem(ExplosiveMeshSystem)
     .registerSystem(RendererSystem);

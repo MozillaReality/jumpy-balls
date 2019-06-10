@@ -29,8 +29,7 @@ export class DissolveSystem extends System {
       object.material.transparent = true;
       dissolve.value -= delta * dissolve.speed;
       if (dissolve.value <= 0) {
-        entity.removeComponent(Dissolve);
-        //entity.removeComponent(Object3D);
+        entity.remove();
       }
     }
   }
