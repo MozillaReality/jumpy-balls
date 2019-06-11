@@ -9,6 +9,12 @@ export class Sky {
   constructor() {}
 }
 
+export class Element {
+  constructor() {
+    
+  }
+}
+
 export class Visible {
   constructor() {
     this.value = false;

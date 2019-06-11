@@ -9,6 +9,7 @@ import {
   GameState,
   Active,
   CameraRig,
+  Element,
   Sky,
   Visible,
   Environment,
@@ -17,6 +18,7 @@ import {
 } from "./Components/components.mjs";
 import {
   VRControllerSystem,
+  ElementSystem,
   TargetSystem,
   RendererSystem,
   DissolveSystem,
@@ -50,6 +52,7 @@ Ammo().then(() => {
   world
     .registerSystem(EnvironmentSystem)
     .registerSystem(DissolveSystem)
+    .registerSystem(ElementSystem)
     .registerSystem(GeometrySystem)
     .registerSystem(CameraRigSystem)
     .registerSystem(BallGeneratorSystem)
@@ -113,24 +116,39 @@ Ammo().then(() => {
     //
 
     createFloor();
-    createBox().addComponent(Transform, {
-      position: { x: -0.75, y: 1.5, z: 0 },
-      rotation: { x: 0, y: 0, z: 6 }
-    });
-    /*
-    createBox().addComponent(Transform, {
-      position: { x: 0, y: 1, z: 0 },
-      rotation: { x: 0, y: 0, z: -0.3 }
-    });
 
-    createBox().addComponent(Transform, {
-      position: { x: 0.5, y: 0, z: 0 },
-      rotation: { x: 0, y: 0, z: 0.1 }
-    });
-    */
-    createBox().addComponent(Transform, {
-      position: { x: 1, y: 1, z: 0 },
-      rotation: { x: 0, y: 0, z: 0.1 }
+    // Create elements
+    var elements = [
+      {
+        type: 2,
+        position: { x: -0.75, y: 1.5, z: 0 },
+        rotation: { x: 0, y: 0, z: 6 }
+      },
+      {
+        type: 0,
+        position: { x: -0.2, y: 0.8, z: 0 },
+        rotation: { x: 0, y: 0, z: -0.3 }
+      },
+      {
+        type: 0,
+        position: { x: 0.5, y: 0, z: 0 },
+        rotation: { x: 0, y: 0, z: 0.1 }
+      },
+      {
+        type: 0,
+        position: { x: 1, y: 1, z: 0 },
+        rotation: { x: 0, y: 0, z: 0.1 }
+      }
+    ];
+
+    elements.forEach(element => {
+      world
+        .createEntity()
+        .addComponent(Element, { type: element.type })
+        .addComponent(Transform, {
+          position: element.position,
+          rotation: element.rotation
+        });
     });
 
     createTarget().addComponent(Transform, {

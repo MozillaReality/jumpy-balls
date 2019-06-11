@@ -14,3 +14,4 @@ export { SkySystem } from "./SkySystem.js";
 export { RotatingSystem } from "./RotatingSystem.js";
 export { ExplosiveMeshSystem } from "./ExplosiveMeshSystem.js";
 export { VisibilitySystem } from "./VisibilitySystem.js";
+export { ElementSystem } from "./ElementSystem.js";
