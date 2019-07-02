@@ -18,7 +18,7 @@ export class TargetSystem extends System {
   init() {
     return {
       queries: {
-        targets: { components: [Target] },
+        targets: { components: [Target, Object3D] },
         balls: { components: [Ball, Active, Object3D] }
       }
     };

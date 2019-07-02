@@ -1,6 +1,12 @@
 /* global THREE */
 import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Geometry, Object3D, Transform } from "../Components/components.mjs";
+import {
+  Geometry,
+  Object3D,
+  Transform,
+  Element,
+  Draggable
+} from "../Components/components.mjs";
 
 /**
  * Create a Mesh based on the [Geometry] component and attach it to the entity using a [Object3D] component
@@ -63,7 +69,8 @@ export class GeometrySystem extends System {
           break;
       }
 
-      var color = component.primitive === 'torus' ? 0x999900 : Math.random() * 0xffffff;
+      var color =
+        component.primitive === "torus" ? 0x999900 : Math.random() * 0xffffff;
 
       var material = new THREE.MeshStandardMaterial({
         color: color,
@@ -86,6 +93,10 @@ export class GeometrySystem extends System {
             transform.rotation.z
           );
         }
+      }
+
+      if (entity.hasComponent(Element) && !entity.hasComponent(Draggable)) {
+        object.material.color.set(0x333333);
       }
 
       this.world.components.threeContext.scene.add(object);

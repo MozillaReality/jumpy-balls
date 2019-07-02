@@ -29,13 +29,6 @@ export class FloorCollisionSystem extends System {
       if (ballObject.position.y < radius) {
         ball.removeComponent(Active);
 
-        // @todo emit event so this is handled in the gamestate system
-        this.world.components.gameState.numBallsFailed++;
-        console.log(
-          "Failed!, number of balls:",
-          this.world.components.gameState.numBallsFailed
-        );
-
         // Wait a bit before spawning a new bullet from the generator
         this.world.emitEvent("floorCollided", ball);
       }

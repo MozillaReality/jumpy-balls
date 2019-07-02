@@ -3,17 +3,15 @@ import { World } from "../../node_modules/ecsy/build/ecsy.module.js";
 import {
   Geometry,
   Transform,
-  Draggable,
   ThreeContext,
-  Target,
   GameState,
-  Active,
+  Shape,
+  Level,
   CameraRig,
-  Element,
   Sky,
   Visible,
+  TextGeometry,
   Environment,
-  BallGenerator,
   RigidBody
 } from "./Components/components.mjs";
 import {
@@ -26,12 +24,17 @@ import {
   GeometrySystem,
   SkySystem,
   EnvironmentSystem,
+  GLTFLoaderSystem,
+  OutputSystem,
   CameraRigSystem,
   FloorCollisionSystem,
   PhysicsSystem,
   BallGeneratorSystem,
+  TransformSystem,
   RotatingSystem,
   GameStateSystem,
+  LevelManager,
+  TextGeometrySystem,
   BallSystem
 } from "./Systems/systems.mjs";
 
@@ -45,12 +48,25 @@ Ammo().then(() => {
     .registerSingletonComponent(GameState);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.gammaInput = true;
+  renderer.gammaOutput = true;
+  renderer.shadowMap.enabled = true;
+  renderer.vr.enabled = true;
+  document.body.appendChild(renderer.domElement);
+  renderer.setAnimationLoop(animate);
+  document.body.appendChild(WEBVR.createButton(renderer));
+  const clock = new THREE.Clock();
 
   world.components.threeContext.renderer = renderer;
   world.components.threeContext.scene = scene;
+  window.renderer = renderer;
 
   world
     .registerSystem(EnvironmentSystem)
+    .registerSystem(GLTFLoaderSystem)
+    .registerSystem(LevelManager)
     .registerSystem(DissolveSystem)
     .registerSystem(ElementSystem)
     .registerSystem(GeometrySystem)
@@ -65,19 +81,11 @@ Ammo().then(() => {
     .registerSystem(TargetSystem)
     .registerSystem(SkySystem)
     .registerSystem(RotatingSystem)
+    .registerSystem(OutputSystem)
+    .registerSystem(TextGeometrySystem)
     //.registerSystem(ExplosiveMeshSystem)
+    .registerSystem(TransformSystem)
     .registerSystem(RendererSystem);
-
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.gammaInput = true;
-  renderer.gammaOutput = true;
-  renderer.shadowMap.enabled = true;
-  renderer.vr.enabled = true;
-  document.body.appendChild(renderer.domElement);
-  renderer.setAnimationLoop(animate);
-  document.body.appendChild(WEBVR.createButton(renderer));
-  const clock = new THREE.Clock();
 
   init();
   function init() {
@@ -94,106 +102,50 @@ Ammo().then(() => {
     scene.add(light);
     //scene.add( new THREE.CameraHelper( light.shadow.camera ) );
 
-    world.createEntity().addComponent(Sky);
-
-    // Ball generator
-    world
-      .createEntity()
-      .addComponent(BallGenerator, { position: { x: 1, y: 2.5, z: 0 } })
-      .addComponent(Active);
-
-    world
-      .createEntity()
-      .addComponent(Geometry, { primitive: "sphere", radius: 0.15 })
-      .addComponent(Transform, {
-        position: { x: 1, y: 2.5, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      });
-
     // camera rig & controllers
     world.createEntity().addComponent(CameraRig);
 
-    //
+    // @Hack to workaround singletonComponents
+    world.entity = world.createEntity();
+    world.entity.addComponent(Level, { level: 0 });
 
+    // Scene
+    createScene();
+  }
+
+  function createScene() {
+    world.createEntity().addComponent(Sky);
     createFloor();
 
-    // Create elements
-    var elements = [
-      {
-        type: 2,
-        position: { x: -0.75, y: 1.5, z: 0 },
-        rotation: { x: 0, y: 0, z: 6 }
-      },
-      {
-        type: 0,
-        position: { x: -0.2, y: 0.8, z: 0 },
-        rotation: { x: 0, y: 0, z: -0.3 }
-      },
-      {
-        type: 0,
-        position: { x: 0.5, y: 0, z: 0 },
-        rotation: { x: 0, y: 0, z: 0.1 }
-      },
-      {
-        type: 0,
-        position: { x: 1, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0.1 }
-      }
-    ];
-
-    elements.forEach(element => {
-      world
-        .createEntity()
-        .addComponent(Element, { type: element.type })
-        .addComponent(Transform, {
-          position: element.position,
-          rotation: element.rotation
-        });
+    var text = world.createEntity();
+    text.addComponent(TextGeometry, { text: "" }).addComponent(Transform, {
+      position: { x: 0, y: 0, z: -3 },
+      rotation: { x: 0, y: -0.4, z: 0 }
     });
 
-    createTarget().addComponent(Transform, {
-      position: { x: 1.5, y: 0.8, z: 0 },
-      rotation: { x: 0, y: Math.PI / 2, z: 0 }
-    });
+    window.text = text; //@fixme megahack
 
-    function createTarget() {
-      return world
-        .createEntity()
-        .addComponent(Target)
-        .addComponent(Geometry, {
-          primitive: "torus",
-          radius: 0.3,
-          tube: 0.02,
-          radialSegments: 8,
-          tubularSegments: 30
-        });
-    }
+    world
+      .createEntity()
+      .addComponent(TextGeometry, { text: "mozilla" })
+      .addComponent(Transform, {
+        position: { x: -5, y: 0, z: -1 },
+        rotation: { x: 0, y: 0.4, z: 0 }
+      });
 
-    function createBox() {
-      const entity = world.createEntity();
-      entity
-        .addComponent(Geometry, {
-          primitive: "box",
-          width: 0.3,
-          height: 0.03,
-          depth: 0.15
-        })
-        .addComponent(Draggable)
-        .addComponent(RigidBody, {
-          weight: 0.0,
-          restitution: 1,
-          friction: 0,
-          linearDamping: 0.0,
-          angularDamping: 0.0
-        });
-      return entity;
-    }
+    //world.createEntity().addComponent(GLTFModel, { url: "BouncyFrame.glb" });
   }
 
   function createFloor() {
     world
       .createEntity()
       .addComponent(Geometry, {
+        primitive: "box",
+        width: 100,
+        height: 0.1,
+        depth: 100
+      })
+      .addComponent(Shape, {
         primitive: "box",
         width: 100,
         height: 0.1,

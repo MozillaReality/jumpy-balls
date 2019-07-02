@@ -6,8 +6,6 @@ export class EnvironmentSystem extends System {
   init() {
     var scene = this.world.components.threeContext.scene;
 
-    console.log(this.world.components.environment);
-
     // stage ground diameter (and sky radius)
     var STAGE_SIZE = 200;
 

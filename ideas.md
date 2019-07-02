@@ -168,3 +168,6 @@ execute() {
     entity.removeComponent(component.Components);
   });
 }
+
+/ˈēsēswī/
+/ēksē/

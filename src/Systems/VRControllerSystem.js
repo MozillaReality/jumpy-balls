@@ -3,6 +3,7 @@ import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
 import {
   VRController,
   Draggable,
+  Dragging,
   Parent,
   Object3D
 } from "../Components/components.mjs";
@@ -23,12 +24,17 @@ export class VRControllerSystem extends System {
             }
           }
         },
-        objects: { components: [Draggable] }
+        objects: { components: [Draggable, Object3D] },
+        dragging: { components: [Dragging] }
       }
     };
   }
 
   execute() {
+    this.queries.dragging.forEach(entity => {
+      this.reposition(entity.getComponent(Object3D).object, true);
+    });
+
     this.events.controllers.added.forEach(entity => {
       var renderer = this.world.components.threeContext.renderer;
       var scene = this.world.components.threeContext.scene;
@@ -75,6 +81,7 @@ export class VRControllerSystem extends System {
       tempMatrix.getInverse(controller.matrixWorld);
 
       var object = intersection.object;
+      object.userData.entity.addComponent(Dragging);
       object.matrix.premultiply(tempMatrix);
       object.matrix.decompose(object.position, object.quaternion, object.scale);
       object.material.emissive.b = 1;
@@ -90,6 +97,8 @@ export class VRControllerSystem extends System {
 
     if (controller.userData.selected !== undefined) {
       var object = controller.userData.selected;
+      object.userData.entity.removeComponent(Dragging);
+
       object.matrix.premultiply(controller.matrixWorld);
       object.matrix.decompose(object.position, object.quaternion, object.scale);
       object.material.emissive.b = 0;
@@ -98,6 +107,8 @@ export class VRControllerSystem extends System {
       controller.userData.selected = undefined;
 
       // Reposition
+      // @todo This should be moved to the physics system
+      /*
       const initialTransform = new Ammo.btTransform();
       initialTransform.setIdentity();
       initialTransform.setOrigin(
@@ -116,6 +127,71 @@ export class VRControllerSystem extends System {
         )
       );
       object.userData.body.setWorldTransform(initialTransform);
+      */
+      this.reposition(object);
+    }
+  }
+
+  reposition(object, world) {
+    if (world) {
+      var position = new THREE.Vector3();
+      var scale = new THREE.Vector3();
+      var quaternion = new THREE.Quaternion();
+      object.updateWorldMatrix(true);
+      object.matrixWorld.decompose(position, quaternion, scale);
+
+      var wxform = object.userData.body.getWorldTransform();
+      wxform.setIdentity();
+      var origin = wxform.getOrigin();
+      var quat = wxform.getRotation();
+
+      const initialTransform = new Ammo.btTransform();
+      initialTransform.setIdentity();
+      initialTransform.setOrigin(
+        new Ammo.btVector3(position.x, position.y, position.z)
+      );
+      initialTransform.setRotation(
+        new Ammo.btQuaternion(
+          quaternion.x,
+          quaternion.y,
+          quaternion.z,
+          quaternion.w
+        )
+      );
+      object.userData.body.setWorldTransform(initialTransform);
+    } else {
+      const initialTransform = new Ammo.btTransform();
+      initialTransform.setIdentity();
+      initialTransform.setOrigin(
+        new Ammo.btVector3(
+          object.position.x,
+          object.position.y,
+          object.position.z
+        )
+      );
+      initialTransform.setRotation(
+        new Ammo.btQuaternion(
+          object.quaternion.x,
+          object.quaternion.y,
+          object.quaternion.z,
+          object.quaternion.w
+        )
+      );
+      object.userData.body.setWorldTransform(initialTransform);
+
+      /*
+      var wxform = object.userData.body.getWorldTransform();
+      wxform.setIdentity();
+      var origin = wxform.getOrigin();
+      var quat = wxform.getRotation();
+      origin.setValue(object.position.x, object.position.y, object.position.z);
+      quat.setValue(
+        object.quaternion.x,
+        object.quaternion.y,
+        object.quaternion.z,
+        object.quaternion.w
+      );
+      */
     }
   }
 
@@ -142,9 +218,12 @@ export class VRControllerSystem extends System {
 
     raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
     raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
-    var objects = this.queries.objects.map(
-      o => o.getComponent(Object3D).object
-    );
+    // @fixme expensive
+    var objects = this.queries.objects.map(entity => {
+      var object = entity.getComponent(Object3D).object;
+      object.userData.entity = entity;
+      return object;
+    });
 
     return raycaster.intersectObjects(objects);
   }

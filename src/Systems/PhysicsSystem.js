@@ -1,6 +1,14 @@
-/* global Ammo */
+/* global THREE, Ammo */
 import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Geometry, Object3D, RigidBody } from "../Components/components.mjs";
+import {
+  Transform,
+  Shape,
+  Object3D,
+  RigidBody
+} from "../Components/components.mjs";
+
+var quaternion = new THREE.Quaternion();
+var euler = new THREE.Euler();
 
 export class PhysicsSystem extends System {
   init() {
@@ -11,7 +19,7 @@ export class PhysicsSystem extends System {
     return {
       queries: {
         entities: {
-          components: [RigidBody, Geometry, Object3D],
+          components: [RigidBody, Shape, Object3D],
           events: {
             added: {
               event: "EntityAdded"
@@ -34,9 +42,7 @@ export class PhysicsSystem extends System {
       this._physicsWorld.addRigidBody(body);
     });
 
-    //this._physicsWorld.stepSimulation(delta, 2);
-    //this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
-    this._physicsWorld.stepSimulation(delta, 4, 1 / 80);
+    this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
 
     const entities = this.queries.entities;
     for (let i = 0, il = entities.length; i < il; i++) {
@@ -57,6 +63,11 @@ export class PhysicsSystem extends System {
       // Update instance's position and quaternion
       object.position.set(o.x(), o.y(), o.z());
       object.quaternion.set(q.x(), q.y(), q.z(), q.w());
+
+      // @todo Create transform component to sync object & component
+      let transformComponent = entity.getMutableComponent(Transform);
+      transformComponent.position.copy(object.position);
+      transformComponent.rotation.copy(object.rotation);
     }
 
     this.events.entities.removed.forEach(entity => {
@@ -90,25 +101,22 @@ export class PhysicsSystem extends System {
   }
 
   _createShape(entity) {
-    var geometry = entity.getComponent(Geometry);
-    if (geometry.primitive === "box") {
+    var shape = entity.getComponent(Shape);
+    if (shape.primitive === "box") {
       return new Ammo.btBoxShape(
-        new Ammo.btVector3(
-          geometry.width / 2,
-          geometry.height / 2,
-          geometry.depth / 2
-        )
+        new Ammo.btVector3(shape.width / 2, shape.height / 2, shape.depth / 2)
       );
     }
-    if (geometry.primitive === "sphere") {
-      return new Ammo.btSphereShape(geometry.radius);
+    if (shape.primitive === "sphere") {
+      return new Ammo.btSphereShape(shape.radius);
     }
     return new Ammo.btBoxShape(new Ammo.btVector3(1.0, 1.0, 1.0));
   }
 
   _createRigidBody(entity) {
     const rigidBody = entity.getComponent(RigidBody);
-    const object = entity.getComponent(Object3D).object;
+    const transform = entity.getComponent(Transform);
+
     const shape = this._createShape(entity);
     const localInertia = new Ammo.btVector3(0, 0, 0);
     shape.calculateLocalInertia(rigidBody.weight, localInertia);
@@ -116,17 +124,21 @@ export class PhysicsSystem extends System {
     form.setIdentity();
     form.setOrigin(
       new Ammo.btVector3(
-        object.position.x,
-        object.position.y,
-        object.position.z
+        transform.position.x,
+        transform.position.y,
+        transform.position.z
       )
     );
+
+    euler.set(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+    quaternion.setFromEuler(euler);
+
     form.setRotation(
       new Ammo.btQuaternion(
-        object.quaternion.x,
-        object.quaternion.y,
-        object.quaternion.z,
-        object.quaternion.w
+        quaternion.x,
+        quaternion.y,
+        quaternion.z,
+        quaternion.w
       )
     );
 

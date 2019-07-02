@@ -5,14 +5,24 @@ export class Geometry {
   }
 }
 
+export class GLTFModel {}
+export class LevelItem {}
+export class Shape {}
+
+
+export class Level {}
+
+export class Dragging {}
+
 export class Sky {
   constructor() {}
 }
 
 export class Element {
-  constructor() {
-    
-  }
+  constructor() {}
+}
+
+export class TextGeometry {
 }
 
 export class Visible {
@@ -152,10 +162,12 @@ export class Object3D {
 export class BallGenerator {
   constructor() {
     this.position = new THREE.Vector3();
+    this.linearVelocity = new THREE.Vector3();
   }
 
   copy(src) {
     this.position.copy(src.position);
+    this.linearVelocity.copy(src.linearVelocity);
   }
 }
 
@@ -163,11 +175,13 @@ export class Ball {
   constructor() {
     this.position = new THREE.Vector3();
     this.radius = 0.4;
+    this.linearVelocity = new THREE.Vector3();
   }
 
   copy(src) {
     this.position.copy(src.position);
     this.radius = src.radius;
+    this.linearVelocity.copy(src.linearVelocity);
   }
 }
 

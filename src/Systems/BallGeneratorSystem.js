@@ -38,7 +38,11 @@ export class BallGeneratorSystem extends System {
           position: component.position,
           rotation: { x: 0, y: 0, z: 0 }
         })
-        .addComponent(Ball, { position: component.position, radius: radius })
+        .addComponent(Ball, {
+          position: component.position,
+          radius: radius,
+          linearVelocity: component.linearVelocity
+        })
         .addComponent(Active);
 
       entity.removeComponent(Active);

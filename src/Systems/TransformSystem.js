@@ -1,21 +1,52 @@
 import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Transform } from "../Components/components.mjs";
+import { Transform, Object3D } from "../Components/components.mjs";
 
 export class TransformSystem extends System {
   init() {
     return {
-      entities: [Transform]
+      queries: {
+        entities: {
+          components: [Object3D, Transform],
+          events: {
+            added: {
+              event: "EntityAdded"
+            },
+            changed: {
+              event: "ComponentChanged",
+              components: [Transform]
+            }
+          }
+        }
+      }
     };
   }
 
   execute() {
-    /*
-    var entities = this.queries.entities;
+    var entitiesEvents = this.events.entities;
+    for (let i = 0; i < entitiesEvents.added.length; i++) {
+      let entity = entitiesEvents.added[i];
+      let transform = entity.getComponent(Transform);
+      let object = entity.getComponent(Object3D).object;
 
-    for (var i = 0; i < entities.length; i++) {
-      var entity = entities[i];
-      var component = entity.getComponent(Transform);
+      object.position.copy(transform.position);
+      object.rotation.set(
+        transform.rotation.x,
+        transform.rotation.y,
+        transform.rotation.z
+      );
     }
-    */
+
+    for (let i = 0; i < entitiesEvents.changed.length; i++) {
+      let entity = entitiesEvents.changed[i];
+      let transform = entity.getComponent(Transform);
+      let object = entity.getComponent(Object3D).object;
+
+      object.position.copy(transform.position);
+      object.rotation.set(
+        transform.rotation.x,
+        transform.rotation.y,
+        transform.rotation.z
+      );
+    }
   }
 }

@@ -27,6 +27,7 @@ export class DissolveSystem extends System {
       var object = entity.getComponent(Object3D).object;
       object.material.opacity = dissolve.value;
       object.material.transparent = true;
+
       dissolve.value -= delta * dissolve.speed;
       if (dissolve.value <= 0) {
         entity.remove();
