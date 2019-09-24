@@ -12,6 +12,8 @@ export class LevelItem {}
 export class Shape {}
 export class Level {}
 export class Dragging extends TagComponent {}
+export class FloorCollided extends TagComponent {}
+export class Cleared extends TagComponent {}
 
 export class Sky {
   constructor() {}
@@ -136,6 +138,11 @@ export class Transform {
     this.position.copy(src.position);
     this.rotation.copy(src.rotation);
   }
+
+  reset() {
+    this.position.set(0, 0, 0);
+    this.rotation.set(0, 0, 0);
+  }
 }
 
 export class GameState {
@@ -194,6 +201,12 @@ export class Ball {
     this.position = new THREE.Vector3();
     this.radius = 0.4;
     this.linearVelocity = new THREE.Vector3();
+  }
+
+  reset() {
+    this.position.copy(0, 0, 0);
+    this.radius = 0.4;
+    this.linearVelocity.set(0, 0, 0);
   }
 
   copy(src) {

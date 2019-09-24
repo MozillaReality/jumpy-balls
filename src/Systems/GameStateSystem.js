@@ -3,9 +3,13 @@ import {
   TextGeometry,
   BallGenerator,
   Dissolve,
+  Target,
+  Cleared,
   Active,
   ThreeContext,
   Level,
+  Ball,
+  FloorCollided,
   GameState
 } from "../Components/components.mjs";
 
@@ -17,7 +21,8 @@ export class GameStateSystem extends System {
     );
 
     // If a ball collided with the floor, reactivate the generator to throw another ball
-    this.events.floorCollided.forEach(ball => {
+    //this.events.floorCollided.forEach(ball => {
+    this.queries.ballFloorCollided.added.forEach(ball => {
       // @todo this.component.numBallsFailed++
       gameState.numBallsFailed++;
 
@@ -38,7 +43,7 @@ export class GameStateSystem extends System {
       }, 2000);
     });
 
-    this.events.levelCleared.forEach(() => {
+    this.queries.targetCleared.added.forEach(() => {
       window.text.getMutableComponent(TextGeometry).text = `Level Cleared!`;
 
       setTimeout(() => {
@@ -60,10 +65,17 @@ export class GameStateSystem extends System {
 GameStateSystem.queries = {
   entities: { components: [BallGenerator] },
   gameState: { components: [GameState] },
-  threeContext: { components: [ThreeContext] }
-};
-
-GameStateSystem.events = {
-  floorCollided: "floorCollided",
-  levelCleared: "levelCleared"
+  threeContext: { components: [ThreeContext] },
+  ballFloorCollided: {
+    components: [Ball, FloorCollided],
+    listen: {
+      added: true
+    }
+  },
+  targetCleared: {
+    components: [Target, Cleared],
+    listen: {
+      added: true
+    }
+  }
 };

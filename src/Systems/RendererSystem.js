@@ -1,4 +1,4 @@
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import { System, World } from "../../node_modules/ecsy/build/ecsy.module.js";
 import {
   ThreeContext,
   CameraRig,

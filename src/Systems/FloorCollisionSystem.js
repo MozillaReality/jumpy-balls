@@ -3,6 +3,7 @@ import {
   GameState,
   Ball,
   Active,
+  FloorCollided,
   Object3D
 } from "../Components/components.mjs";
 
@@ -11,16 +12,17 @@ import {
  */
 export class FloorCollisionSystem extends System {
   execute() {
-    var balls = this.queries.balls.results;
-
     var gameState = this.queries.gameState.results[0].getComponent(GameState);
 
     if (gameState.levelFinished) {
       return;
     }
 
-    for (var i = 0; i < balls.length; i++) {
-      var ball = balls[i];
+    this.queries.ballsCollided.results.forEach(ball => {
+      ball.removeComponent(FloorCollided);
+    });
+
+    this.queries.balls.results.forEach(ball => {
       var ballObject = ball.getComponent(Object3D).value;
       var radius = ball.getComponent(Ball).radius;
 
@@ -29,15 +31,18 @@ export class FloorCollisionSystem extends System {
         ball.removeComponent(Active);
 
         // Wait a bit before spawning a new bullet from the generator
-        this.world.emitEvent("floorCollided", ball);
+        ball.addComponent(FloorCollided);
       }
-    }
+    });
   }
 }
 
 FloorCollisionSystem.queries = {
   balls: {
     components: [Ball, Active, Object3D]
+  },
+  ballsCollided: {
+    components: [Ball, FloorCollided]
   },
   gameState: {
     components: [GameState]

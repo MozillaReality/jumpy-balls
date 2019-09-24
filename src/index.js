@@ -47,12 +47,7 @@ Ammo().then(() => {
     .addComponent(Environment)
     .addComponent(ThreeContext)
     .addComponent(GameState);
-/*
-  world
-    .registerSingletonComponent(Environment)
-    .registerSingletonComponent(ThreeContext)
-    .registerSingletonComponent(GameState);
-*/
+
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

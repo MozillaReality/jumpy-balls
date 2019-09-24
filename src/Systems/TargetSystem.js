@@ -3,6 +3,7 @@ import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
 import {
   Rotating,
   Ball,
+  Cleared,
   Active,
   Target,
   Object3D
@@ -43,8 +44,8 @@ export class TargetSystem extends System {
           radiusSum * radiusSum
         ) {
           ball.removeComponent(Active);
-          this.world.emitEvent("levelCleared");
           target.addComponent(Rotating, { speed: { x: 5, y: 13, z: 0 } });
+          target.addComponent(Cleared);
         }
       }
     }
