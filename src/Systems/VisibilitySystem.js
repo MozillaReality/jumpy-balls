@@ -5,7 +5,7 @@ import { Visible, Object3D } from "../Components/components.mjs";
 export class VisibilitySystem extends System {
   processVisibility(entities) {
     entities.forEach(entity => {
-      entity.getMutableComponent(Object3D).object.visible = entity.getComponent(
+      entity.getMutableComponent(Object3D).value.visible = entity.getComponent(
         Visible
       ).value;
     });

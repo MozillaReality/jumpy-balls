@@ -7,7 +7,7 @@ export class TransformSystem extends System {
     for (let i = 0; i < entitiesEvents.added.length; i++) {
       let entity = entitiesEvents.added[i];
       let transform = entity.getComponent(Transform);
-      let object = entity.getComponent(Object3D).object;
+      let object = entity.getComponent(Object3D).value;
 
       object.position.copy(transform.position);
       object.rotation.set(
@@ -20,7 +20,7 @@ export class TransformSystem extends System {
     for (let i = 0; i < entitiesEvents.changed.length; i++) {
       let entity = entitiesEvents.changed[i];
       let transform = entity.getComponent(Transform);
-      let object = entity.getComponent(Object3D).object;
+      let object = entity.getComponent(Object3D).value;
 
       object.position.copy(transform.position);
       object.rotation.set(

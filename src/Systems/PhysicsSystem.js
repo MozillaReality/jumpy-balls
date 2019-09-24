@@ -19,7 +19,7 @@ export class PhysicsSystem extends System {
 
   execute(delta) {
     this.queries.entities.added.forEach(entity => {
-      var object = entity.getComponent(Object3D).object;
+      var object = entity.getComponent(Object3D).value;
       const body = this._setupRigidBody(this._createRigidBody(entity), entity);
       body.object3D = object;
       object.userData.body = body;
@@ -35,7 +35,7 @@ export class PhysicsSystem extends System {
 
       if (rigidBody.weight === 0.0) continue;
 
-      const object = entity.getComponent(Object3D).object;
+      const object = entity.getComponent(Object3D).value;
       const body = object.userData.body;
       const transform = this._transform;
       const q = this._quaternion;
@@ -60,7 +60,7 @@ export class PhysicsSystem extends System {
   }
 
   _removeRigidBody(entity) {
-    var object = entity.getRemovedComponent(Object3D).object;
+    var object = entity.getRemovedComponent(Object3D).value;
     var body = object.userData.body;
     this._physicsWorld.removeRigidBody(body);
     Ammo.destroy(body);

@@ -21,7 +21,7 @@ export class TargetSystem extends System {
 
     for (let i = 0; i < targets.length; i++) {
       var target = targets[i];
-      var targetObject = target.getComponent(Object3D).object;
+      var targetObject = target.getComponent(Object3D).value;
       targetObject.getWorldPosition(worldPos);
       if (!targetObject.geometry.boundingSphere) {
         targetObject.geometry.computeBoundingSphere();
@@ -31,7 +31,7 @@ export class TargetSystem extends System {
 
       for (let i = 0; i < balls.length; i++) {
         var ball = balls[i];
-        var ballObject = ball.getComponent(Object3D).object;
+        var ballObject = ball.getComponent(Object3D).value;
         if (!ballObject.geometry.boundingSphere) {
           ballObject.geometry.computeBoundingSphere();
         }

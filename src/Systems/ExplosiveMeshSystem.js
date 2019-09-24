@@ -13,7 +13,7 @@ export class ExplosiveMeshSystem extends System {
     for (let i = 0; i < entities.length; i++) {
       var entity = entities[i];
       var expMesh = entity.getMutableComponent(ExplosiveMesh);
-      var object3D = entity.getComponent(Object3D).object;
+      var object3D = entity.getComponent(Object3D).value;
       var positions = object3D.geometry.attributes.position.array;
       var normals = object3D.geometry.attributes.normal.array;
       object3D.geometry.computeVertexNormals();

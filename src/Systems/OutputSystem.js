@@ -14,7 +14,7 @@ export class OutputSystem extends System {
         var element = entity.getComponent(Element);
         item.type = element.type;
 
-        var object = entity.getComponent(Object3D).object; // @todo Transform
+        var object = entity.getComponent(Object3D).value; // @todo Transform
         item.position = JSON.parse(JSON.stringify(object.position));
         item.rotation = JSON.parse(JSON.stringify(object.rotation));
 

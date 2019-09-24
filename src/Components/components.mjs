@@ -1,4 +1,6 @@
 /* global THREE */
+import { TagComponent } from "../../node_modules/ecsy/build/ecsy.module.js";
+
 export class Geometry {
   constructor() {
     this.primitive = "box";
@@ -9,7 +11,7 @@ export class GLTFModel {}
 export class LevelItem {}
 export class Shape {}
 export class Level {}
-export class Dragging {}
+export class Dragging extends TagComponent {}
 
 export class Sky {
   constructor() {}
@@ -19,11 +21,14 @@ export class Element {
   constructor() {}
 }
 
-export class TextGeometry {
-}
+export class TextGeometry {}
 
 export class Visible {
   constructor() {
+    this.reset();
+  }
+
+  reset() {
     this.value = false;
   }
 }
@@ -32,10 +37,18 @@ export class Rotating {
   constructor() {
     this.speed = new THREE.Vector3(0, 0, 0);
   }
+
+  reset() {
+    this.speed.set(0, 0, 0);
+  }
 }
 
 export class ExplosiveMesh {
   constructor() {
+    this.reset();
+  }
+
+  reset() {
     this.value = 0;
     this.speed = 1;
   }
@@ -91,7 +104,11 @@ export class Dissolve {
 
 export class Parent {
   constructor() {
-    this.parent = null;
+    this.reset();
+  }
+
+  reset() {
+    this.value = null;
   }
 }
 
@@ -152,7 +169,11 @@ export class Active {
 
 export class Object3D {
   constructor() {
-    this.object = null;
+    this.reset();
+  }
+
+  reset() {
+    this.value = null;
   }
 }
 
@@ -190,8 +211,8 @@ export class Target {
   copy(src) {
     this.position.copy(src.position);
   }
-}
 
+}
 export class RigidBody {
   constructor() {
     this.object = null;

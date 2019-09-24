@@ -28,7 +28,7 @@ export class CameraRigSystem extends System {
         1000
       );
       cameraRig.add(camera);
-      entity.addComponent(Object3D, { object: cameraRig });
+      entity.addComponent(Object3D, { value: cameraRig });
       cameraRig.add(camera);
       cameraRig.position.set(0, 0, 1);
       cameraRig.position.set(0, 1, 5);
@@ -37,11 +37,11 @@ export class CameraRigSystem extends System {
       window.controller = this.world
         .createEntity()
         .addComponent(VRController, { id: 0 })
-        .addComponent(Parent, { parent: cameraRig });
+        .addComponent(Parent, { value: cameraRig });
       this.world
         .createEntity()
         .addComponent(VRController, { id: 1 })
-        .addComponent(Parent, { parent: cameraRig });
+        .addComponent(Parent, { value: cameraRig });
 
       threeContext.scene.add(cameraRig);
     });
@@ -50,7 +50,7 @@ export class CameraRigSystem extends System {
   onWindowResize() {
     this.queries.entities.results.forEach(entity => {
       // ugly
-      var camera = entity.getComponent(Object3D).object.children[0];
+      var camera = entity.getComponent(Object3D).value.children[0];
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
     });

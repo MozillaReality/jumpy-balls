@@ -16,7 +16,7 @@ var intersected = [];
 export class VRControllerSystem extends System {
   execute() {
     this.queries.dragging.results.forEach(entity => {
-      this.reposition(entity.getComponent(Object3D).object, true);
+      this.reposition(entity.getComponent(Object3D).value, true);
     });
 
     var threeContext = this.queries.threeContext.results[0].getComponent(
@@ -29,7 +29,7 @@ export class VRControllerSystem extends System {
         entity.getComponent(VRController).id
       );
 
-      entity.addComponent(Object3D, { object: controller });
+      entity.addComponent(Object3D, { value: controller });
       controller.addEventListener("selectstart", this.onSelectStart.bind(this));
       controller.addEventListener("selectend", this.onSelectEnd.bind(this));
 
@@ -45,7 +45,7 @@ export class VRControllerSystem extends System {
       controller.add(line);
 
       if (entity.hasComponent(Parent)) {
-        entity.getComponent(Parent).parent.add(controller);
+        entity.getComponent(Parent).value.add(controller);
       } else {
         scene.add(controller);
       }
@@ -54,7 +54,7 @@ export class VRControllerSystem extends System {
     this.cleanIntersected();
 
     this.queries.controllers.results.forEach(controller => {
-      this.intersectObjects(controller.getComponent(Object3D).object);
+      this.intersectObjects(controller.getComponent(Object3D).value);
     });
   }
 
@@ -207,7 +207,7 @@ export class VRControllerSystem extends System {
     raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
     // @fixme expensive
     var objects = this.queries.objects.results.map(entity => {
-      var object = entity.getComponent(Object3D).object;
+      var object = entity.getComponent(Object3D).value;
       object.userData.entity = entity;
       return object;
     });

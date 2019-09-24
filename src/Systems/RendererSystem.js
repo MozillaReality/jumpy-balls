@@ -25,7 +25,7 @@ export class RendererSystem extends System {
       ThreeContext
     );
     var camera = this.queries.activeCamera.results[0].getComponent(Object3D)
-      .object.children[0];
+      .value.children[0];
     threeContext.renderer.render(threeContext.scene, camera);
   }
 }

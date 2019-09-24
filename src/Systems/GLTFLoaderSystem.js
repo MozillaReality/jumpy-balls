@@ -26,7 +26,7 @@ export class GLTFLoaderSystem extends System {
         });
 */
         threeContext.scene.add(gltf.scene);
-        entity.addComponent(Object3D, { object: gltf.scene });
+        entity.addComponent(Object3D, { value: gltf.scene });
       });
     }
   }

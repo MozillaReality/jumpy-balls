@@ -21,7 +21,7 @@ export class FloorCollisionSystem extends System {
 
     for (var i = 0; i < balls.length; i++) {
       var ball = balls[i];
-      var ballObject = ball.getComponent(Object3D).object;
+      var ballObject = ball.getComponent(Object3D).value;
       var radius = ball.getComponent(Ball).radius;
 
       // Hit the floor

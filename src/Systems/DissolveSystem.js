@@ -9,7 +9,7 @@ export class DissolveSystem extends System {
     for (let i = 0; i < entities.length; i++) {
       var entity = entities[i];
       var dissolve = entity.getMutableComponent(Dissolve);
-      var object = entity.getComponent(Object3D).object;
+      var object = entity.getComponent(Object3D).value;
       object.material.opacity = dissolve.value;
       object.material.transparent = true;
 

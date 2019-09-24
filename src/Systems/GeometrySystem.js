@@ -17,7 +17,7 @@ export class GeometrySystem extends System {
   execute() {
     // Removed
     this.queries.entities.removed.forEach(entity => {
-      var object = entity.getRemovedComponent(Object3D).object;
+      var object = entity.getRemovedComponent(Object3D).value;
       object.parent.remove(object);
     });
 
@@ -86,11 +86,11 @@ export class GeometrySystem extends System {
       var threeContext = this.queries.threeContext.results[0].getComponent(ThreeContext);
 
       if (entity.hasComponent(Parent)) {
-        entity.getComponent(Parent).parent.add(object);
+        entity.getComponent(Parent).value.add(object);
       } else {
         threeContext.scene.add(object);
       }
-      entity.addComponent(Object3D, { object: object });
+      entity.addComponent(Object3D, { value: object });
     });
   }
 }

@@ -15,7 +15,7 @@ export class RotatingSystem extends System {
     for (let i = 0; i < entities.length; i++) {
       var entity = entities[i];
       var rotating = entity.getComponent(Rotating);
-      var object = entity.getComponent(Object3D).object;
+      var object = entity.getComponent(Object3D).value;
       object.rotation.x += rotating.speed.x * delta;
       object.rotation.y += rotating.speed.y * delta;
       object.rotation.z += rotating.speed.z * delta;

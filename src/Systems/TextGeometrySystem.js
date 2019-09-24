@@ -38,7 +38,7 @@ export class TextGeometrySystem extends System {
         bevelOffset: 0,
         bevelSegments: 3
       });
-      var object = entity.getMutableComponent(Object3D).object;
+      var object = entity.getMutableComponent(Object3D).value;
       object.geometry = geometry;
     });
 
@@ -68,7 +68,7 @@ export class TextGeometrySystem extends System {
       var mesh = new THREE.Mesh(geometry, material);
 
       threeContext.scene.add(mesh);
-      entity.addComponent(Object3D, { object: mesh });
+      entity.addComponent(Object3D, { value: mesh });
     });
   }
 }
