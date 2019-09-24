@@ -3,20 +3,8 @@ import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
 import { Element, Object3D } from "../Components/components.mjs";
 
 export class OutputSystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: {
-          components: [Element]
-        }
-      },
-      events: {
-        generateJSON: "generateJSON"
-      }
-    };
-  }
-
   execute() {
+    return; // TODO
     if (this.events.generateJSON.length > 0) {
       var entities = this.queries.entities;
       var json = [];
@@ -36,3 +24,13 @@ export class OutputSystem extends System {
     }
   }
 }
+
+OutputSystem.queries = {
+  entities: {
+    components: [Element]
+  }
+};
+
+OutputSystem.events = {
+  generateJSON: "generateJSON"
+};

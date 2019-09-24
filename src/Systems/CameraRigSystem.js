@@ -4,29 +4,21 @@ import {
   Object3D,
   Parent,
   CameraRig,
+  ThreeContext,
   VRController
 } from "../Components/components.mjs";
 
 export class CameraRigSystem extends System {
   init() {
     window.addEventListener("resize", this.onWindowResize.bind(this), false);
-
-    return {
-      queries: {
-        entities: {
-          components: [CameraRig],
-          events: {
-            added: {
-              event: "EntityAdded"
-            }
-          }
-        }
-      }
-    };
   }
 
   execute() {
-    this.events.entities.added.forEach(entity => {
+    var threeContext = this.queries.threeContext.results[0].getComponent(
+      ThreeContext
+    );
+
+    this.queries.entities.added.forEach(entity => {
       var cameraRig = new THREE.Group();
       const camera = new THREE.PerspectiveCamera(
         70,
@@ -50,7 +42,7 @@ export class CameraRigSystem extends System {
         .addComponent(VRController, { id: 1 })
         .addComponent(Parent, { parent: cameraRig });
 
-      this.world.components.threeContext.scene.add(cameraRig);
+      threeContext.scene.add(cameraRig);
     });
   }
 
@@ -63,3 +55,15 @@ export class CameraRigSystem extends System {
     });
   }
 }
+
+CameraRigSystem.queries = {
+  entities: {
+    components: [CameraRig],
+    listen: {
+      added: true
+    }
+  },
+  threeContext: {
+    components: [ThreeContext]
+  }
+};

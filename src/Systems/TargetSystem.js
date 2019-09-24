@@ -15,15 +15,6 @@ var worldPos = new THREE.Vector3();
  * Check if the [Active Ball] collides with the [Target] entities
  */
 export class TargetSystem extends System {
-  init() {
-    return {
-      queries: {
-        targets: { components: [Target, Object3D] },
-        balls: { components: [Ball, Active, Object3D] }
-      }
-    };
-  }
-
   execute() {
     var balls = this.queries.balls;
     var targets = this.queries.targets;
@@ -59,3 +50,8 @@ export class TargetSystem extends System {
     }
   }
 }
+
+TargetSystem.queries = {
+  targets: { components: [Target, Object3D] },
+  balls: { components: [Ball, Active, Object3D] }
+};

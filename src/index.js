@@ -42,11 +42,17 @@ Ammo().then(() => {
   const world = (window.world = new World());
   const scene = new THREE.Scene();
 
+  var singletonEntity = world
+    .createEntity()
+    .addComponent(Environment)
+    .addComponent(ThreeContext)
+    .addComponent(GameState);
+/*
   world
     .registerSingletonComponent(Environment)
     .registerSingletonComponent(ThreeContext)
     .registerSingletonComponent(GameState);
-
+*/
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -56,12 +62,12 @@ Ammo().then(() => {
   renderer.vr.enabled = true;
   document.body.appendChild(renderer.domElement);
   renderer.setAnimationLoop(animate);
-  document.body.appendChild(WEBVR.createButton(renderer));
+  document.body.appendChild(THREE.WEBVR.createButton(renderer));
   const clock = new THREE.Clock();
 
-  world.components.threeContext.renderer = renderer;
-  world.components.threeContext.scene = scene;
-  window.renderer = renderer;
+  var threeContext = singletonEntity.getMutableComponent(ThreeContext);
+  threeContext.renderer = renderer;
+  threeContext.scene = scene;
 
   world
     .registerSystem(EnvironmentSystem)

@@ -89,33 +89,12 @@ var levels = [
 ];
 
 export class LevelManager extends System {
-  init() {
-    return {
-      queries: {
-        /* @todo singleton */
-        levels: {
-          components: [Level],
-          events: {
-            added: {
-              event: "EntityAdded"
-            },
-            changed: {
-              event: "ComponentChanged",
-              components: [Level]
-            }
-          }
-        },
-        levelItems: { components: [LevelItem] }
-      }
-    };
-  }
-
   execute(delta, time) {
-    this.events.levels.added.forEach(entity => {
+    this.queries.levels.added.forEach(entity => {
       this.initializeLevel(entity.getComponent(Level).level);
     });
 
-    this.events.levels.changed.forEach(entity => {
+    this.queries.levels.changed.forEach(entity => {
       this.initializeLevel(entity.getComponent(Level).level);
     });
   }
@@ -185,3 +164,17 @@ export class LevelManager extends System {
     });
   }
 }
+
+LevelManager.queries = {
+  /* @todo singleton */
+  levels: {
+    components: [Level],
+    listen: {
+      added: true,
+      changed: true
+    }
+  },
+  levelItems: {
+    components: [LevelItem]
+  }
+};

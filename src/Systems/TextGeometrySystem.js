@@ -1,6 +1,10 @@
 /* global THREE */
 import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { TextGeometry, Object3D } from "../Components/components.mjs";
+import {
+  ThreeContext,
+  TextGeometry,
+  Object3D
+} from "../Components/components.mjs";
 
 export class TextGeometrySystem extends System {
   init() {
@@ -11,24 +15,16 @@ export class TextGeometrySystem extends System {
       this.font = font;
       this.initialized = true;
     });
-
-    return {
-      queries: {
-        entities: {
-          components: [TextGeometry],
-          events: {
-            added: { event: "EntityAdded" },
-            changed: { event: "ComponentChanged", components: [TextGeometry] }
-          }
-        }
-      }
-    };
   }
 
   execute() {
     if (!this.font) return;
 
-    var changed = this.events.entities.changed;
+    var threeContext = this.queries.threeContext.results[0].getComponent(
+      ThreeContext
+    );
+
+    var changed = this.queries.entities.changed;
     changed.forEach(entity => {
       var textComponent = entity.getComponent(TextGeometry);
       var geometry = new THREE.TextGeometry(textComponent.text, {
@@ -46,7 +42,7 @@ export class TextGeometrySystem extends System {
       object.geometry = geometry;
     });
 
-    var added = this.events.entities.added;
+    var added = this.queries.entities.added;
     added.forEach(entity => {
       var textComponent = entity.getComponent(TextGeometry);
       var geometry = new THREE.TextGeometry(textComponent.text, {
@@ -71,8 +67,21 @@ export class TextGeometrySystem extends System {
 
       var mesh = new THREE.Mesh(geometry, material);
 
-      this.world.components.threeContext.scene.add(mesh);
+      threeContext.scene.add(mesh);
       entity.addComponent(Object3D, { object: mesh });
     });
   }
 }
+
+TextGeometrySystem.queries = {
+  entities: {
+    components: [TextGeometry],
+    listen: {
+      added: true,
+      changed: true
+    }
+  },
+  threeContext: {
+    components: [ThreeContext]
+  }
+};

@@ -5,6 +5,7 @@ import {
   Object3D,
   Transform,
   Element,
+  ThreeContext,
   Draggable
 } from "../Components/components.mjs";
 
@@ -12,33 +13,15 @@ import {
  * Create a Mesh based on the [Geometry] component and attach it to the entity using a [Object3D] component
  */
 export class GeometrySystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: {
-          components: [Geometry], // @todo Transform: As optional, how to define it?
-          events: {
-            added: {
-              event: "EntityAdded"
-            },
-            removed: {
-              event: "EntityRemoved"
-            }
-          }
-        }
-      }
-    };
-  }
-
   execute() {
     // Removed
-    this.events.entities.removed.forEach(entity => {
-      var object = entity.getComponent(Object3D).object;
+    this.queries.entities.removed.forEach(entity => {
+      var object = entity.getRemovedComponent(Object3D).object;
       object.parent.remove(object);
     });
 
     // Added
-    this.events.entities.added.forEach(entity => {
+    this.queries.entities.added.forEach(entity => {
       var component = entity.getComponent(Geometry);
 
       var geometry;
@@ -99,8 +82,23 @@ export class GeometrySystem extends System {
         object.material.color.set(0x333333);
       }
 
-      this.world.components.threeContext.scene.add(object);
+      var threeContext = this.queries.threeContext.results[0].getComponent(ThreeContext);
+
+      threeContext.scene.add(object);
       entity.addComponent(Object3D, { object: object });
     });
   }
 }
+
+GeometrySystem.queries = {
+  entities: {
+    components: [Geometry], // @todo Transform: As optional, how to define it?
+    listen: {
+      added: true,
+      removed: true
+    }
+  },
+  threeContext: {
+    components: [ThreeContext]
+  }
+};

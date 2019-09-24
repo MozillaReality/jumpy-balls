@@ -8,24 +8,8 @@ import {
 } from "../Components/components.mjs";
 
 export class BallGeneratorSystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: {
-          components: [BallGenerator, Active],
-          events: {
-            added: {
-              event: "EntityAdded"
-            }
-          }
-        }
-      }
-    };
-  }
-
   execute() {
-    var entities = this.events.entities.added;
-    entities.forEach(entity => {
+    this.queries.entities.added.forEach(entity => {
       var component = entity.getComponent(BallGenerator);
 
       var radius = 0.1;
@@ -35,7 +19,7 @@ export class BallGeneratorSystem extends System {
       ball
         .addComponent(Geometry, { primitive: "sphere", radius: radius })
         .addComponent(Transform, {
-          position: component.position,
+          position: {x:0,y:1, z:0},
           rotation: { x: 0, y: 0, z: 0 }
         })
         .addComponent(Ball, {
@@ -49,3 +33,12 @@ export class BallGeneratorSystem extends System {
     });
   }
 }
+
+BallGeneratorSystem.queries = {
+  entities: {
+    components: [BallGenerator, Active],
+    listen: {
+      added: true
+    }
+  }
+};

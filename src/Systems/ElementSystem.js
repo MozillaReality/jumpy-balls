@@ -10,23 +10,10 @@ import {
 } from "../Components/components.mjs";
 
 export class ElementSystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: {
-          components: [Element],
-          events: {
-            added: { event: "EntityAdded" }
-          }
-        }
-      }
-    };
-  }
-
   execute() {
-    var events = this.events.entities;
-    for (let i = 0; i < events.added.length; i++) {
-      var entity = events.added[i];
+    var entitiesAdded = this.queries.entities.added;
+    for (let i = 0; i < entitiesAdded.length; i++) {
+      var entity = entitiesAdded[i];
       var component = entity.getComponent(Element);
 
       const elementTypes = [
@@ -99,3 +86,12 @@ export class ElementSystem extends System {
     }
   }
 }
+
+ElementSystem.queries = {
+  entities: {
+    components: [Element],
+    listen: {
+      added: true
+    }
+  }
+};

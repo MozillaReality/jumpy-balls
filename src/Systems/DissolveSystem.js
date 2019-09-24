@@ -2,23 +2,8 @@ import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
 import { Ball, Dissolve, Object3D } from "../Components/components.mjs";
 
 export class DissolveSystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: {
-          components: [Ball, Dissolve, Object3D],
-          events: {
-            added: {
-              event: "EntityAdded"
-            }
-          }
-        }
-      }
-    };
-  }
-
   execute(delta) {
-    var entities = this.queries.entities;
+    var entities = this.queries.entities.results;
 
     //Queries
     for (let i = 0; i < entities.length; i++) {
@@ -35,3 +20,12 @@ export class DissolveSystem extends System {
     }
   }
 }
+
+DissolveSystem.queries = {
+  entities: {
+    components: [Ball, Dissolve, Object3D],
+    listen: {
+      added: true
+    }
+  }
+};

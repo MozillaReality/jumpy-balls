@@ -2,27 +2,8 @@ import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
 import { Transform, Object3D } from "../Components/components.mjs";
 
 export class TransformSystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: {
-          components: [Object3D, Transform],
-          events: {
-            added: {
-              event: "EntityAdded"
-            },
-            changed: {
-              event: "ComponentChanged",
-              components: [Transform]
-            }
-          }
-        }
-      }
-    };
-  }
-
   execute() {
-    var entitiesEvents = this.events.entities;
+    var entitiesEvents = this.queries.entities;
     for (let i = 0; i < entitiesEvents.added.length; i++) {
       let entity = entitiesEvents.added[i];
       let transform = entity.getComponent(Transform);
@@ -50,3 +31,13 @@ export class TransformSystem extends System {
     }
   }
 }
+
+TransformSystem.queries = {
+  entities: {
+    components: [Object3D, Transform],
+    listen: {
+      added: true,
+      changed:  [Transform]
+    }
+  }
+};

@@ -13,28 +13,12 @@ var euler = new THREE.Euler();
 export class PhysicsSystem extends System {
   init() {
     this._physicsWorld = this._createWorld();
-
     this._transform = new Ammo.btTransform();
     this._quaternion = new Ammo.btQuaternion(0, 0, 0, 1);
-    return {
-      queries: {
-        entities: {
-          components: [RigidBody, Shape, Object3D],
-          events: {
-            added: {
-              event: "EntityAdded"
-            },
-            removed: {
-              event: "EntityRemoved"
-            }
-          }
-        }
-      }
-    };
   }
 
   execute(delta) {
-    this.events.entities.added.forEach(entity => {
+    this.queries.entities.added.forEach(entity => {
       var object = entity.getComponent(Object3D).object;
       const body = this._setupRigidBody(this._createRigidBody(entity), entity);
       body.object3D = object;
@@ -44,7 +28,7 @@ export class PhysicsSystem extends System {
 
     this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
 
-    const entities = this.queries.entities;
+    const entities = this.queries.entities.results;
     for (let i = 0, il = entities.length; i < il; i++) {
       const entity = entities[i];
       const rigidBody = entity.getComponent(RigidBody);
@@ -70,13 +54,13 @@ export class PhysicsSystem extends System {
       transformComponent.rotation.copy(object.rotation);
     }
 
-    this.events.entities.removed.forEach(entity => {
+    this.queries.entities.removed.forEach(entity => {
       this._removeRigidBody(entity);
     });
   }
 
   _removeRigidBody(entity) {
-    var object = entity.getComponent(Object3D).object;
+    var object = entity.getRemovedComponent(Object3D).object;
     var body = object.userData.body;
     this._physicsWorld.removeRigidBody(body);
     Ammo.destroy(body);
@@ -165,3 +149,13 @@ export class PhysicsSystem extends System {
     return body;
   }
 }
+
+PhysicsSystem.queries = {
+  entities: {
+    components: [RigidBody, Shape, Object3D],
+    listen: {
+      added: true,
+      removed: true
+    }
+  }
+};

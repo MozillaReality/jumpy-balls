@@ -4,36 +4,31 @@ import {
   BallGenerator,
   Dissolve,
   Active,
-  Level
+  ThreeContext,
+  Level,
+  GameState
 } from "../Components/components.mjs";
 
 export class GameStateSystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: { components: [BallGenerator] }
-      },
-      events: {
-        floorCollided: "floorCollided",
-        levelCleared: "levelCleared"
-      }
-    };
-  }
-
   execute() {
+    var gameState = this.queries.gameState.results[0].getComponent(GameState);
+    var threeContext = this.queries.threeContext.results[0].getComponent(
+      ThreeContext
+    );
+
     // If a ball collided with the floor, reactivate the generator to throw another ball
     this.events.floorCollided.forEach(ball => {
       // @todo this.component.numBallsFailed++
-      this.world.components.gameState.numBallsFailed++;
+      gameState.numBallsFailed++;
 
       // @todo remove it and link the text element
       window.text.getMutableComponent(TextGeometry).text =
-        "balls: " + this.world.components.gameState.numBallsFailed;
+        "balls: " + gameState.numBallsFailed;
 
       // @todo here we should just activate the collided ball's generator
       // Wait 2s before reactivating the ball generator
       setTimeout(() => {
-        this.queries.entities.forEach(generator => {
+        this.queries.entities.results.forEach(generator => {
           generator.addComponent(Active);
         });
       }, 1000);
@@ -49,13 +44,26 @@ export class GameStateSystem extends System {
       setTimeout(() => {
         var levelComponent = this.world.entity.getMutableComponent(Level);
         levelComponent.level++;
-        window.text.getMutableComponent(TextGeometry).text = `Level: ${levelComponent.level}`;
-        this.world.components.threeContext.scene.background.set(0x333333);
-        this.world.components.gameState.levelFinished = false;
+        window.text.getMutableComponent(TextGeometry).text = `Level: ${
+          levelComponent.level
+        }`;
+        threeContext.scene.background.set(0x333333);
+        gameState.levelFinished = false;
       }, 2000);
 
-      this.world.components.threeContext.scene.background.set(0x00ff00);
-      this.world.components.gameState.levelFinished = true;
+      threeContext.scene.background.set(0x00ff00);
+      gameState.levelFinished = true;
     });
   }
 }
+
+GameStateSystem.queries = {
+  entities: { components: [BallGenerator] },
+  gameState: { components: [GameState] },
+  threeContext: { components: [ThreeContext] }
+};
+
+GameStateSystem.events = {
+  floorCollided: "floorCollided",
+  levelCleared: "levelCleared"
+};

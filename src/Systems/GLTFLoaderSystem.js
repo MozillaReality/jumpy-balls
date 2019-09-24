@@ -1,27 +1,16 @@
 /* global THREE */
 import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Object3D, Transform, GLTFModel } from "../Components/components.mjs";
+import { ThreeContext, Object3D, Transform, GLTFModel } from "../Components/components.mjs";
 
 var loader = new THREE.GLTFLoader().setPath("/assets/");
 
 export class GLTFLoaderSystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: {
-          components: [GLTFModel],
-          events: {
-            added: {
-              event: "EntityAdded"
-            }
-          }
-        }
-      }
-    };
-  }
-
   execute() {
-    var entities = this.events.entities.added;
+    var entities = this.queries.entities.added;
+
+    var threeContext = this.queries.threeContext.results[0].getComponent(
+      ThreeContext
+    );
 
     //Queries
     for (let i = 0; i < entities.length; i++) {
@@ -36,9 +25,21 @@ export class GLTFLoaderSystem extends System {
           }
         });
 */
-        this.world.components.threeContext.scene.add(gltf.scene);
+        threeContext.scene.add(gltf.scene);
         entity.addComponent(Object3D, { object: gltf.scene });
       });
     }
   }
 }
+
+GLTFLoaderSystem.queries = {
+  entities: {
+    components: [GLTFModel],
+    listen: {
+      added: true
+    }
+  },
+  threeContext: {
+    components: [ThreeContext]
+  }
+};

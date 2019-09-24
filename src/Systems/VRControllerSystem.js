@@ -5,7 +5,8 @@ import {
   Draggable,
   Dragging,
   Parent,
-  Object3D
+  Object3D,
+  ThreeContext
 } from "../Components/components.mjs";
 
 var raycaster = new THREE.Raycaster();
@@ -13,31 +14,17 @@ var tempMatrix = new THREE.Matrix4();
 var intersected = [];
 
 export class VRControllerSystem extends System {
-  init() {
-    return {
-      queries: {
-        controllers: {
-          components: [VRController],
-          events: {
-            added: {
-              event: "EntityAdded"
-            }
-          }
-        },
-        objects: { components: [Draggable, Object3D] },
-        dragging: { components: [Dragging] }
-      }
-    };
-  }
-
   execute() {
-    this.queries.dragging.forEach(entity => {
+    this.queries.dragging.results.forEach(entity => {
       this.reposition(entity.getComponent(Object3D).object, true);
     });
 
-    this.events.controllers.added.forEach(entity => {
-      var renderer = this.world.components.threeContext.renderer;
-      var scene = this.world.components.threeContext.scene;
+    var threeContext = this.queries.threeContext.results[0].getComponent(
+      ThreeContext
+    );
+    this.queries.controllers.added.forEach(entity => {
+      var renderer = threeContext.renderer;
+      var scene = threeContext.scene;
       var controller = renderer.vr.getController(
         entity.getComponent(VRController).id
       );
@@ -66,7 +53,7 @@ export class VRControllerSystem extends System {
 
     this.cleanIntersected();
 
-    this.queries.controllers.forEach(controller => {
+    this.queries.controllers.results.forEach(controller => {
       this.intersectObjects(controller.getComponent(Object3D).object);
     });
   }
@@ -219,7 +206,7 @@ export class VRControllerSystem extends System {
     raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
     raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
     // @fixme expensive
-    var objects = this.queries.objects.map(entity => {
+    var objects = this.queries.objects.results.map(entity => {
       var object = entity.getComponent(Object3D).object;
       object.userData.entity = entity;
       return object;
@@ -235,3 +222,17 @@ export class VRControllerSystem extends System {
     }
   }
 }
+
+VRControllerSystem.queries = {
+  controllers: {
+    components: [VRController],
+    listen: {
+      added: true
+    }
+  },
+  objects: { components: [Draggable, Object3D] },
+  dragging: { components: [Dragging] },
+  threeContext: {
+    components: [ThreeContext]
+  }
+};

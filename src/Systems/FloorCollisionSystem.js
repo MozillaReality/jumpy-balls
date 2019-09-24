@@ -1,22 +1,21 @@
 import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Ball, Active, Object3D } from "../Components/components.mjs";
+import {
+  GameState,
+  Ball,
+  Active,
+  Object3D
+} from "../Components/components.mjs";
 
 /**
  * Check collisions between [Active Ball] and the ground
  */
 export class FloorCollisionSystem extends System {
-  init() {
-    return {
-      queries: {
-        balls: { components: [Ball, Active, Object3D] }
-      }
-    };
-  }
-
   execute() {
-    var balls = this.queries.balls;
+    var balls = this.queries.balls.results;
 
-    if (this.world.components.gameState.levelFinished) {
+    var gameState = this.queries.gameState.results[0].getComponent(GameState);
+
+    if (gameState.levelFinished) {
       return;
     }
 
@@ -35,3 +34,12 @@ export class FloorCollisionSystem extends System {
     }
   }
 }
+
+FloorCollisionSystem.queries = {
+  balls: {
+    components: [Ball, Active, Object3D]
+  },
+  gameState: {
+    components: [GameState]
+  }
+};

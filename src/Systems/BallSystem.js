@@ -12,24 +12,8 @@ import {
  * Process [Ball] components and adds geometry and rigidbody for the simulation
  */
 export class BallSystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: {
-          components: [Ball],
-          events: {
-            added: {
-              event: "EntityAdded"
-            }
-          }
-        }
-      }
-    };
-  }
-
   execute() {
-    var entities = this.events.entities.added;
-    entities.forEach(entity => {
+    this.queries.entities.added.forEach(entity => {
       var ball = entity.getComponent(Ball);
       entity
         .addComponent(Geometry, {
@@ -52,3 +36,12 @@ export class BallSystem extends System {
     });
   }
 }
+
+BallSystem.queries = {
+  entities: {
+    components: [Ball],
+    listen: {
+      added: true
+    }
+  }
+};

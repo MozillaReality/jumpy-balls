@@ -1,10 +1,13 @@
 /* global THREE */
 import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Environment } from "../Components/components.mjs";
+import { ThreeContext, Environment } from "../Components/components.mjs";
 
 export class EnvironmentSystem extends System {
   init() {
-    var scene = this.world.components.threeContext.scene;
+    var threeContext = this.queries.threeContext.results[0].getComponent(
+      ThreeContext
+    );
+    var scene = threeContext.scene;
 
     // stage ground diameter (and sky radius)
     var STAGE_SIZE = 200;
@@ -75,3 +78,9 @@ export class EnvironmentSystem extends System {
     scene.background = new THREE.Color(color);
   }
 }
+
+EnvironmentSystem.queries = {
+  threeContext: {
+    components: [ThreeContext]
+  }
+};

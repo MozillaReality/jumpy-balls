@@ -8,14 +8,6 @@ import {
 } from "../Components/components.mjs";
 
 export class RotatingSystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: { components: [Object3D, Rotating] }
-      }
-    };
-  }
-
   execute(delta, time) {
     var entities = this.queries.entities;
 
@@ -28,5 +20,11 @@ export class RotatingSystem extends System {
       object.rotation.y += rotating.speed.y * delta;
       object.rotation.z += rotating.speed.z * delta;
     }
+  }
+}
+
+RotatingSystem.queries = {
+  entities: {
+    components: [Object3D, Rotating]
   }
 }

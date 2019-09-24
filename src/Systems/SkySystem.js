@@ -226,21 +226,6 @@ THREE.Sky.SkyShader = {
 
 
 export class SkySystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: {
-          components: [Sky],
-          events: {
-            added: {
-              event: "EntityAdded"
-            }
-          }
-        }
-      }
-    };
-  }
-
   execute(delta, time) {
     return;
     var entitiesEvent = this.events.entities;
@@ -266,3 +251,12 @@ export class SkySystem extends System {
     }
   }
 }
+
+SkySystem.queries = {
+	entities: {
+		components: [Sky],
+		listen: {
+			added: true
+		}
+	}
+};

@@ -6,14 +6,6 @@ import {
 
 
 export class ExplosiveMeshSystem extends System {
-  init() {
-    return {
-      queries: {
-        entities: { components: [Object3D, ExplosiveMesh] }
-      }
-    };
-  }
-
   execute(delta, time) {
     var entities = this.queries.entities;
 
@@ -34,7 +26,12 @@ export class ExplosiveMeshSystem extends System {
       object3D.geometry.attributes.position.needsUpdate = true;
 
       expMesh.value += delta / 10;
-      //console.log(expMesh.value);
     }
   }
 }
+
+ExplosiveMeshSystem.queries = {
+  entities: {
+    components: [Object3D, ExplosiveMesh]
+  }
+};
