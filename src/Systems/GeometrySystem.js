@@ -6,7 +6,8 @@ import {
   Transform,
   Element,
   ThreeContext,
-  Draggable
+  Draggable,
+  Parent
 } from "../Components/components.mjs";
 
 /**
@@ -84,7 +85,11 @@ export class GeometrySystem extends System {
 
       var threeContext = this.queries.threeContext.results[0].getComponent(ThreeContext);
 
-      threeContext.scene.add(object);
+      if (entity.hasComponent(Parent)) {
+        entity.getComponent(Parent).parent.add(object);
+      } else {
+        threeContext.scene.add(object);
+      }
       entity.addComponent(Object3D, { object: object });
     });
   }

@@ -16,8 +16,8 @@ var worldPos = new THREE.Vector3();
  */
 export class TargetSystem extends System {
   execute() {
-    var balls = this.queries.balls;
-    var targets = this.queries.targets;
+    var balls = this.queries.balls.results;
+    var targets = this.queries.targets.results;
 
     for (let i = 0; i < targets.length; i++) {
       var target = targets[i];

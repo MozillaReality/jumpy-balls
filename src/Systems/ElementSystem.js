@@ -50,8 +50,14 @@ export class ElementSystem extends System {
       const config = elementTypes[component.type];
 
       if (component.type === 0) {
-        entity.addComponent(GLTFModel, { url: "ConcreteSlab.glb" });
-        entity.addComponent(Shape, {
+        //entity.addComponent(GLTFModel, { url: "ConcreteSlab.glb" });
+        entity.addComponent(Geometry, {
+          primitive: "box",
+          width: config.width,
+          height: config.height,
+          depth: config.depth
+        })
+        .addComponent(Shape, {
           primitive: "box",
           width: config.width,
           height: config.height,

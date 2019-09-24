@@ -8,10 +8,7 @@ export class Geometry {
 export class GLTFModel {}
 export class LevelItem {}
 export class Shape {}
-
-
 export class Level {}
-
 export class Dragging {}
 
 export class Sky {

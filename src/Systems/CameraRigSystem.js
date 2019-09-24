@@ -4,6 +4,7 @@ import {
   Object3D,
   Parent,
   CameraRig,
+  Geometry,
   ThreeContext,
   VRController
 } from "../Components/components.mjs";
@@ -30,10 +31,10 @@ export class CameraRigSystem extends System {
       entity.addComponent(Object3D, { object: cameraRig });
       cameraRig.add(camera);
       cameraRig.position.set(0, 0, 1);
-      cameraRig.position.set(0, 0, 5);
+      cameraRig.position.set(0, 1, 5);
 
       // Controllers
-      this.world
+      window.controller = this.world
         .createEntity()
         .addComponent(VRController, { id: 0 })
         .addComponent(Parent, { parent: cameraRig });
@@ -47,7 +48,7 @@ export class CameraRigSystem extends System {
   }
 
   onWindowResize() {
-    this.queries.entities.forEach(entity => {
+    this.queries.entities.results.forEach(entity => {
       // ugly
       var camera = entity.getComponent(Object3D).object.children[0];
       camera.aspect = window.innerWidth / window.innerHeight;
