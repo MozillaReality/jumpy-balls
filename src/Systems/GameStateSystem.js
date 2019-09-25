@@ -21,7 +21,6 @@ export class GameStateSystem extends System {
     );
 
     // If a ball collided with the floor, reactivate the generator to throw another ball
-    //this.events.floorCollided.forEach(ball => {
     this.queries.ballFloorCollided.added.forEach(ball => {
       // @todo this.component.numBallsFailed++
       gameState.numBallsFailed++;
