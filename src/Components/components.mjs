@@ -221,10 +221,7 @@ export class Target {
     this.position = new THREE.Vector3();
   }
 
-  copy(src) {
-    this.position.copy(src.position);
-  }
-
+  reset() {}
 }
 export class RigidBody {
   constructor() {
