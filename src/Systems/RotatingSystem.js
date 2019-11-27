@@ -1,11 +1,11 @@
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import { System } from "ecsy";
 import {
   Rotating,
   Ball,
   Active,
   Target,
   Object3D
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 export class RotatingSystem extends System {
   execute(delta, time) {

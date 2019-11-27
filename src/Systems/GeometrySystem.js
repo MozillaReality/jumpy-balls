@@ -1,5 +1,6 @@
 /* global THREE */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import * as THREE from "three";
+import { System } from "ecsy";
 import {
   Geometry,
   Object3D,
@@ -8,7 +9,7 @@ import {
   ThreeContext,
   Draggable,
   Parent
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 /**
  * Create a Mesh based on the [Geometry] component and attach it to the entity using a [Object3D] component

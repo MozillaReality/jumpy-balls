@@ -1,11 +1,12 @@
-/* global THREE, Ammo */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+/* global  Ammo */
+import * as THREE from "three";
+import { System } from "ecsy";
 import {
   Transform,
   Shape,
   Object3D,
   RigidBody
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 var quaternion = new THREE.Quaternion();
 var euler = new THREE.Euler();

@@ -19,4 +19,3 @@ export { OutputSystem } from "./OutputSystem.js";
 export { TextGeometrySystem } from "./TextGeometrySystem.js";
 export { TransformSystem } from "./TransformSystem.js";
 export { LevelManager } from "./LevelManager.js";
-export { GLTFLoaderSystem } from "./GLTFLoaderSystem.js";

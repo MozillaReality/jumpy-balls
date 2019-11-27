@@ -4,12 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production",
     "lint": "eslint src",
-    "start": "http-server -c-1 -p 8080 --cors"
+    "brow": "browserify src/index.js bundle.browserify.js",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fernandojsg/machine.git"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
   },
   "author": "Fernando Serrano <fernandojsg@gmail.com> (http://fernandojsg.com)",
   "license": "MIT",
@@ -18,13 +33,24 @@
   },
   "homepage": "https://github.com/fernandojsg/machine#readme",
   "dependencies": {
-    "ecsy": "0.0.1"
+    "ecsy": "0.0.1",
+    "ecsy-three": "0.0.1",
+    "three": "^0.110.0"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "prettier": "^1.17.1"
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^1.19.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   }
 }

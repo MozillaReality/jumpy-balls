@@ -1,6 +1,6 @@
 /* global THREE */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Element, Object3D } from "../Components/components.mjs";
+import { System } from "ecsy";
+import { Element, Object3D } from "../Components/components.js";
 
 export class OutputSystem extends System {
   execute() {

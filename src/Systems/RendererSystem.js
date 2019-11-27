@@ -1,9 +1,9 @@
-import { System, World } from "../../node_modules/ecsy/build/ecsy.module.js";
+import { System } from "ecsy";
 import {
   ThreeContext,
   CameraRig,
   Object3D
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 export class RendererSystem extends System {
   init() {

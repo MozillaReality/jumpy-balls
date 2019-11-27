@@ -1,4 +1,4 @@
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import { System } from "ecsy";
 import {
   TextGeometry,
   BallGenerator,
@@ -11,7 +11,7 @@ import {
   Ball,
   FloorCollided,
   GameState
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 export class GameStateSystem extends System {
   execute() {

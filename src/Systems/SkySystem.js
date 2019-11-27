@@ -1,6 +1,6 @@
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Sky } from "../Components/components.mjs";
-
+import * as THREE from "three";
+import { System } from "ecsy";
+import { Sky } from "../Components/components.js";
 
 /**
  * @author zz85 / https://github.com/zz85
@@ -18,9 +18,9 @@ import { Sky } from "../Components/components.mjs";
  * Three.js integration by zz85 http://twitter.com/blurspline
 */
 
-THREE.Sky = function () {
+var THREESky = function () {
 
-	var shader = THREE.Sky.SkyShader;
+	var shader = THREESky.SkyShader;
 
 	var material = new THREE.ShaderMaterial( {
 		fragmentShader: shader.fragmentShader,
@@ -33,9 +33,9 @@ THREE.Sky = function () {
 
 };
 
-THREE.Sky.prototype = Object.create( THREE.Mesh.prototype );
+THREESky.prototype = Object.create( THREE.Mesh.prototype );
 
-THREE.Sky.SkyShader = {
+THREESky.SkyShader = {
 
 	uniforms: {
 		"luminance": { value: 1 },
@@ -233,7 +233,7 @@ export class SkySystem extends System {
     for (let i = 0; i < entitiesEvent.added.length; i++) {
       var entity = entitiesEvent.added[i];
       var component = entity.getComponent(Sky);
-      var sky = new THREE.Sky();
+      var sky = new THREESky();
       sky.scale.setScalar(4500);
       var uniforms = sky.material.uniforms;
 /*

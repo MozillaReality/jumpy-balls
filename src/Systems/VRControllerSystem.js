@@ -1,5 +1,6 @@
-/* global Ammo THREE */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+/* global Ammo */
+import * as THREE from "three";
+import { System } from "ecsy";
 import {
   VRController,
   Draggable,
@@ -7,7 +8,7 @@ import {
   Parent,
   Object3D,
   ThreeContext
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 var raycaster = new THREE.Raycaster();
 var tempMatrix = new THREE.Matrix4();

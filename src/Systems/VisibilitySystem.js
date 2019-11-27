@@ -1,6 +1,5 @@
-/* global THREE */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Visible, Object3D } from "../Components/components.mjs";
+import { System } from "ecsy";
+import { Visible, Object3D } from "../Components/components.js";
 
 export class VisibilitySystem extends System {
   processVisibility(entities) {

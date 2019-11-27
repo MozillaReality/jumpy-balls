@@ -1,5 +1,7 @@
-/* global Ammo THREE WEBVR */
-import { World } from "../../node_modules/ecsy/build/ecsy.module.js";
+/* global Ammo */
+import * as THREE from "three";
+import { WEBVR } from "three/examples/jsm/vr/WebVR.js";
+import { World } from "ecsy";
 import {
   Geometry,
   Transform,
@@ -13,7 +15,7 @@ import {
   TextGeometry,
   Environment,
   RigidBody
-} from "./Components/components.mjs";
+} from "./Components/components.js";
 import {
   VRControllerSystem,
   ElementSystem,
@@ -24,7 +26,6 @@ import {
   GeometrySystem,
   SkySystem,
   EnvironmentSystem,
-  GLTFLoaderSystem,
   OutputSystem,
   CameraRigSystem,
   FloorCollisionSystem,
@@ -38,11 +39,15 @@ import {
   BallSystem
 } from "./Systems/systems.mjs";
 
-Ammo().then(() => {
-  const world = (window.world = new World());
+import {
+  GLTFLoaderSystem
+} from "ecsy-three";
+
+function initGame() {
+  const world = new World();
   const scene = new THREE.Scene();
 
-  var singletonEntity = world
+  let singletonEntity = world
     .createEntity()
     .addComponent(Environment)
     .addComponent(ThreeContext)
@@ -57,7 +62,7 @@ Ammo().then(() => {
   renderer.vr.enabled = true;
   document.body.appendChild(renderer.domElement);
   renderer.setAnimationLoop(animate);
-  document.body.appendChild(THREE.WEBVR.createButton(renderer));
+  document.body.appendChild(WEBVR.createButton(renderer));
   const clock = new THREE.Clock();
 
   var threeContext = singletonEntity.getMutableComponent(ThreeContext);
@@ -169,4 +174,6 @@ Ammo().then(() => {
   function animate() {
     world.execute(clock.getDelta(), clock.elapsedTime);
   }
-});
+}
+
+Ammo().then(initGame);

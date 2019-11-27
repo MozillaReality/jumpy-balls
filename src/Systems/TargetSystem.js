@@ -1,5 +1,5 @@
-/* global THREE */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import * as THREE from "three";
+import { System } from "ecsy";
 import {
   Rotating,
   Ball,
@@ -7,7 +7,7 @@ import {
   Active,
   Target,
   Object3D
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 // Aux position
 var worldPos = new THREE.Vector3();

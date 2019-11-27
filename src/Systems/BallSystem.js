@@ -1,12 +1,11 @@
-/* global THREE */
-import { System, World } from "../../node_modules/ecsy/build/ecsy.module.js";
+import { System } from "ecsy";
 import {
   LevelItem,
   Ball,
   Shape,
   Geometry,
   RigidBody
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 /**
  * Process [Ball] components and adds geometry and rigidbody for the simulation

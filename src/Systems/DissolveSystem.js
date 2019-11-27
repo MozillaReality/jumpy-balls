@@ -1,5 +1,5 @@
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Ball, Dissolve, Object3D } from "../Components/components.mjs";
+import { System } from "ecsy";
+import { Ball, Dissolve, Object3D } from "../Components/components.js";
 
 export class DissolveSystem extends System {
   execute(delta) {

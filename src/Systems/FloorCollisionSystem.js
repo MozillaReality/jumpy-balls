@@ -1,11 +1,11 @@
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import { System } from "ecsy";
 import {
   GameState,
   Ball,
   Active,
   FloorCollided,
   Object3D
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 /**
  * Check collisions between [Active Ball] and the ground

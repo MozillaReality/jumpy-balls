@@ -1,8 +1,8 @@
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import { System } from "ecsy";
 import {
   ExplosiveMesh,
   Object3D
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 
 export class ExplosiveMeshSystem extends System {

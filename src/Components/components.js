@@ -1,38 +1,31 @@
-/* global THREE */
-import { TagComponent } from "../../node_modules/ecsy/build/ecsy.module.js";
+import * as THREE from "three";
+import { TagComponent } from "ecsy";
 
-export class Geometry {
-  constructor() {
-    this.primitive = "box";
-  }
-}
+export {
+  Object3D,
+  Parent,
+  Visible,
+  CameraRig,
+  Draggable,
+  Dragging,
+  Active,
+  Transform,
+  Geometry,
+  GLTFModel,
+  VRController,
+  Material,
+  Sky,
+  TextGeometry
+} from "ecsy-three";
 
-export class GLTFModel {}
 export class LevelItem {}
 export class Shape {}
 export class Level {}
-export class Dragging extends TagComponent {}
 export class FloorCollided extends TagComponent {}
 export class Cleared extends TagComponent {}
 
-export class Sky {
-  constructor() {}
-}
-
 export class Element {
   constructor() {}
-}
-
-export class TextGeometry {}
-
-export class Visible {
-  constructor() {
-    this.reset();
-  }
-
-  reset() {
-    this.value = false;
-  }
 }
 
 export class Rotating {
@@ -104,47 +97,6 @@ export class Dissolve {
   }
 }
 
-export class Parent {
-  constructor() {
-    this.reset();
-  }
-
-  reset() {
-    this.value = null;
-  }
-}
-
-export class CameraRig {
-  constructor() {
-    this.leftHand = null;
-    this.rightHand = null;
-    this.camera = null;
-  }
-}
-
-export class Material {
-  constructor() {
-    this.color = 0xff0000;
-  }
-}
-
-export class Transform {
-  constructor() {
-    this.position = new THREE.Vector3();
-    this.rotation = new THREE.Vector3();
-  }
-
-  copy(src) {
-    this.position.copy(src.position);
-    this.rotation.copy(src.rotation);
-  }
-
-  reset() {
-    this.position.set(0, 0, 0);
-    this.rotation.set(0, 0, 0);
-  }
-}
-
 export class GameState {
   constructor() {
     this.levelFinished = false;
@@ -156,31 +108,6 @@ export class ThreeContext {
   constructor() {
     this.scene = null;
     this.renderer = null;
-  }
-}
-
-export class VRController {
-  constructor() {
-    this.id = 0;
-    this.controller = null;
-  }
-}
-
-export class Draggable {
-  constructor() {}
-}
-
-export class Active {
-  constructor() {}
-}
-
-export class Object3D {
-  constructor() {
-    this.reset();
-  }
-
-  reset() {
-    this.value = null;
   }
 }
 

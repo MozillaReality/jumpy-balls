@@ -1,10 +1,11 @@
 /* global THREE */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import * as THREE from "three";
+import { System } from "ecsy";
 import {
   ThreeContext,
   TextGeometry,
   Object3D
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 export class TextGeometrySystem extends System {
   init() {

@@ -1,6 +1,7 @@
 /* global THREE */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { ThreeContext, Environment } from "../Components/components.mjs";
+import * as THREE from "three";
+import { System } from "ecsy";
+import { ThreeContext, Environment } from "../Components/components.js";
 
 export class EnvironmentSystem extends System {
   init() {

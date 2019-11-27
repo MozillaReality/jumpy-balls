@@ -1,5 +1,5 @@
 /* global THREE */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import { System } from "ecsy";
 import {
   Element,
   GLTFModel,
@@ -7,7 +7,7 @@ import {
   Shape,
   Draggable,
   RigidBody
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 export class ElementSystem extends System {
   execute() {

@@ -1,13 +1,12 @@
-/* global THREE */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import * as THREE from "three";
+import { System } from "ecsy";
 import {
   Object3D,
   Parent,
   CameraRig,
-  Geometry,
   ThreeContext,
   VRController
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 export class CameraRigSystem extends System {
   init() {

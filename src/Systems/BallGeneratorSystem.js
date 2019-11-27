@@ -1,35 +1,35 @@
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import { System } from "ecsy";
 import {
   Ball,
   Active,
   Transform,
   Geometry,
   BallGenerator
-} from "../Components/components.mjs";
+} from "../Components/components.js";
+
+const RADIUS = 0.1;
 
 export class BallGeneratorSystem extends System {
   execute() {
-    this.queries.entities.added.forEach(entity => {
-      var component = entity.getComponent(BallGenerator);
-
-      var radius = 0.1;
+    this.queries.entities.added.forEach(generator => {
+      var ballGeneratorComponent = generator.getComponent(BallGenerator);
 
       // Ball dispatcher object
       var ball = this.world.createEntity();
       ball
-        .addComponent(Geometry, { primitive: "sphere", radius: radius })
+        .addComponent(Geometry, { primitive: "sphere", radius: RADIUS })
         .addComponent(Transform, {
-          position: component.position,
+          position: ballGeneratorComponent.position,
           rotation: { x: 0, y: 0, z: 0 }
         })
         .addComponent(Ball, {
-          position: component.position,
-          radius: radius,
-          linearVelocity: component.linearVelocity
+          position: ballGeneratorComponent.position,
+          radius: RADIUS,
+          linearVelocity: ballGeneratorComponent.linearVelocity
         })
         .addComponent(Active);
 
-      entity.removeComponent(Active);
+      generator.removeComponent(Active);
     });
   }
 }

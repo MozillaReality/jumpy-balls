@@ -1,5 +1,5 @@
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
-import { Transform, Object3D } from "../Components/components.mjs";
+import { System } from "ecsy";
+import { Transform, Object3D } from "../Components/components.js";
 
 export class TransformSystem extends System {
   execute() {
@@ -37,7 +37,7 @@ TransformSystem.queries = {
     components: [Object3D, Transform],
     listen: {
       added: true,
-      changed:  [Transform]
+      changed: [Transform]
     }
   }
 };

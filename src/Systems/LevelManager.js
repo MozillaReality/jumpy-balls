@@ -1,5 +1,5 @@
 /* global THREE */
-import { System } from "../../node_modules/ecsy/build/ecsy.module.js";
+import { System } from "ecsy";
 import {
   Level,
   Target,
@@ -9,7 +9,7 @@ import {
   Transform,
   LevelItem,
   Element
-} from "../Components/components.mjs";
+} from "../Components/components.js";
 
 var levels = [
   {
