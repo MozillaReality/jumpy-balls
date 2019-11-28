@@ -86,7 +86,6 @@ function initGame() {
     .registerSystem(LevelManager)
     .registerSystem(DissolveSystem)
     .registerSystem(ElementSystem)
-    .registerSystem(GeometrySystem)
     .registerSystem(CameraRigSystem)
     .registerSystem(BallGeneratorSystem)
     .registerSystem(BallSystem)
@@ -103,6 +102,7 @@ function initGame() {
     .registerSystem(TextGeometrySystem)
     // .registerSystem(ExplosiveMeshSystem)
     .registerSystem(TransformSystem)
+    .registerSystem(GeometrySystem)
     .registerSystem(RendererSystem);
 
   init();

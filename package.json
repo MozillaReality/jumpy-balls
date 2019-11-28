@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development",
+    "start": "webpack-dev-server --host 0.0.0.0 --mode development",
     "build": "webpack --mode production",
     "lint": "eslint src",
     "brow": "browserify src/index.js bundle.browserify.js",

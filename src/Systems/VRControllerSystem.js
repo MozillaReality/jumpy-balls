@@ -37,19 +37,22 @@ export class VRControllerSystem extends System {
       let geometry = new THREE.BufferGeometry();
       geometry.setAttribute(
         "position",
-        new THREE.Float32BufferAttribute([0, 0, 0, 0, 0, 1], 3)
+        new THREE.Float32BufferAttribute([0, 0, 0, 0, 0, -1], 3)
       );
 
       var line = new THREE.Line(geometry);
       line.name = "line";
       line.scale.z = 5;
-
       controller.add(line);
 
+      let geometry2 = new THREE.BoxBufferGeometry(0.1, 0.1, 0.1);
+      let material2 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      let cube = new THREE.Mesh(geometry2, material2);
+      controller.add(cube);
+
       if (entity.hasComponent(Parent)) {
-        entity.getComponent(Parent).value.add(controller);
-      } else {
-        scene.add(controller);
+        let parent = entity.getComponent(Parent).value;
+        parent.getComponent(Object3D).value.add(controller);
       }
     });
 

@@ -36,11 +36,11 @@ export class CameraRigSystem extends System {
       window.controller = this.world
         .createEntity()
         .addComponent(VRController, { id: 0 })
-        .addComponent(Parent, { value: cameraRig });
+        .addComponent(Parent, { value: entity });
       this.world
         .createEntity()
         .addComponent(VRController, { id: 1 })
-        .addComponent(Parent, { value: cameraRig });
+        .addComponent(Parent, { value: entity });
 
       threeContext.scene.add(cameraRig);
     });
