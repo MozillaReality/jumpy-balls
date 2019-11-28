@@ -7,6 +7,7 @@ export {
   Visible,
   CameraRig,
   Draggable,
+  Scene,
   Dragging,
   Active,
   Transform,
@@ -18,14 +19,24 @@ export {
   TextGeometry
 } from "ecsy-three";
 
-export class LevelItem {}
-export class Shape {}
-export class Level {}
+export class LevelItem {
+  reset() {}
+}
+
+export class Shape {
+  reset() {}
+}
+
+export class Level {
+  reset() {}
+}
+
 export class FloorCollided extends TagComponent {}
 export class Cleared extends TagComponent {}
 
 export class Element {
   constructor() {}
+  reset() {}
 }
 
 export class Rotating {
@@ -50,6 +61,7 @@ export class ExplosiveMesh {
 }
 
 export class Environment {
+  reset() {}
   constructor() {
     this.active = false;
     this.preset = "default";
@@ -91,9 +103,9 @@ export class Dissolve {
     this.speed = 1;
   }
 
-  copy(src) {
-    this.value = src.value;
-    this.speed = src.speed;
+  reset() {
+    this.value = 1;
+    this.speed = 1;
   }
 }
 
@@ -102,6 +114,7 @@ export class GameState {
     this.levelFinished = false;
     this.numBallsFailed = 0;
   }
+  reset() {}
 }
 
 export class ThreeContext {
@@ -109,6 +122,7 @@ export class ThreeContext {
     this.scene = null;
     this.renderer = null;
   }
+  reset() {}
 }
 
 export class BallGenerator {
@@ -121,6 +135,7 @@ export class BallGenerator {
     this.position.copy(src.position);
     this.linearVelocity.copy(src.linearVelocity);
   }
+  reset() {}
 }
 
 export class Ball {
@@ -160,4 +175,5 @@ export class RigidBody {
     this.angularDamping = 0;
     this.linearVelocity = { x: 0, y: 0, z: 0 };
   }
+  reset() {}
 }

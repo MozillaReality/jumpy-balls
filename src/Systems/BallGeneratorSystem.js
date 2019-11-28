@@ -2,6 +2,7 @@ import { System } from "ecsy";
 import {
   Ball,
   Active,
+  Parent,
   Transform,
   Geometry,
   BallGenerator
@@ -27,7 +28,8 @@ export class BallGeneratorSystem extends System {
           radius: RADIUS,
           linearVelocity: ballGeneratorComponent.linearVelocity
         })
-        .addComponent(Active);
+        .addComponent(Active)
+        .addComponent(Parent, { value: window.entityScene });
 
       generator.removeComponent(Active);
     });

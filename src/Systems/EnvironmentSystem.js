@@ -1,4 +1,3 @@
-/* global THREE */
 import * as THREE from "three";
 import { System } from "ecsy";
 import { ThreeContext, Environment } from "../Components/components.js";
@@ -21,7 +20,7 @@ export class EnvironmentSystem extends System {
 
     var resolution = 64; // number of divisions of the ground mesh
 
-    var groundGeometry = new THREE.PlaneGeometry(
+    var groundGeometry = new THREE.PlaneBufferGeometry(
       STAGE_SIZE + 2,
       STAGE_SIZE + 2,
       resolution - 1,

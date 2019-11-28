@@ -1,4 +1,3 @@
-/* global THREE */
 import { System } from "ecsy";
 import {
   Level,
@@ -6,6 +5,7 @@ import {
   Geometry,
   BallGenerator,
   Active,
+  Parent,
   Transform,
   LevelItem,
   Element
@@ -130,7 +130,8 @@ export class LevelManager extends System {
           position: g.position,
           rotation: { x: 0, y: 0, z: 0 }
         })
-        .addComponent(LevelItem);
+        .addComponent(LevelItem)
+        .addComponent(Parent, { value: window.entityScene });
     });
 
     // Targets
@@ -149,7 +150,8 @@ export class LevelManager extends System {
           position: t.position,
           rotation: t.rotation
         })
-        .addComponent(LevelItem);
+        .addComponent(LevelItem)
+        .addComponent(Parent, { value: window.entityScene });
     });
 
     level.elements.forEach(element => {

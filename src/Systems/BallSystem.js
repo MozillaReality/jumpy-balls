@@ -4,6 +4,7 @@ import {
   Ball,
   Shape,
   Geometry,
+  Parent,
   RigidBody
 } from "../Components/components.js";
 
@@ -31,7 +32,8 @@ export class BallSystem extends System {
           linearDamping: 0.0,
           angularDamping: 0.0,
           linearVelocity: ball.linearVelocity
-        });
+        })
+        .addComponent(Parent, { value: window.entityScene });
     });
   }
 }

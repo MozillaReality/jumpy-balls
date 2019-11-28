@@ -1,9 +1,5 @@
 import { System } from "ecsy";
-import {
-  ThreeContext,
-  CameraRig,
-  Object3D
-} from "../Components/components.js";
+import { ThreeContext, CameraRig, Object3D } from "../Components/components.js";
 
 export class RendererSystem extends System {
   init() {
@@ -26,6 +22,7 @@ export class RendererSystem extends System {
     );
     var camera = this.queries.activeCamera.results[0].getComponent(Object3D)
       .value.children[0];
+
     threeContext.renderer.render(threeContext.scene, camera);
   }
 }

@@ -3,6 +3,7 @@ import { System } from "ecsy";
 import {
   Element,
   GLTFModel,
+  Parent,
   Geometry,
   Shape,
   Draggable,
@@ -51,18 +52,20 @@ export class ElementSystem extends System {
 
       if (component.type === 0) {
         //entity.addComponent(GLTFModel, { url: "ConcreteSlab.glb" });
-        entity.addComponent(Geometry, {
-          primitive: "box",
-          width: config.width,
-          height: config.height,
-          depth: config.depth
-        })
-        .addComponent(Shape, {
-          primitive: "box",
-          width: config.width,
-          height: config.height,
-          depth: config.depth
-        });
+        entity
+          .addComponent(Geometry, {
+            primitive: "box",
+            width: config.width,
+            height: config.height,
+            depth: config.depth
+          })
+          .addComponent(Shape, {
+            primitive: "box",
+            width: config.width,
+            height: config.height,
+            depth: config.depth
+          })
+          .addComponent(Parent, { value: window.entityScene });
       } else {
         entity
           .addComponent(Geometry, {
@@ -76,7 +79,8 @@ export class ElementSystem extends System {
             width: config.width,
             height: config.height,
             depth: config.depth
-          });
+          })
+          .addComponent(Parent, { value: window.entityScene });
       }
 
       entity.addComponent(RigidBody, {

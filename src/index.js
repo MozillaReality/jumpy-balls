@@ -11,6 +11,9 @@ import {
   Level,
   CameraRig,
   Sky,
+  Scene,
+  Parent,
+  Object3D,
   Visible,
   TextGeometry,
   Environment,
@@ -22,8 +25,6 @@ import {
   TargetSystem,
   RendererSystem,
   DissolveSystem,
-  VisibilitySystem,
-  GeometrySystem,
   SkySystem,
   EnvironmentSystem,
   OutputSystem,
@@ -35,17 +36,22 @@ import {
   RotatingSystem,
   GameStateSystem,
   LevelManager,
-  TextGeometrySystem,
   BallSystem
 } from "./Systems/systems.mjs";
 
 import {
+  TextGeometrySystem,
+  VisibilitySystem,
+  GeometrySystem,
   GLTFLoaderSystem
 } from "ecsy-three";
+
+var entityScene = null;
 
 function initGame() {
   const world = new World();
   const scene = new THREE.Scene();
+  window.scene = scene;
 
   let singletonEntity = world
     .createEntity()
@@ -69,6 +75,11 @@ function initGame() {
   threeContext.renderer = renderer;
   threeContext.scene = scene;
 
+  window.entityScene = entityScene = world
+    .createEntity()
+    .addComponent(Scene)
+    .addComponent(Object3D, { value: scene });
+
   world
     .registerSystem(EnvironmentSystem)
     .registerSystem(GLTFLoaderSystem)
@@ -79,6 +90,7 @@ function initGame() {
     .registerSystem(CameraRigSystem)
     .registerSystem(BallGeneratorSystem)
     .registerSystem(BallSystem)
+
     .registerSystem(VRControllerSystem)
     .registerSystem(GameStateSystem)
     .registerSystem(PhysicsSystem)
@@ -89,7 +101,7 @@ function initGame() {
     .registerSystem(RotatingSystem)
     .registerSystem(OutputSystem)
     .registerSystem(TextGeometrySystem)
-    //.registerSystem(ExplosiveMeshSystem)
+    // .registerSystem(ExplosiveMeshSystem)
     .registerSystem(TransformSystem)
     .registerSystem(RendererSystem);
 
@@ -168,7 +180,8 @@ function initGame() {
         friction: 1.0,
         linearDamping: 0.0,
         angularDamping: 0.0
-      });
+      })
+      .addComponent(Parent, { value: entityScene });
   }
 
   function animate() {

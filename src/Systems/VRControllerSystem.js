@@ -23,21 +23,22 @@ export class VRControllerSystem extends System {
     var threeContext = this.queries.threeContext.results[0].getComponent(
       ThreeContext
     );
+
     this.queries.controllers.added.forEach(entity => {
       var renderer = threeContext.renderer;
       var scene = threeContext.scene;
       var controller = renderer.vr.getController(
         entity.getComponent(VRController).id
       );
-
       entity.addComponent(Object3D, { value: controller });
       controller.addEventListener("selectstart", this.onSelectStart.bind(this));
       controller.addEventListener("selectend", this.onSelectEnd.bind(this));
 
-      var geometry = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0, 0, -1)
-      ]);
+      let geometry = new THREE.BufferGeometry();
+      geometry.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute([0, 0, 0, 0, 0, 1], 3)
+      );
 
       var line = new THREE.Line(geometry);
       line.name = "line";
@@ -55,7 +56,7 @@ export class VRControllerSystem extends System {
     this.cleanIntersected();
 
     this.queries.controllers.results.forEach(controller => {
-      this.intersectObjects(controller.getComponent(Object3D).value);
+      // this.intersectObjects(controller.getComponent(Object3D).value);
     });
   }
 
