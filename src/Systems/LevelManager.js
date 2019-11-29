@@ -52,6 +52,34 @@ var levels = [
         position: { x: 0.6, y: 0.8, z: 0 },
         rotation: { x: 0, y: 0, z: 0.1 }
       }
+
+
+
+
+      ,
+      {
+        type: 3,
+        position: { x: 1.6, y: 0.8, z: 0 },
+        rotation: { x: 0, y: 0, z: 0.1 }
+      }
+      ,
+      {
+        type: 3,
+        position: { x: 2.6, y: 0.8, z: 0 },
+        rotation: { x: 0, y: 0, z: 0.1 }
+      }
+      ,
+      {
+        type: 3,
+        position: { x: 3.6, y: 0.8, z: 0 },
+        rotation: { x: 0, y: 0, z: 0.1 }
+      }
+      ,
+      {
+        type: 3,
+        position: { x: 4.6, y: 0.8, z: 0 },
+        rotation: { x: 0, y: 0, z: 0.1 }
+      }
     ]
   },
   {
@@ -83,7 +111,9 @@ var levels = [
         type: 3,
         position: { x: 0.6, y: 0.8, z: 0 },
         rotation: { x: 0, y: 0, z: 0.1 }
-      }
+      },
+
+
     ]
   }
 ];
@@ -131,7 +161,7 @@ export class LevelManager extends System {
           rotation: { x: 0, y: 0, z: 0 }
         })
         .addComponent(LevelItem)
-        .addComponent(Parent, { value: window.entityScene });
+        //!!!!!!.addComponent(Parent, { value: window.entityScene });
     });
 
     // Targets
@@ -151,7 +181,7 @@ export class LevelManager extends System {
           rotation: t.rotation
         })
         .addComponent(LevelItem)
-        .addComponent(Parent, { value: window.entityScene });
+        ////////.addComponent(Parent, { value: window.entityScene });
     });
 
     level.elements.forEach(element => {

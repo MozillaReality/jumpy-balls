@@ -1,5 +1,6 @@
 /* global Ammo */
 import * as THREE from "three";
+import { WEBVR } from "three/examples/jsm/vr/WebVR.js";
 import { World } from "ecsy";
 import {
   Geometry,
@@ -13,6 +14,7 @@ import {
   Object3D,
   Visible,
   TextGeometry,
+  WebGLRendererContext,
   Environment,
   RigidBody
 } from "./Components/components.js";
@@ -39,46 +41,42 @@ import {
   VisibilitySystem,
   GeometrySystem,
   GLTFLoaderSystem,
+  TransformSystem,
   initializeDefault
 } from "ecsy-three";
-
-var entityScene = null;
 
 var world;
 
 function initGame() {
   world = new World();
+/*
+  var renderer = new THREE.WebGLRenderer({
+    antialias: true
+  });
 
-  /*
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.gammaInput = true;
   renderer.gammaOutput = true;
-  renderer.shadowMap.enabled = true;
-  renderer.vr.enabled = true;
+  // renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
-  document.body.appendChild(WEBVR.createButton(renderer));
-  */
+  renderer.vr.enabled = true;
+  document.body.appendChild(
+    WEBVR.createButton(renderer, { referenceSpaceType: "local" })
+  );
 
-  /*entityScene = world
-    .createEntity()
-    .addComponent(Scene)
-    .addComponent(Object3D, { value: scene });
+  world.createEntity().addComponent(WebGLRendererContext, { value: renderer });
 */
-
   world
     .registerSystem(GLTFLoaderSystem)
     .registerSystem(LevelManager)
     .registerSystem(DissolveSystem)
     .registerSystem(ElementSystem)
-
-   .registerSystem(CameraRigSystem)
-
+    .registerSystem(EnvironmentSystem)
     .registerSystem(BallGeneratorSystem)
     .registerSystem(BallSystem)
-
     .registerSystem(VRControllerSystem)
+    .registerSystem(CameraRigSystem)
     .registerSystem(GameStateSystem)
     .registerSystem(PhysicsSystem)
     .registerSystem(VisibilitySystem)
@@ -88,18 +86,15 @@ function initGame() {
     .registerSystem(RotatingSystem)
     .registerSystem(OutputSystem)
     .registerSystem(TextGeometrySystem)
-
+    //.registerSystem(TransformSystem)
     // .registerSystem(ExplosiveMeshSystem)
     //.registerSystem(TransformSystem)
-    .registerSystem(EnvironmentSystem)
     .registerSystem(GeometrySystem);
 
   let data = initializeDefault(world, { vr: true });
 
   var scene = data.entities.scene.getComponent(Object3D).value;
-
-  window.entityScene = entityScene = data.entities.scene;
-  window.world = world;
+  window.entityScene = data.entities.scene;
 
   // Singleton entity
   world
@@ -108,8 +103,9 @@ function initGame() {
     .addComponent(Scene, { value: data.entities.scene })
     .addComponent(GameState);
 
-  init();
-  function init() {
+  init(data);
+
+  function init(data) {
     scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
 
     var light = new THREE.DirectionalLight(0xffffff);
@@ -128,17 +124,17 @@ function initGame() {
     world.entity.addComponent(Level, { level: 0 });
 
     // Scene
-    createScene();
+    createScene(data);
 
-    console.log('Finished!');
-    //animate();
-    world.execute();
+    console.log("Finished!");
+    animate();
   }
 
   function createScene() {
     world.createEntity().addComponent(Sky);
     createFloor();
-/*
+
+    /*
     var text = world.createEntity();
     text.addComponent(TextGeometry, { text: "" }).addComponent(Transform, {
       position: { x: 0, y: 0, z: -3 },
@@ -185,16 +181,15 @@ function initGame() {
         linearDamping: 0.0,
         angularDamping: 0.0
       })
-      .addComponent(Parent, { value: entityScene });
-      console.log(entityScene);
+      .addComponent(Parent, { value: data.entities.scene });
   }
 }
 
 const clock = new THREE.Clock();
 
 function animate() {
-  console.log('-------------------------->');
   world.execute(clock.getDelta(), clock.elapsedTime);
+  requestAnimationFrame(animate);
 }
 
 Ammo().then(initGame);

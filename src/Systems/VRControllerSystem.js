@@ -28,7 +28,9 @@ export class VRControllerSystem extends System {
       var controller = renderer.vr.getController(
         entity.getComponent(VRController).id
       );
+
       entity.addComponent(Object3D, { value: controller });
+
       controller.addEventListener("selectstart", this.onSelectStart.bind(this));
       controller.addEventListener("selectend", this.onSelectEnd.bind(this));
 
@@ -46,13 +48,10 @@ export class VRControllerSystem extends System {
       let geometry2 = new THREE.BoxBufferGeometry(0.1, 0.1, 0.1);
       let material2 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
       let cube = new THREE.Mesh(geometry2, material2);
+      controller.name = "VRController";
       controller.add(cube);
-/*
-      if (entity.hasComponent(Parent)) {
-        let parent = entity.getComponent(Parent).value;
-        parent.getComponent(Object3D).value.add(controller);
-      }
-      */
+
+      window.controller = controller;
     });
 
     this.cleanIntersected();

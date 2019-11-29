@@ -31,8 +31,6 @@ export class CameraRigSystem extends System {
         .addComponent(Active)
         .addComponent(Parent, { value: entity });
 
-/*
-
       // Controllers
       this.world
         .createEntity()
@@ -42,15 +40,6 @@ export class CameraRigSystem extends System {
         .createEntity()
         .addComponent(VRController, { id: 1 })
         .addComponent(Parent, { value: entity });
-
-      // @todo Remove it! hierarchy system will take care of it
-      if (entity.hasComponent(Parent)) {
-        entity
-          .getComponent(Parent)
-          .value.getComponent(Object3D)
-          .value.add(cameraRig);
-      }
-      */
     });
   }
 
