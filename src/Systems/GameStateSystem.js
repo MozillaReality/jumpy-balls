@@ -6,7 +6,6 @@ import {
   Target,
   Cleared,
   Active,
-  ThreeContext,
   Level,
   Ball,
   FloorCollided,
@@ -16,9 +15,6 @@ import {
 export class GameStateSystem extends System {
   execute() {
     var gameState = this.queries.gameState.results[0].getComponent(GameState);
-    var threeContext = this.queries.threeContext.results[0].getComponent(
-      ThreeContext
-    );
 
     // If a ball collided with the floor, reactivate the generator to throw another ball
     this.queries.ballFloorCollided.added.forEach(ball => {
@@ -26,8 +22,7 @@ export class GameStateSystem extends System {
       gameState.numBallsFailed++;
 
       // @todo remove it and link the text element
-      window.text.getMutableComponent(TextGeometry).text =
-        "balls: " + gameState.numBallsFailed;
+      //window.text.getMutableComponent(TextGeometry).text ="balls: " + gameState.numBallsFailed;
 
       // @todo here we should just activate the collided ball's generator
       // Wait 2s before reactivating the ball generator
@@ -43,19 +38,17 @@ export class GameStateSystem extends System {
     });
 
     this.queries.targetCleared.added.forEach(() => {
-      window.text.getMutableComponent(TextGeometry).text = `Level Cleared!`;
+      //window.text.getMutableComponent(TextGeometry).text = `Level Cleared!`;
 
       setTimeout(() => {
         var levelComponent = this.world.entity.getMutableComponent(Level);
         levelComponent.level++;
-        window.text.getMutableComponent(TextGeometry).text = `Level: ${
-          levelComponent.level
-        }`;
-        threeContext.scene.background.set(0x333333);
+        //window.text.getMutableComponent(TextGeometry).text = `Level: ${levelComponent.level}`;
+        // threeContext.scene.background.set(0x333333);
         gameState.levelFinished = false;
       }, 2000);
 
-      threeContext.scene.background.set(0x00ff00);
+      // threeContext.scene.background.set(0x00ff00);
       gameState.levelFinished = true;
     });
   }
@@ -64,7 +57,6 @@ export class GameStateSystem extends System {
 GameStateSystem.queries = {
   entities: { components: [BallGenerator] },
   gameState: { components: [GameState] },
-  threeContext: { components: [ThreeContext] },
   ballFloorCollided: {
     components: [Ball, FloorCollided],
     listen: {

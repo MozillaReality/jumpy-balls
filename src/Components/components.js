@@ -6,13 +6,16 @@ export {
   Parent,
   Visible,
   CameraRig,
+  Camera,
   Draggable,
   Scene,
   Dragging,
   Active,
   Transform,
+  WebGLRendererContext,
   Geometry,
   GLTFModel,
+  RenderPass,
   VRController,
   Material,
   Sky,
@@ -165,6 +168,7 @@ export class Target {
 
   reset() {}
 }
+
 export class RigidBody {
   constructor() {
     this.object = null;

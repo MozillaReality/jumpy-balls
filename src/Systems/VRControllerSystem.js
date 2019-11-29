@@ -7,7 +7,7 @@ import {
   Dragging,
   Parent,
   Object3D,
-  ThreeContext
+  WebGLRendererContext
 } from "../Components/components.js";
 
 var raycaster = new THREE.Raycaster();
@@ -20,13 +20,11 @@ export class VRControllerSystem extends System {
       this.reposition(entity.getComponent(Object3D).value, true);
     });
 
-    var threeContext = this.queries.threeContext.results[0].getComponent(
-      ThreeContext
-    );
+    let renderer = this.queries.rendererContext.results[0].getComponent(
+      WebGLRendererContext
+    ).value;
 
     this.queries.controllers.added.forEach(entity => {
-      var renderer = threeContext.renderer;
-      var scene = threeContext.scene;
       var controller = renderer.vr.getController(
         entity.getComponent(VRController).id
       );
@@ -49,11 +47,12 @@ export class VRControllerSystem extends System {
       let material2 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
       let cube = new THREE.Mesh(geometry2, material2);
       controller.add(cube);
-
+/*
       if (entity.hasComponent(Parent)) {
         let parent = entity.getComponent(Parent).value;
         parent.getComponent(Object3D).value.add(controller);
       }
+      */
     });
 
     this.cleanIntersected();
@@ -237,7 +236,8 @@ VRControllerSystem.queries = {
   },
   objects: { components: [Draggable, Object3D] },
   dragging: { components: [Dragging] },
-  threeContext: {
-    components: [ThreeContext]
+  rendererContext: {
+    components: [WebGLRendererContext],
+    mandatory: true
   }
 };

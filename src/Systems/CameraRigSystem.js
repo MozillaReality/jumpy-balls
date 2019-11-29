@@ -3,8 +3,9 @@ import { System } from "ecsy";
 import {
   Object3D,
   Parent,
+  Active,
+  Camera,
   CameraRig,
-  ThreeContext,
   VRController
 } from "../Components/components.js";
 
@@ -14,26 +15,26 @@ export class CameraRigSystem extends System {
   }
 
   execute() {
-    var threeContext = this.queries.threeContext.results[0].getComponent(
-      ThreeContext
-    );
-
     this.queries.entities.added.forEach(entity => {
       var cameraRig = new THREE.Group();
-      const camera = new THREE.PerspectiveCamera(
-        70,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
-      cameraRig.add(camera);
       entity.addComponent(Object3D, { value: cameraRig });
-      cameraRig.add(camera);
-      cameraRig.position.set(0, 0, 1);
-      cameraRig.position.set(0, 1, 5);
+      this.world
+        .createEntity()
+        .addComponent(Camera, {
+          fov: 90,
+          aspect: window.innerWidth / window.innerHeight,
+          near: 1,
+          far: 1000,
+          layers: 1,
+          handleResize: true
+        })
+        .addComponent(Active)
+        .addComponent(Parent, { value: entity });
+
+/*
 
       // Controllers
-      window.controller = this.world
+      this.world
         .createEntity()
         .addComponent(VRController, { id: 0 })
         .addComponent(Parent, { value: entity });
@@ -42,7 +43,14 @@ export class CameraRigSystem extends System {
         .addComponent(VRController, { id: 1 })
         .addComponent(Parent, { value: entity });
 
-      threeContext.scene.add(cameraRig);
+      // @todo Remove it! hierarchy system will take care of it
+      if (entity.hasComponent(Parent)) {
+        entity
+          .getComponent(Parent)
+          .value.getComponent(Object3D)
+          .value.add(cameraRig);
+      }
+      */
     });
   }
 
@@ -62,8 +70,5 @@ CameraRigSystem.queries = {
     listen: {
       added: true
     }
-  },
-  threeContext: {
-    components: [ThreeContext]
   }
 };

@@ -1,15 +1,12 @@
 /* global Ammo */
 import * as THREE from "three";
-import { WEBVR } from "three/examples/jsm/vr/WebVR.js";
 import { World } from "ecsy";
 import {
   Geometry,
   Transform,
-  ThreeContext,
   GameState,
   Shape,
   Level,
-  CameraRig,
   Sky,
   Scene,
   Parent,
@@ -23,7 +20,6 @@ import {
   VRControllerSystem,
   ElementSystem,
   TargetSystem,
-  RendererSystem,
   DissolveSystem,
   SkySystem,
   EnvironmentSystem,
@@ -32,7 +28,6 @@ import {
   FloorCollisionSystem,
   PhysicsSystem,
   BallGeneratorSystem,
-  TransformSystem,
   RotatingSystem,
   GameStateSystem,
   LevelManager,
@@ -43,22 +38,18 @@ import {
   TextGeometrySystem,
   VisibilitySystem,
   GeometrySystem,
-  GLTFLoaderSystem
+  GLTFLoaderSystem,
+  initializeDefault
 } from "ecsy-three";
 
 var entityScene = null;
 
+var world;
+
 function initGame() {
-  const world = new World();
-  const scene = new THREE.Scene();
-  window.scene = scene;
+  world = new World();
 
-  let singletonEntity = world
-    .createEntity()
-    .addComponent(Environment)
-    .addComponent(ThreeContext)
-    .addComponent(GameState);
-
+  /*
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -67,26 +58,23 @@ function initGame() {
   renderer.shadowMap.enabled = true;
   renderer.vr.enabled = true;
   document.body.appendChild(renderer.domElement);
-  renderer.setAnimationLoop(animate);
   document.body.appendChild(WEBVR.createButton(renderer));
-  const clock = new THREE.Clock();
+  */
 
-  var threeContext = singletonEntity.getMutableComponent(ThreeContext);
-  threeContext.renderer = renderer;
-  threeContext.scene = scene;
-
-  window.entityScene = entityScene = world
+  /*entityScene = world
     .createEntity()
     .addComponent(Scene)
     .addComponent(Object3D, { value: scene });
+*/
 
   world
-    .registerSystem(EnvironmentSystem)
     .registerSystem(GLTFLoaderSystem)
     .registerSystem(LevelManager)
     .registerSystem(DissolveSystem)
     .registerSystem(ElementSystem)
-    .registerSystem(CameraRigSystem)
+
+   .registerSystem(CameraRigSystem)
+
     .registerSystem(BallGeneratorSystem)
     .registerSystem(BallSystem)
 
@@ -100,10 +88,25 @@ function initGame() {
     .registerSystem(RotatingSystem)
     .registerSystem(OutputSystem)
     .registerSystem(TextGeometrySystem)
+
     // .registerSystem(ExplosiveMeshSystem)
-    .registerSystem(TransformSystem)
-    .registerSystem(GeometrySystem)
-    .registerSystem(RendererSystem);
+    //.registerSystem(TransformSystem)
+    .registerSystem(EnvironmentSystem)
+    .registerSystem(GeometrySystem);
+
+  let data = initializeDefault(world, { vr: true });
+
+  var scene = data.entities.scene.getComponent(Object3D).value;
+
+  window.entityScene = entityScene = data.entities.scene;
+  window.world = world;
+
+  // Singleton entity
+  world
+    .createEntity()
+    .addComponent(Environment)
+    .addComponent(Scene, { value: data.entities.scene })
+    .addComponent(GameState);
 
   init();
   function init() {
@@ -120,21 +123,22 @@ function initGame() {
     scene.add(light);
     //scene.add( new THREE.CameraHelper( light.shadow.camera ) );
 
-    // camera rig & controllers
-    world.createEntity().addComponent(CameraRig);
-
     // @Hack to workaround singletonComponents
     world.entity = world.createEntity();
     world.entity.addComponent(Level, { level: 0 });
 
     // Scene
     createScene();
+
+    console.log('Finished!');
+    //animate();
+    world.execute();
   }
 
   function createScene() {
     world.createEntity().addComponent(Sky);
     createFloor();
-
+/*
     var text = world.createEntity();
     text.addComponent(TextGeometry, { text: "" }).addComponent(Transform, {
       position: { x: 0, y: 0, z: -3 },
@@ -142,7 +146,7 @@ function initGame() {
     });
 
     window.text = text; //@fixme megahack
-
+*/
     world
       .createEntity()
       .addComponent(TextGeometry, { text: "mozilla" })
@@ -182,11 +186,15 @@ function initGame() {
         angularDamping: 0.0
       })
       .addComponent(Parent, { value: entityScene });
+      console.log(entityScene);
   }
+}
 
-  function animate() {
-    world.execute(clock.getDelta(), clock.elapsedTime);
-  }
+const clock = new THREE.Clock();
+
+function animate() {
+  console.log('-------------------------->');
+  world.execute(clock.getDelta(), clock.elapsedTime);
 }
 
 Ammo().then(initGame);

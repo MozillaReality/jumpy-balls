@@ -13,7 +13,6 @@ export { LevelManager } from "./LevelManager.js";
 export { CameraRigSystem } from "./CameraRigSystem.js";
 export { VRControllerSystem } from "./VRControllerSystem.js";
 export { PhysicsSystem } from "./PhysicsSystem.js";
-export { RendererSystem } from "./RendererSystem.js";
 export { EnvironmentSystem } from "./EnvironmentSystem.js";
 export { SkySystem } from "./SkySystem.js";
 export { TransformSystem } from "./TransformSystem.js";
