@@ -1,9 +1,6 @@
 module.exports = {
   mode: "development",
   entry: "./src/index.js",
-  externals: {
-    three: "THREE"
-  },
   output: {
     filename: "build/bundle.js",
     path: __dirname

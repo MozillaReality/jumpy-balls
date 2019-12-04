@@ -38,21 +38,24 @@ export class PhysicsSystem extends System {
 
       const object = entity.getComponent(Object3D).value;
       const body = object.userData.body;
-      const transform = this._transform;
-      const q = this._quaternion;
+      if (body.isActive() && body.getMotionState()) {
 
-      body.getMotionState().getWorldTransform(transform);
-      const o = transform.getOrigin();
-      transform.getBasis().getRotation(q);
+        const transform = this._transform;
+        const q = this._quaternion;
 
-      // Update instance's position and quaternion
-      object.position.set(o.x(), o.y(), o.z());
-      object.quaternion.set(q.x(), q.y(), q.z(), q.w());
+        body.getMotionState().getWorldTransform(transform);
+        const o = transform.getOrigin();
+        transform.getBasis().getRotation(q);
 
-      // @todo Create transform component to sync object & component
-      let transformComponent = entity.getMutableComponent(Transform);
-      transformComponent.position.copy(object.position);
-      transformComponent.rotation.copy(object.rotation);
+        // Update instance's position and quaternion
+        object.position.set(o.x(), o.y(), o.z());
+        object.quaternion.set(q.x(), q.y(), q.z(), q.w());
+
+        // @todo Create transform component to sync object & component
+        let transformComponent = entity.getMutableComponent(Transform);
+        transformComponent.position.copy(object.position);
+        transformComponent.rotation.copy(object.rotation);
+      }
     }
 
     this.queries.entities.removed.forEach(entity => {

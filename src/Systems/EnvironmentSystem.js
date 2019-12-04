@@ -1,6 +1,11 @@
 import * as THREE from "three";
 import { System } from "ecsy";
-import { Scene, Object3D, Environment } from "../Components/components.js";
+import {
+  Parent,
+  Scene,
+  Object3D,
+  Environment
+} from "../Components/components.js";
 
 export class EnvironmentSystem extends System {
   execute() {
@@ -66,7 +71,9 @@ export class EnvironmentSystem extends System {
       let object = new THREE.Mesh(geometry, groundMaterial);
       object.rotation.x = -Math.PI / 2;
       object.receiveShadow = true;
-      scene.add(object);
+
+      entity.addComponent(Object3D, { value: object });
+      entity.addComponent(Parent, { value: window.entityScene });
 
       const color = 0x333333;
       const near = 20;

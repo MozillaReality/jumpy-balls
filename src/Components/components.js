@@ -120,14 +120,6 @@ export class GameState {
   reset() {}
 }
 
-export class ThreeContext {
-  constructor() {
-    this.scene = null;
-    this.renderer = null;
-  }
-  reset() {}
-}
-
 export class BallGenerator {
   constructor() {
     this.position = new THREE.Vector3();

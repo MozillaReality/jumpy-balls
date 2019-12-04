@@ -15,4 +15,3 @@ export { VRControllerSystem } from "./VRControllerSystem.js";
 export { PhysicsSystem } from "./PhysicsSystem.js";
 export { EnvironmentSystem } from "./EnvironmentSystem.js";
 export { SkySystem } from "./SkySystem.js";
-export { TransformSystem } from "./TransformSystem.js";

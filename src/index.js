@@ -1,47 +1,45 @@
 /* global Ammo */
 import * as THREE from "three";
-import { WEBVR } from "three/examples/jsm/vr/WebVR.js";
 import { World } from "ecsy";
 import {
-  Geometry,
-  Transform,
-  GameState,
-  Shape,
-  Level,
-  Sky,
-  Scene,
-  Parent,
-  Object3D,
-  Visible,
-  TextGeometry,
-  WebGLRendererContext,
   Environment,
-  RigidBody
+  GameState,
+  Geometry,
+  Level,
+  Object3D,
+  Parent,
+  RigidBody,
+  Scene,
+  Shape,
+  GLTFModel,
+  Sky,
+  TextGeometry,
+  Transform,
+  Visible
 } from "./Components/components.js";
 import {
-  VRControllerSystem,
-  ElementSystem,
-  TargetSystem,
-  DissolveSystem,
-  SkySystem,
-  EnvironmentSystem,
-  OutputSystem,
-  CameraRigSystem,
-  FloorCollisionSystem,
-  PhysicsSystem,
   BallGeneratorSystem,
-  RotatingSystem,
+  BallSystem,
+  CameraRigSystem,
+  DissolveSystem,
+  ElementSystem,
+  EnvironmentSystem,
+  FloorCollisionSystem,
   GameStateSystem,
   LevelManager,
-  BallSystem
+  OutputSystem,
+  PhysicsSystem,
+  RotatingSystem,
+  SkySystem,
+  TargetSystem,
+  VRControllerSystem
 } from "./Systems/systems.mjs";
 
 import {
-  TextGeometrySystem,
-  VisibilitySystem,
   GeometrySystem,
   GLTFLoaderSystem,
-  TransformSystem,
+  TextGeometrySystem,
+  VisibilitySystem,
   initializeDefault
 } from "ecsy-three";
 
@@ -49,24 +47,7 @@ var world;
 
 function initGame() {
   world = new World();
-/*
-  var renderer = new THREE.WebGLRenderer({
-    antialias: true
-  });
 
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.gammaInput = true;
-  renderer.gammaOutput = true;
-  // renderer.shadowMap.enabled = true;
-  document.body.appendChild(renderer.domElement);
-  renderer.vr.enabled = true;
-  document.body.appendChild(
-    WEBVR.createButton(renderer, { referenceSpaceType: "local" })
-  );
-
-  world.createEntity().addComponent(WebGLRendererContext, { value: renderer });
-*/
   world
     .registerSystem(GLTFLoaderSystem)
     .registerSystem(LevelManager)
@@ -86,9 +67,6 @@ function initGame() {
     .registerSystem(RotatingSystem)
     .registerSystem(OutputSystem)
     .registerSystem(TextGeometrySystem)
-    //.registerSystem(TransformSystem)
-    // .registerSystem(ExplosiveMeshSystem)
-    //.registerSystem(TransformSystem)
     .registerSystem(GeometrySystem);
 
   let data = initializeDefault(world, { vr: true });
@@ -126,23 +104,20 @@ function initGame() {
     // Scene
     createScene(data);
 
-    console.log("Finished!");
-    animate();
+    // @todo This first one remove
+    world.execute(0.016, 0);
   }
 
   function createScene() {
     world.createEntity().addComponent(Sky);
     createFloor();
 
-    /*
     var text = world.createEntity();
     text.addComponent(TextGeometry, { text: "" }).addComponent(Transform, {
       position: { x: 0, y: 0, z: -3 },
       rotation: { x: 0, y: -0.4, z: 0 }
     });
 
-    window.text = text; //@fixme megahack
-*/
     world
       .createEntity()
       .addComponent(TextGeometry, { text: "mozilla" })
@@ -151,7 +126,23 @@ function initGame() {
         rotation: { x: 0, y: 0.4, z: 0 }
       });
 
-    //world.createEntity().addComponent(GLTFModel, { url: "BouncyFrame.glb" });
+    world
+      .createEntity()
+      .addComponent(GLTFModel, { url: "BouncyFrame.glb" })
+      .addComponent(Transform, {
+        position: { x: 0, y: 1, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 }
+      })
+      .addComponent(Parent, { value: data.entities.scene });
+
+    world
+      .createEntity()
+      .addComponent(GLTFModel, { url: "BouncyFrame.glb" })
+      .addComponent(Transform, {
+        position: { x: 1, y: 2, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 }
+      })
+      .addComponent(Parent, { value: data.entities.scene });
   }
 
   function createFloor() {
@@ -183,13 +174,6 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene });
   }
-}
-
-const clock = new THREE.Clock();
-
-function animate() {
-  world.execute(clock.getDelta(), clock.elapsedTime);
-  requestAnimationFrame(animate);
 }
 
 Ammo().then(initGame);

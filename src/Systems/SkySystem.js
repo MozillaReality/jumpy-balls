@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { System } from "ecsy";
-import { Sky } from "../Components/components.js";
+import { Sky, Object3D } from "../Components/components.js";
 
 /**
  * @author zz85 / https://github.com/zz85
@@ -226,16 +226,15 @@ THREESky.SkyShader = {
 
 
 export class SkySystem extends System {
-  execute(delta, time) {
-    return;
-    var entitiesEvent = this.events.entities;
+  execute() {
+    var entitiesEvent = this.queries.entities.added;
     //Queries
-    for (let i = 0; i < entitiesEvent.added.length; i++) {
-      var entity = entitiesEvent.added[i];
+    this.queries.entities.added.forEach(entity => {
       var component = entity.getComponent(Sky);
       var sky = new THREESky();
       sky.scale.setScalar(4500);
-      var uniforms = sky.material.uniforms;
+			var uniforms = sky.material.uniforms;
+			window.entityScene.getComponent(Object3D).value.add(sky);
 /*
       uniforms[ "turbidity" ].value = effectController.turbidity;
       uniforms[ "rayleigh" ].value = effectController.rayleigh;
@@ -244,11 +243,10 @@ export class SkySystem extends System {
       uniforms[ "mieDirectionalG" ].value = effectController.mieDirectionalG;
 */
       uniforms[ "luminance" ].value = 10;
-      this.world.components.threeContext.scene.add(sky);
       // segmentsWidth: 64, segmentsHeight: 32
       // Material color #ff, side: back, shader: 'flat', npot: true
       //scale '-1, 1 1'
-    }
+		});
   }
 }
 
