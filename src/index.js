@@ -23,7 +23,6 @@ import {
   CameraRigSystem,
   DissolveSystem,
   ElementSystem,
-  EnvironmentSystem,
   FloorCollisionSystem,
   GameStateSystem,
   LevelManager,
@@ -38,6 +37,7 @@ import {
 import {
   GeometrySystem,
   GLTFLoaderSystem,
+  EnvironmentSystem,
   TextGeometrySystem,
   VisibilitySystem,
   initializeDefault

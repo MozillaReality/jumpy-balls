@@ -9,9 +9,7 @@ export { ExplosiveMeshSystem } from "./ExplosiveMeshSystem.js";
 export { ElementSystem } from "./ElementSystem.js";
 export { OutputSystem } from "./OutputSystem.js";
 export { LevelManager } from "./LevelManager.js";
-
 export { CameraRigSystem } from "./CameraRigSystem.js";
 export { VRControllerSystem } from "./VRControllerSystem.js";
 export { PhysicsSystem } from "./PhysicsSystem.js";
-export { EnvironmentSystem } from "./EnvironmentSystem.js";
 export { SkySystem } from "./SkySystem.js";

@@ -25,7 +25,7 @@ export class VRControllerSystem extends System {
     ).value;
 
     this.queries.controllers.added.forEach(entity => {
-      var controller = renderer.vr.getController(
+      var controller = renderer.xr.getController(
         entity.getComponent(VRController).id
       );
 
