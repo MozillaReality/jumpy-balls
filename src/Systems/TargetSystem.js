@@ -44,7 +44,7 @@ export class TargetSystem extends System {
           radiusSum * radiusSum
         ) {
           ball.removeComponent(Active);
-          target.addComponent(Rotating, { speed: { x: 5, y: 13, z: 0 } });
+          target.addComponent(Rotating, { speed: new THREE.Vector3(5, 13, 0) });
           target.addComponent(Cleared);
         }
       }

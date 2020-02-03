@@ -1,4 +1,5 @@
 import { System } from "ecsy";
+import { levels } from "../levels.js";
 import {
   TextGeometry,
   BallGenerator,
@@ -42,10 +43,14 @@ export class GameStateSystem extends System {
 
       setTimeout(() => {
         var levelComponent = this.world.entity.getMutableComponent(Level);
-        levelComponent.level++;
-        //window.text.getMutableComponent(TextGeometry).text = `Level: ${levelComponent.level}`;
-        // threeContext.scene.background.set(0x333333);
-        gameState.levelFinished = false;
+        if (levelComponent.value === levels.length - 1) {
+          levelComponent.value = 0;
+        } else {
+          levelComponent.value++;
+          //window.text.getMutableComponent(TextGeometry).text = `Level: ${levelComponent.value}`;
+          // threeContext.scene.background.set(0x333333);
+          gameState.levelFinished = false;
+        }
       }, 2000);
 
       // threeContext.scene.background.set(0x00ff00);

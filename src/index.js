@@ -17,6 +17,7 @@ import {
   Transform,
   Visible
 } from "./Components/components.js";
+
 import {
   BallGeneratorSystem,
   BallSystem,
@@ -97,9 +98,11 @@ function initGame() {
     scene.add(light);
     //scene.add( new THREE.CameraHelper( light.shadow.camera ) );
 
+    window.world = world;
+    window.Level = Level;
     // @Hack to workaround singletonComponents
     world.entity = world.createEntity();
-    world.entity.addComponent(Level, { level: 0 });
+    world.entity.addComponent(Level, { value: 1 });
 
     // Scene
     createScene(data);
@@ -125,7 +128,7 @@ function initGame() {
         position: { x: -5, y: 0, z: -1 },
         rotation: { x: 0, y: 0.4, z: 0 }
       });
-
+/*
     world
       .createEntity()
       .addComponent(GLTFModel, { url: "BouncyFrame.glb" })
@@ -143,6 +146,7 @@ function initGame() {
         rotation: { x: 0, y: 0, z: 0 }
       })
       .addComponent(Parent, { value: data.entities.scene });
+*/
   }
 
   function createFloor() {
