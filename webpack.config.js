@@ -10,6 +10,7 @@ module.exports = {
     ignored: [/node_modules/]
   },
   resolve: {
+    symlinks: false,
     modules: ["./node_modules"]
   }
 };

@@ -45,9 +45,11 @@ export class CameraRigSystem extends System {
 
   onWindowResize() {
     this.queries.entities.results.forEach(entity => {
+      /*
       var camera = entity.getComponent(Object3D).value.children[0];
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
+      */
     });
   }
 }
