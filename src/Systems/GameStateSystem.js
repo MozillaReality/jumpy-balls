@@ -1,5 +1,6 @@
 import { System } from "ecsy";
 import { levels } from "../levels.js";
+import { Text } from "ecsy-three";
 import {
   TextGeometry,
   BallGenerator,
@@ -22,8 +23,9 @@ export class GameStateSystem extends System {
       // @todo this.component.numBallsFailed++
       gameState.numBallsFailed++;
 
-      // @todo remove it and link the text element
-      //window.text.getMutableComponent(TextGeometry).text ="balls: " + gameState.numBallsFailed;
+      this.world.entityManager
+        .getEntityByName("numberBallsText")
+        .getMutableComponent(Text).text = `balls: ${gameState.numBallsFailed}`;
 
       // @todo here we should just activate the collided ball's generator
       // Wait 2s before reactivating the ball generator
@@ -39,7 +41,9 @@ export class GameStateSystem extends System {
     });
 
     this.queries.targetCleared.added.forEach(() => {
-      //window.text.getMutableComponent(TextGeometry).text = `Level Cleared!`;
+      this.world.entityManager
+        .getEntityByName("numberBallsText")
+        .getMutableComponent(Text).text = `Level cleared!`;
 
       setTimeout(() => {
         var levelComponent = this.world.entity.getMutableComponent(Level);
@@ -47,7 +51,11 @@ export class GameStateSystem extends System {
           levelComponent.value = 0;
         } else {
           levelComponent.value++;
-          //window.text.getMutableComponent(TextGeometry).text = `Level: ${levelComponent.value}`;
+
+          this.world.entityManager
+            .getEntityByName("numberBallsText")
+            .getMutableComponent(Text).text = `Level: ${levelComponent.value}`;
+
           // threeContext.scene.background.set(0x333333);
           gameState.levelFinished = false;
         }

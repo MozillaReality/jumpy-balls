@@ -42,8 +42,14 @@ import {
   TextGeometrySystem,
   VRControllerSystem,
   VisibilitySystem,
-  initializeDefault,
+  SDFTextSystem,
+
+  Position,
+  Text,
+
+  initializeDefault
 } from "ecsy-three";
+import { Vector3 } from "three";
 
 var world;
 
@@ -66,6 +72,7 @@ function initGame() {
     .registerSystem(VisibilitySystem)
     .registerSystem(FloorCollisionSystem)
     .registerSystem(TargetSystem)
+    .registerSystem(SDFTextSystem)
     .registerSystem(SkySystem)
     .registerSystem(RotatingSystem)
     .registerSystem(OutputSystem)
@@ -109,6 +116,21 @@ function initGame() {
     // Scene
     createScene(data);
 
+    let numberBalls = world.createEntity("numberBallsText");
+    numberBalls
+      .addComponent(Text, {
+        color: "#ffffff",
+        fontSize: 0.5,
+        anchor: "left",
+        textAlign: "center",
+        baseline: "center",
+        maxWidth: 10,
+        lineHeight: 1.3,
+        text: "Balls counter!"
+      })
+      .addComponent(Parent, { value: data.entities.scene })
+      .addComponent(Position, { value: new Vector3(-1, 2, -1) });
+
     // @todo This first one remove
     world.execute(0.016, 0);
   }
@@ -130,7 +152,7 @@ function initGame() {
         position: { x: -5, y: 0, z: -1 },
         rotation: { x: 0, y: 0.4, z: 0 }
       });
-/*
+    /*
     world
       .createEntity()
       .addComponent(GLTFModel, { url: "BouncyFrame.glb" })
