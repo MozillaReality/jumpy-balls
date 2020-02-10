@@ -17,11 +17,16 @@ import {
 export class GameStateSystem extends System {
   execute() {
     var gameState = this.queries.gameState.results[0].getComponent(GameState);
-    let elapsedTime = performance.now() - gameState.levelStartTime;
+    let elapsedTimeCurrent = performance.now() - gameState.levelStartTime;
+    let elapsedTimeTotal = performance.now() - gameState.gameStartTime;
 
     this.world.entityManager
       .getEntityByName("timer")
-      .getMutableComponent(Text).text = `time: ${new Date(elapsedTime)
+      .getMutableComponent(Text).text = `current level: ${new Date(
+      elapsedTimeCurrent
+    )
+      .toISOString()
+      .substr(14, 5)}\ntotal: ${new Date(elapsedTimeTotal)
       .toISOString()
       .substr(14, 5)}`;
 
