@@ -8,6 +8,7 @@ import {
   CameraRig,
   VRController
 } from "../Components/components.js";
+import { Position } from "ecsy-three";
 
 export class CameraRigSystem extends System {
   init() {
@@ -20,6 +21,9 @@ export class CameraRigSystem extends System {
       entity.addComponent(Object3D, { value: cameraRig });
       this.world
         .createEntity()
+        .addComponent(Position, {
+          value: new THREE.Vector3(0, 1.6, 2)
+        })
         .addComponent(Camera, {
           fov: 90,
           aspect: window.innerWidth / window.innerHeight,

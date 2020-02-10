@@ -32,7 +32,7 @@ import {
   RotatingSystem,
   SkySystem,
   TargetSystem,
-  VRControllerSystem
+  VRControllerInteraction
 } from "./Systems/systems.mjs";
 
 import {
@@ -40,8 +40,9 @@ import {
   GLTFLoaderSystem,
   EnvironmentSystem,
   TextGeometrySystem,
+  VRControllerSystem,
   VisibilitySystem,
-  initializeDefault
+  initializeDefault,
 } from "ecsy-three";
 
 var world;
@@ -57,6 +58,7 @@ function initGame() {
     .registerSystem(EnvironmentSystem)
     .registerSystem(BallGeneratorSystem)
     .registerSystem(BallSystem)
+    .registerSystem(VRControllerInteraction)
     .registerSystem(VRControllerSystem)
     .registerSystem(CameraRigSystem)
     .registerSystem(GameStateSystem)
@@ -111,9 +113,9 @@ function initGame() {
     world.execute(0.016, 0);
   }
 
-  function createScene() {
+  function createScene(data) {
     world.createEntity().addComponent(Sky);
-    createFloor();
+    createFloor(data);
 
     var text = world.createEntity();
     text.addComponent(TextGeometry, { text: "" }).addComponent(Transform, {
@@ -149,7 +151,7 @@ function initGame() {
 */
   }
 
-  function createFloor() {
+  function createFloor(data) {
     world
       .createEntity()
       .addComponent(Geometry, {

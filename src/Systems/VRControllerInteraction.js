@@ -9,31 +9,32 @@ import {
   Object3D,
   WebGLRendererContext
 } from "../Components/components.js";
+import { VRControllerBasicBehaviour } from "ecsy-three";
 
 var raycaster = new THREE.Raycaster();
 var tempMatrix = new THREE.Matrix4();
 var intersected = [];
 
-export class VRControllerSystem extends System {
+export class VRControllerInteraction extends System {
   execute() {
     this.queries.dragging.results.forEach(entity => {
       this.reposition(entity.getComponent(Object3D).value, true);
     });
 
-    let renderer = this.queries.rendererContext.results[0].getComponent(
-      WebGLRendererContext
-    ).value;
-
     this.queries.controllers.added.forEach(entity => {
-      var controller = renderer.xr.getController(
-        entity.getComponent(VRController).id
-      );
+      entity.addComponent(VRControllerBasicBehaviour, {
+        selectstart: this.onSelectStart.bind(this),
+        selectend: this.onSelectEnd.bind(this),
+        connected: function(event) {
+          //		      this.add( buildController( event.data ) );
+        },
+        disconnected: function() {
+          //          this.remove( this.children[ 0 ] );
+        }
+      });
 
-      entity.addComponent(Object3D, { value: controller });
-
-      controller.addEventListener("selectstart", this.onSelectStart.bind(this));
-      controller.addEventListener("selectend", this.onSelectEnd.bind(this));
-
+      //entity.addComponent(Object3D, { value: controller });
+      /*
       let geometry = new THREE.BufferGeometry();
       geometry.setAttribute(
         "position",
@@ -50,8 +51,7 @@ export class VRControllerSystem extends System {
       let cube = new THREE.Mesh(geometry2, material2);
       controller.name = "VRController";
       controller.add(cube);
-
-      window.controller = controller;
+*/
     });
 
     this.cleanIntersected();
@@ -226,7 +226,7 @@ export class VRControllerSystem extends System {
   }
 }
 
-VRControllerSystem.queries = {
+VRControllerInteraction.queries = {
   controllers: {
     components: [VRController],
     listen: {

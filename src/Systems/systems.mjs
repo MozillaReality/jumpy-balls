@@ -10,6 +10,6 @@ export { ElementSystem } from "./ElementSystem.js";
 export { OutputSystem } from "./OutputSystem.js";
 export { LevelManager } from "./LevelManager.js";
 export { CameraRigSystem } from "./CameraRigSystem.js";
-export { VRControllerSystem } from "./VRControllerSystem.js";
+export { VRControllerInteraction } from "./VRControllerInteraction.js";
 export { PhysicsSystem } from "./PhysicsSystem.js";
 export { SkySystem } from "./SkySystem.js";
