@@ -12,7 +12,6 @@ import {
   Scene,
   Shape,
   GLTFModel,
-  Sky,
   TextGeometry,
   Transform,
   Visible
@@ -30,7 +29,6 @@ import {
   OutputSystem,
   PhysicsSystem,
   RotatingSystem,
-  SkySystem,
   TargetSystem,
   VRControllerInteraction
 } from "./Systems/systems.mjs";
@@ -43,10 +41,8 @@ import {
   VRControllerSystem,
   VisibilitySystem,
   SDFTextSystem,
-
   Position,
   Text,
-
   initializeDefault
 } from "ecsy-three";
 import { Vector3 } from "three";
@@ -73,7 +69,6 @@ function initGame() {
     .registerSystem(FloorCollisionSystem)
     .registerSystem(TargetSystem)
     .registerSystem(SDFTextSystem)
-    .registerSystem(SkySystem)
     .registerSystem(RotatingSystem)
     .registerSystem(OutputSystem)
     .registerSystem(TextGeometrySystem)
@@ -116,8 +111,8 @@ function initGame() {
     // Scene
     createScene(data);
 
-    let numberBalls = world.createEntity("numberBallsText");
-    numberBalls
+    world
+      .createEntity("numberBallsText")
       .addComponent(Text, {
         color: "#ffffff",
         fontSize: 0.5,
@@ -136,7 +131,7 @@ function initGame() {
   }
 
   function createScene(data) {
-    world.createEntity().addComponent(Sky);
+    // world.createEntity().addComponent(Sky);
     createFloor(data);
 
     var text = world.createEntity();

@@ -19,7 +19,6 @@ export {
   RenderPass,
   VRController,
   Material,
-  Sky,
   TextGeometry
 } from "ecsy-three";
 
