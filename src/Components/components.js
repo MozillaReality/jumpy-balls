@@ -79,6 +79,8 @@ export class GameState {
   constructor() {
     this.levelFinished = false;
     this.numBallsFailed = 0;
+    this.levelStartTime = 0;
+    this.gameStartTime = 0;
   }
   reset() {}
 }

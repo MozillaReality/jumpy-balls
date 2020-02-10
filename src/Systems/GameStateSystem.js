@@ -17,6 +17,13 @@ import {
 export class GameStateSystem extends System {
   execute() {
     var gameState = this.queries.gameState.results[0].getComponent(GameState);
+    let elapsedTime = performance.now() - gameState.levelStartTime;
+
+    this.world.entityManager
+      .getEntityByName("timer")
+      .getMutableComponent(Text).text = `time: ${new Date(elapsedTime)
+      .toISOString()
+      .substr(14, 5)}`;
 
     // If a ball collided with the floor, reactivate the generator to throw another ball
     this.queries.ballFloorCollided.added.forEach(ball => {

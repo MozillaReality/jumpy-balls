@@ -84,7 +84,10 @@ function initGame() {
     .createEntity()
     .addComponent(Environment)
     .addComponent(Scene, { value: data.entities.scene })
-    .addComponent(GameState);
+    .addComponent(GameState, {
+      levelStartTime: performance.now(),
+      gameStartTime: performance.now()
+    });
 
   init(data);
 
@@ -125,6 +128,21 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Position, { value: new Vector3(-1, 2, -1) });
+
+    world
+      .createEntity("timer")
+      .addComponent(Text, {
+        color: "#ffffff",
+        fontSize: 0.5,
+        anchor: "left",
+        textAlign: "center",
+        baseline: "center",
+        maxWidth: 10,
+        lineHeight: 1.3,
+        text: "Balls counter!"
+      })
+      .addComponent(Parent, { value: data.entities.scene })
+      .addComponent(Position, { value: new Vector3(-1, 4, -1) });
 
     // @todo This first one remove
     world.execute(0.016, 0);
