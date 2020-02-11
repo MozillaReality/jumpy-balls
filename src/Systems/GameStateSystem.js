@@ -2,7 +2,6 @@ import { System } from "ecsy";
 import { levels } from "../levels.js";
 import { Text } from "ecsy-three";
 import {
-  TextGeometry,
   BallGenerator,
   Dissolve,
   Target,

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --host 0.0.0.0 --mode development",
-    "https": "webpack-dev-server --host 0.0.0.0 --mode development --cert=cert.pem --key=key.pem --https",
+    "start": "webpack-dev-server --host 0.0.0.0 --mode development --https -d",
+    "http": "webpack-dev-server --host 0.0.0.0 --mode development -d",
     "build": "webpack --mode production",
     "lint": "eslint src",
     "brow": "browserify src/index.js bundle.browserify.js",
