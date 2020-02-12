@@ -52,7 +52,7 @@ export class GameStateSystem extends System {
       }, 1000);
 
       setTimeout(() => {
-        if (this.world.entity.getComponent(Level).value !== currentLevel) {
+        if (!ball || this.world.entity.getComponent(Level).value !== currentLevel) {
           return;
         }
 
