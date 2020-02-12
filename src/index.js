@@ -109,7 +109,8 @@ function initGame() {
     window.Level = Level;
     // @Hack to workaround singletonComponents
     world.entity = world.createEntity();
-    world.entity.addComponent(Level, { value: 1 });
+    let level = 1;
+    world.entity.addComponent(Level, { value: level });
 
     // Scene
     createScene(data);
@@ -128,6 +129,21 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Position, { value: new Vector3(-1, 2, -1) });
+
+    world
+      .createEntity("level")
+      .addComponent(Text, {
+        color: "#ffffff",
+        fontSize: 0.5,
+        anchor: "left",
+        textAlign: "center",
+        baseline: "center",
+        maxWidth: 10,
+        lineHeight: 1.3,
+        text: "Level: " + level
+      })
+      .addComponent(Parent, { value: data.entities.scene })
+      .addComponent(Position, { value: new Vector3(-1, 3, -1) });
 
     world
       .createEntity("timer")

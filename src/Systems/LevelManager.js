@@ -1,4 +1,5 @@
 import { System } from "ecsy";
+import { Text } from "ecsy-three";
 import {
   Level,
   Target,
@@ -31,6 +32,10 @@ export class LevelManager extends System {
   }
 
   initializeLevel(levelId) {
+    this.world.entityManager
+      .getEntityByName("level")
+      .getMutableComponent(Text).text = `Level ${levelId}`;
+
     this.clearCurrentLevel();
     var level = levels[levelId];
 

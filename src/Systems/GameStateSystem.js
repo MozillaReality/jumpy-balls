@@ -40,13 +40,22 @@ export class GameStateSystem extends System {
 
       // @todo here we should just activate the collided ball's generator
       // Wait 2s before reactivating the ball generator
+      let currentLevel = world.entity.getComponent(Level).value;
+
       setTimeout(() => {
+        if (this.world.entity.getComponent(Level).value !== currentLevel) {
+          return;
+        }
         this.queries.entities.results.forEach(generator => {
           generator.addComponent(Active);
         });
       }, 1000);
 
       setTimeout(() => {
+        if (this.world.entity.getComponent(Level).value !== currentLevel) {
+          return;
+        }
+
         ball.addComponent(Dissolve);
       }, 2000);
     });

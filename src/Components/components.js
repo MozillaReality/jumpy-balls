@@ -31,7 +31,13 @@ export class Shape {
 }
 
 export class Level {
-  reset() {}
+  constructor() {
+    this.value = 0;
+  }
+
+  reset() {
+    this.value = 0;
+  }
 }
 
 export class FloorCollided extends TagComponent {}
