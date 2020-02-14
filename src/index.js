@@ -14,7 +14,9 @@ import {
   GLTFModel,
   TextGeometry,
   Transform,
-  Visible
+  Visible,
+  UI,
+  Button
 } from "./Components/components.js";
 
 import {
@@ -30,6 +32,8 @@ import {
   PhysicsSystem,
   RotatingSystem,
   TargetSystem,
+  RaycasterSystem,
+  UISystem,
   VRControllerInteraction
 } from "./Systems/systems.mjs";
 
@@ -55,6 +59,8 @@ function initGame() {
   world
     .registerSystem(GLTFLoaderSystem)
     .registerSystem(LevelManager)
+    .registerSystem(RaycasterSystem)
+    .registerSystem(UISystem)
     .registerSystem(DissolveSystem)
     .registerSystem(ElementSystem)
     .registerSystem(EnvironmentSystem)
@@ -114,6 +120,13 @@ function initGame() {
 
     // Scene
     createScene(data);
+
+    world
+      .createEntity("button")
+      .addComponent(UI, {})
+      .addComponent(Button, {})
+      .addComponent(Parent, { value: data.entities.scene })
+      .addComponent(Position, { value: new Vector3(-1, 1, -1) });
 
     world
       .createEntity("numberBallsText")

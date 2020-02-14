@@ -7,6 +7,7 @@ import {
   Dragging,
   Parent,
   Object3D,
+  Raycaster,
   WebGLRendererContext
 } from "../Components/components.js";
 import { VRControllerBasicBehaviour } from "ecsy-three";
@@ -22,6 +23,8 @@ export class VRControllerInteraction extends System {
     });
 
     this.queries.controllers.added.forEach(entity => {
+      entity.addComponent(Raycaster, { value: raycaster });
+
       entity.addComponent(VRControllerBasicBehaviour, {
         selectstart: this.onSelectStart.bind(this),
         selectend: this.onSelectEnd.bind(this),

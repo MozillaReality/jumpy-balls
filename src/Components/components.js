@@ -83,12 +83,15 @@ export class Dissolve {
 
 export class GameState {
   constructor() {
+    this.reset();
+  }
+  reset() {
+    this.playing = false;
     this.levelFinished = false;
     this.numBallsFailed = 0;
     this.levelStartTime = 0;
     this.gameStartTime = 0;
   }
-  reset() {}
 }
 
 export class BallGenerator {
@@ -143,4 +146,34 @@ export class RigidBody {
     this.linearVelocity = { x: 0, y: 0, z: 0 };
   }
   reset() {}
+}
+
+export class UI extends TagComponent {}
+
+export class Button {
+  constructor() {}
+  reset() {}
+}
+
+export class RaycastReceiver {
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.hovering = false;
+    this.onHover = null;
+    this.onEnter = null;
+    this.onLeave = null;
+    this.onClick = null;
+  }
+}
+export class Raycaster {
+  constructor () {
+    this.reset();
+  }
+
+  reset() {
+    this.currentEntity = null;
+  }
 }

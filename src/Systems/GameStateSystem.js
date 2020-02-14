@@ -16,6 +16,7 @@ import {
 export class GameStateSystem extends System {
   execute() {
     var gameState = this.queries.gameState.results[0].getComponent(GameState);
+
     let elapsedTimeCurrent = performance.now() - gameState.levelStartTime;
     let elapsedTimeTotal = performance.now() - gameState.gameStartTime;
 
@@ -75,6 +76,8 @@ export class GameStateSystem extends System {
           this.world.entityManager
             .getEntityByName("numberBallsText")
             .getMutableComponent(Text).text = `Level: ${levelComponent.value}`;
+
+          gameState.levelStartTime = performance.now();
 
           // threeContext.scene.background.set(0x333333);
           gameState.levelFinished = false;

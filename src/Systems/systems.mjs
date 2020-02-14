@@ -12,3 +12,5 @@ export { LevelManager } from "./LevelManager.js";
 export { CameraRigSystem } from "./CameraRigSystem.js";
 export { VRControllerInteraction } from "./VRControllerInteraction.js";
 export { PhysicsSystem } from "./PhysicsSystem.js";
+export { UISystem } from "./UISystem.js";
+export { RaycasterSystem } from "./RaycasterSystem.js";
