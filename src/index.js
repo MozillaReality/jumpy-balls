@@ -34,6 +34,7 @@ import {
   TargetSystem,
   RaycasterSystem,
   UISystem,
+  InputSystem,
   VRControllerInteraction
 } from "./Systems/systems.mjs";
 
@@ -57,6 +58,7 @@ function initGame() {
   world = new World();
 
   world
+    .registerSystem(InputSystem)
     .registerSystem(GLTFLoaderSystem)
     .registerSystem(LevelManager)
     .registerSystem(RaycasterSystem)

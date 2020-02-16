@@ -30,20 +30,22 @@ export class UISystem extends System {
       entity.addComponent(RaycastReceiver, {
         onHover: () => {
           let obj = child.getComponent(Object3D).value;
-          console.log("Hoverrr");
+          //console.log("Hoverrr");
         },
         onEnter: () => {
           let obj = child.getComponent(Object3D).value;
           obj.material.color.setRGB(1, 1, 0);
-          console.log(">>>>>>>>>>>> entering");
         },
         onLeave: () => {
           let obj = child.getComponent(Object3D).value;
           obj.material.color.setRGB(1, 1, 1);
-          console.log(">>>>>>>>>>>> leaving");
         },
-        onClick: () => {
-          console.log(">>>>>>>>>>>> clicking");
+        onSelectStart: () => {
+          let obj = child.getComponent(Object3D).value;
+          obj.material.color.setRGB(1, 1, 0.8);
+          setTimeout(() => {
+            obj.material.color.setRGB(1, 1, 0);
+          }, 500);
         }
       });
 

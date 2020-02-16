@@ -8,7 +8,8 @@ import {
   Button,
   Raycaster,
   RaycastReceiver,
-  Object3D
+  Object3D,
+  InputState
 } from "../Components/components.js";
 
 export class RaycasterSystem extends System {
@@ -20,6 +21,10 @@ export class RaycasterSystem extends System {
       console.log(component);
     }
     */
+
+    let inputState = this.queries.inputState.results[0].getComponent(
+      InputState
+    );
 
     this.queries.raycasters.added.forEach(raycaster => {
       var raycaster = new THREE.Raycaster();
@@ -49,6 +54,21 @@ export class RaycasterSystem extends System {
       //raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
       //raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
       let intersections = raycast.intersectObjects(objects, true);
+
+      //inputState.
+      let obj = raycaster.getComponent(Object3D).value;
+      let vrcontrollerGroup = obj ? obj.children[0] : null; //@hack
+      let controllerInputState = inputState.vrcontrollers.get(
+        vrcontrollerGroup
+      );
+/*
+      console.log(
+        controllerInputState,
+        controllerInputState && controllerInputState.selected
+          ? ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+          : ""
+      );
+*/
       if (intersections.length > 0) {
         let intersection = intersections[0];
         let object = intersection.object;
@@ -65,8 +85,11 @@ export class RaycasterSystem extends System {
             receiverHandler.hovering = true;
             receiverHandler.onEnter(intersection);
           }
-
           receiverHandler.onHover && receiverHandler.onHover(intersection);
+
+          if (controllerInputState && controllerInputState.selectStart) {
+            receiverHandler.onSelectStart && receiverHandler.onSelectStart(intersection);
+          }
 
           raycasterComponent.currentEntity = entity;
         }
@@ -104,5 +127,8 @@ RaycasterSystem.queries = {
       removed: true,
       changed: true // [RaycasterReceiver]
     }
+  },
+  inputState: {
+    components: [InputState]
   }
 };

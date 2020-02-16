@@ -24,7 +24,7 @@ export class VRControllerInteraction extends System {
 
     this.queries.controllers.added.forEach(entity => {
       entity.addComponent(Raycaster, { value: raycaster });
-
+/*
       entity.addComponent(VRControllerBasicBehaviour, {
         selectstart: this.onSelectStart.bind(this),
         selectend: this.onSelectEnd.bind(this),
@@ -35,7 +35,7 @@ export class VRControllerInteraction extends System {
           //          this.remove( this.children[ 0 ] );
         }
       });
-
+*/
       //entity.addComponent(Object3D, { value: controller });
       /*
       let geometry = new THREE.BufferGeometry();

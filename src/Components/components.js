@@ -162,18 +162,33 @@ export class RaycastReceiver {
 
   reset() {
     this.hovering = false;
+    this.selecting = false;
+
     this.onHover = null;
     this.onEnter = null;
     this.onLeave = null;
-    this.onClick = null;
+    this.onSelectStart = null;
+    this.onSelect = null;
+    this.onSelectEnd = null;
   }
 }
 export class Raycaster {
-  constructor () {
+  constructor() {
     this.reset();
   }
 
   reset() {
     this.currentEntity = null;
   }
+}
+
+export class InputState {
+  constructor() {
+    this.vrcontrollers = new Map();
+    this.keyboard = {};
+    this.mouse = {};
+    this.gamepads = {};
+  }
+
+  reset() {}
 }
