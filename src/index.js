@@ -122,7 +122,7 @@ function initGame() {
 
     let startButton = world
       .createEntity("startbutton")
-      .addComponent(UI, {})
+      .addComponent(UI)
       .addComponent(Button, {
         onClick: () => {
           console.log("Let's gooo", this);
@@ -164,6 +164,7 @@ function initGame() {
         textAlign: "center",
         baseline: "center",
         maxWidth: 10,
+        //font: "assets/fonts/GamjaFlower-Regular-latin.ttf",
         lineHeight: 1.3,
         text: "Level: " + level
       })
