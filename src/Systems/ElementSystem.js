@@ -80,26 +80,13 @@ export class ElementSystem extends System {
             });
           }
         })
-        /*
-        .addComponent(Geometry, {
-          primitive: "box",
-          width: config.width,
-          height: config.height,
-          depth: config.depth
-        })
-        .addComponent(Shape, {
-          primitive: "box",
-          width: config.width,
-          height: config.height,
-          depth: config.depth
-        })
-        */
+
         .addComponent(Parent, { value: window.entityScene });
 
       entity.addComponent(RigidBody, {
         weight: 0.0,
         restitution: config.restitution,
-        friction: 0,
+        friction: 0.5,
         linearDamping: 0.0,
         angularDamping: 0.0
       });

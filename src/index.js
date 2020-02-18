@@ -21,7 +21,6 @@ import {
 
 import {
   BallGeneratorSystem,
-  BallSystem,
   CameraRigSystem,
   DissolveSystem,
   ElementSystem,
@@ -64,7 +63,6 @@ function initGame() {
     .registerSystem(DissolveSystem)
     .registerSystem(ElementSystem)
     .registerSystem(BallGeneratorSystem)
-    .registerSystem(BallSystem)
     .registerSystem(VRControllerInteraction)
     .registerSystem(VRControllerSystem)
     .registerSystem(CameraRigSystem)

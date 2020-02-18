@@ -54,16 +54,21 @@ export class LevelManager extends System {
         .addComponent(LevelItem);
 
       // Cannon
-      false && this.world
+      this.world
         .createEntity()
-        .addComponent(GLTFModel, { url: "cannon.glb", onLoaded: model => {
+        .addComponent(GLTFModel, {
+          url: "cannon.glb",
+          onLoaded: model => {
             model.scale.multiplyScalar(-1);
           }
         })
         .addComponent(Transform, {
           position: g.position,
-          rotation: { x: THREE.Math.radToDeg(g.linearVelocity.x), y:
-            THREE.Math.radToDeg(g.linearVelocity.y), z: THREE.Math.radToDeg(g.linearVelocity.z )}
+          rotation: {
+            x: THREE.Math.radToDeg(g.linearVelocity.x),
+            y: THREE.Math.radToDeg(g.linearVelocity.y),
+            z: THREE.Math.radToDeg(g.linearVelocity.z)
+          }
         })
         .addComponent(LevelItem)
         .addComponent(Parent, { value: window.entityScene });

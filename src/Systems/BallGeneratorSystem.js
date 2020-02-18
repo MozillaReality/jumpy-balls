@@ -1,10 +1,14 @@
 import { System } from "ecsy";
 import {
   Ball,
+  Object3D,
   Active,
+  LevelItem,
+  GLTFModel,
+  Shape,
   Parent,
+  RigidBody,
   Transform,
-  Geometry,
   BallGenerator
 } from "../Components/components.js";
 
@@ -18,11 +22,27 @@ export class BallGeneratorSystem extends System {
       // Ball dispatcher object
       var ball = this.world.createEntity();
       ball
-        .addComponent(Geometry, { primitive: "sphere", radius: RADIUS })
+        .addComponent(GLTFModel, { url: "ball.glb", onLoaded: model => {
+          ball.getMutableComponent(Object3D).value = model.children[0];
+          }
+        })
         .addComponent(Transform, {
           position: ballGeneratorComponent.position,
           rotation: { x: 0, y: 0, z: 0 }
         })
+        .addComponent(Shape, {
+          primitive: "sphere",
+          radius: RADIUS
+        })
+        .addComponent(RigidBody, {
+          weight: 10.0,
+          restitution: 0.5,
+          friction: 0.5,
+          linearDamping: 0.0,
+          angularDamping: 0.0,
+          linearVelocity: ballGeneratorComponent.linearVelocity
+        })
+        .addComponent(LevelItem)
         .addComponent(Ball, {
           position: ballGeneratorComponent.position,
           radius: RADIUS,
