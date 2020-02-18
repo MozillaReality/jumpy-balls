@@ -122,8 +122,8 @@ function initGame() {
 
     // Scene
     createScene(data);
-    world.getSystem(GameStateSystem).playGame();
-/*
+    //world.getSystem(GameStateSystem).playGame();
+
     let startButton = world
       .createEntity("startbutton")
       .addComponent(UI)
@@ -139,7 +139,7 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Position, { value: new Vector3(-1, 1, -1) });
-*/
+
     world
       .createEntity("numberBallsText")
       .addComponent(Text, {

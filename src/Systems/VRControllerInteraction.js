@@ -24,11 +24,9 @@ export class VRControllerInteraction extends System {
     });
 
     this.queries.objects.added.forEach(entity => {
-      let object = entity.getComponent(Object3D).value;
+      let object = entity.getComponent(Object3D).value.children[0];
       entity.addComponent(RaycastReceiver, {
-        onHover: () => {
-          console.log("Hovering", object);
-        },
+        onHover: () => {},
         onEnter: () => {
           console.log("Entering");
           object.children[0].material.emissive.set(0x224455);
@@ -37,27 +35,14 @@ export class VRControllerInteraction extends System {
           console.log("Leaving");
           object.children[0].material.emissive.set(0x000000);
         },
-        onSelectStart: () => {
-          console.log("Start!");
-        }
+        onSelectStart: this.onSelectStart.bind(this),
+        onSelectEnd: this.onSelectEnd.bind(this)
       });
     });
 
     this.queries.controllers.added.forEach(entity => {
       entity.addComponent(Raycaster, { value: raycaster });
-/*
-      entity.addComponent(VRControllerBasicBehaviour, {
-        selectstart: this.onSelectStart.bind(this),
-        selectend: this.onSelectEnd.bind(this),
-        connected: function(event) {
-          //		      this.add( buildController( event.data ) );
-        },
-        disconnected: function() {
-          //          this.remove( this.children[ 0 ] );
-        }
-      });
-*/
-      //entity.addComponent(Object3D, { value: controller });
+
       /*
       let geometry = new THREE.BufferGeometry();
       geometry.setAttribute(
@@ -79,35 +64,25 @@ export class VRControllerInteraction extends System {
     });
 
     this.cleanIntersected();
-
-    this.queries.controllers.results.forEach(controller => {
-      // this.intersectObjects(controller.getComponent(Object3D).value);
-    });
   }
 
-  onSelectStart(event) {
-    var controller = event.target;
-    var intersections = this.getIntersections(controller);
+  onSelectStart(intersection, obj) {
+    var controller = obj;
+    tempMatrix.getInverse(controller.matrixWorld);
 
-    if (intersections.length > 0) {
-      var intersection = intersections[0];
+    var object = intersection.object;
+    //object.userData.entity.addComponent(Dragging);
+    object.matrix.premultiply(tempMatrix);
+    object.matrix.decompose(object.position, object.quaternion, object.scale);
+    object.material.emissive.b = 1;
+    object.userData.previousParent = object.parent;
+    controller.add(object);
 
-      tempMatrix.getInverse(controller.matrixWorld);
-
-      var object = intersection.object;
-      object.userData.entity.addComponent(Dragging);
-      object.matrix.premultiply(tempMatrix);
-      object.matrix.decompose(object.position, object.quaternion, object.scale);
-      object.material.emissive.b = 1;
-      object.userData.previousParent = object.parent;
-      controller.add(object);
-
-      controller.userData.selected = object;
-    }
+    controller.userData.selected = object;
   }
 
-  onSelectEnd(event) {
-    var controller = event.target;
+  onSelectEnd(intersection, obj) {
+    var controller = obj;
 
     if (controller.userData.selected !== undefined) {
       var object = controller.userData.selected;

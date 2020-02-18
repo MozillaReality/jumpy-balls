@@ -82,9 +82,13 @@ export class RaycasterSystem extends System {
           }
           receiverHandler.onHover && receiverHandler.onHover(intersection);
 
-          if (controllerInputState && controllerInputState.selectStart) {
-            receiverHandler.onSelectStart &&
-              receiverHandler.onSelectStart(intersection);
+          if (controllerInputState) {
+            if (
+              controllerInputState.selectStart &&
+              receiverHandler.onSelectStart
+            ) {
+              receiverHandler.onSelectStart(intersection, vrcontrollerGroup);
+            }
           }
 
           raycasterComponent.currentEntity = entity;
