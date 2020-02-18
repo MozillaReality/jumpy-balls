@@ -5,7 +5,7 @@ import {
   Level,
   Target,
   GLTFModel,
-  Geometry,
+  GameState,
   BallGenerator,
   Active,
   Parent,
@@ -42,16 +42,21 @@ export class LevelManager extends System {
     var level = levels[levelId];
 
     // Generators
+    let worldSingleton = this.world.entityManager.getEntityByName("singleton");
+
     level.generators.forEach(g => {
       // Ball generator
-      this.world
+      let ballGenerator = this.world
         .createEntity()
         .addComponent(BallGenerator, {
           position: g.position,
           linearVelocity: g.linearVelocity
         })
-        .addComponent(Active)
         .addComponent(LevelItem);
+
+      if (worldSingleton.getComponent(GameState).playing) {
+        ballGenerator.addComponent(Active);
+      }
 
       // Cannon
       this.world

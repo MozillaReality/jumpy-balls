@@ -20,7 +20,6 @@ export class PhysicsSystem extends System {
 
   execute(delta) {
     this.queries.entities.added.forEach(entity => {
-      console.log('>>>> Added!');
       var object = entity.getComponent(Object3D).value;
       const body = this._setupRigidBody(this._createRigidBody(entity), entity);
       body.object3D = object;
@@ -28,7 +27,8 @@ export class PhysicsSystem extends System {
       this._physicsWorld.addRigidBody(body);
     });
 
-    this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
+    // this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
+    this._physicsWorld.stepSimulation(delta, 4, 1 / 30);
 
     const entities = this.queries.entities.results;
     for (let i = 0, il = entities.length; i < il; i++) {
@@ -40,7 +40,6 @@ export class PhysicsSystem extends System {
       const object = entity.getComponent(Object3D).value;
       const body = object.userData.body;
       if (body.isActive() && body.getMotionState()) {
-
         const transform = this._transform;
         const q = this._quaternion;
 

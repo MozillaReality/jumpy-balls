@@ -118,7 +118,7 @@ function initGame() {
 
     // Scene
     createScene(data);
-    world.getSystem(GameStateSystem).playGame();
+    // world.getSystem(GameStateSystem).playGame();
 
     let startButton = world
       .createEntity("startbutton")

@@ -22,8 +22,10 @@ export class BallGeneratorSystem extends System {
       // Ball dispatcher object
       var ball = this.world.createEntity();
       ball
-        .addComponent(GLTFModel, { url: "ball.glb", onLoaded: model => {
-          ball.getMutableComponent(Object3D).value = model.children[0];
+        .addComponent(GLTFModel, {
+          url: "ball.glb",
+          onLoaded: model => {
+            ball.getMutableComponent(Object3D).value = model.children[0];
           }
         })
         .addComponent(Transform, {

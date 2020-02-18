@@ -20,6 +20,10 @@ export class GameStateSystem extends System {
     this.queries.gameState.results[0].getMutableComponent(
       GameState
     ).playing = true;
+
+    this.queries.ballGenerators.results.forEach(generator => {
+      generator.addComponent(Active);
+    });
   }
 
   stopGame() {
