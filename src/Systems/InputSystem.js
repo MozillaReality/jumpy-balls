@@ -11,17 +11,14 @@ export class InputSystem extends System {
   }
 
   execute() {
-    //this.clearState();
     this.processVRControllers();
-
-    this.inputStateComponent.vrcontrollers.forEach(state => {
-      state.selectStart = state.selected && !state.prevSelected;
-      state.selectEnd = !state.selected && state.prevSelected;
-      state.prevSelected = state.selected;
-    });
+    // this.processKeyboard();
+    // this.processMouse();
+    // this.processGamepads();
   }
 
   processVRControllers() {
+    // Process recently added controllers
     this.queries.vrcontrollers.added.forEach(entity => {
       entity.addComponent(VRControllerBasicBehaviour, {
         selectstart: event => {
@@ -35,14 +32,19 @@ export class InputSystem extends System {
           state.prevSelected = true;
         },
         connected: event => {
-          let state = {};
-          console.log("connected");
-          this.inputStateComponent.vrcontrollers.set(event.target, state);
+          this.inputStateComponent.vrcontrollers.set(event.target, {});
         },
         disconnected: event => {
-          this.inputStateComponent.vrcontrollers.remove(event.target);
+          this.inputStateComponent.vrcontrollers.delete(event.target);
         }
       });
+    });
+
+    // Update state
+    this.inputStateComponent.vrcontrollers.forEach(state => {
+      state.selectStart = state.selected && !state.prevSelected;
+      state.selectEnd = !state.selected && state.prevSelected;
+      state.prevSelected = state.selected;
     });
   }
 }

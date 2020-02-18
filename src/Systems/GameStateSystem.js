@@ -12,13 +12,39 @@ import {
   FloorCollided,
   GameState
 } from "../Components/components.js";
+import { PhysicsSystem } from "../Systems/systems.mjs";
 
 export class GameStateSystem extends System {
-  execute() {
-    var gameState = this.queries.gameState.results[0].getComponent(GameState);
+  playGame() {
+    this.world.getSystem(PhysicsSystem).play();
+    this.queries.gameState.results[0].getMutableComponent(
+      GameState
+    ).playing = true;
+  }
 
+  stopGame() {
+    this.world.getSystem(PhysicsSystem).stop();
+    this.queries.gameState.results[0].getMutableComponent(
+      GameState
+    ).playing = false;
+  }
+
+  execute() {
+    /*
+    this.queries.gameState.changed.forEach(entity => {
+      var gameState = entity.getComponent(GameState);
+      if (gameState.playing) {
+        this.world.getSystem(PhysicsSystem).play();
+      } else {
+        this.world.getSystem(PhysicsSystem).stop();
+      }
+    });
+*/
+    var gameState = this.queries.gameState.results[0].getComponent(GameState);
     let elapsedTimeCurrent = performance.now() - gameState.levelStartTime;
     let elapsedTimeTotal = performance.now() - gameState.gameStartTime;
+
+    let worldSingleton = this.world.entityManager.getEntityByName("singleton");
 
     this.world.entityManager
       .getEntityByName("timer")
@@ -41,10 +67,10 @@ export class GameStateSystem extends System {
 
       // @todo here we should just activate the collided ball's generator
       // Wait 2s before reactivating the ball generator
-      let currentLevel = world.entity.getComponent(Level).value;
+      let currentLevel = worldSingleton.getComponent(Level).value;
 
       setTimeout(() => {
-        if (this.world.entity.getComponent(Level).value !== currentLevel) {
+        if (worldSingleton.getComponent(Level).value !== currentLevel) {
           return;
         }
         this.queries.entities.results.forEach(generator => {
@@ -53,7 +79,10 @@ export class GameStateSystem extends System {
       }, 1000);
 
       setTimeout(() => {
-        if (!ball || this.world.entity.getComponent(Level).value !== currentLevel) {
+        if (
+          !ball ||
+          worldSingleton.getComponent(Level).value !== currentLevel
+        ) {
           return;
         }
 
@@ -67,7 +96,7 @@ export class GameStateSystem extends System {
         .getMutableComponent(Text).text = `Level cleared!`;
 
       setTimeout(() => {
-        var levelComponent = this.world.entity.getMutableComponent(Level);
+        var levelComponent = worldSingleton.getMutableComponent(Level);
         if (levelComponent.value === levels.length - 1) {
           levelComponent.value = 0;
         } else {
@@ -92,7 +121,12 @@ export class GameStateSystem extends System {
 
 GameStateSystem.queries = {
   entities: { components: [BallGenerator] },
-  gameState: { components: [GameState] },
+  gameState: {
+    components: [GameState],
+    listen: {
+      changed: true
+    }
+  },
   ballFloorCollided: {
     components: [Ball, FloorCollided],
     listen: {

@@ -14,11 +14,12 @@ export class ElementSystem extends System {
   execute() {
     var entitiesAdded = this.queries.entities.added;
     for (let i = 0; i < entitiesAdded.length; i++) {
-      var entity = entitiesAdded[i];
+      let entity = entitiesAdded[i];
       var component = entity.getComponent(Element);
 
       const elementTypes = [
         {
+          model: "metal",
           width: 0.3,
           height: 0.03,
           depth: 0.15,
@@ -26,6 +27,7 @@ export class ElementSystem extends System {
           draggable: true
         },
         {
+          model: "rubber",
           width: 0.4,
           height: 0.03,
           depth: 0.4,
@@ -33,6 +35,7 @@ export class ElementSystem extends System {
           draggable: true
         },
         {
+          model: "wood",
           width: 0.3,
           height: 0.1,
           depth: 0.2,
@@ -40,48 +43,59 @@ export class ElementSystem extends System {
           draggable: true
         },
         {
+          model: "static",
           width: 0.3,
           height: 0.3,
           depth: 0.3,
           restitution: 0.1,
-          draggable: false
+          draggable: false,
+          scale: 0.3
         }
       ];
 
       const config = elementTypes[component.type];
 
-      if (component.type === 0) {
-        //entity.addComponent(GLTFModel, { url: "ConcreteSlab.glb" });
-        entity
-          .addComponent(Geometry, {
-            primitive: "box",
-            width: config.width,
-            height: config.height,
-            depth: config.depth
-          })
-          .addComponent(Shape, {
-            primitive: "box",
-            width: config.width,
-            height: config.height,
-            depth: config.depth
-          })
-          .addComponent(Parent, { value: window.entityScene });
-      } else {
-        entity
-          .addComponent(Geometry, {
-            primitive: "box",
-            width: config.width,
-            height: config.height,
-            depth: config.depth
-          })
-          .addComponent(Shape, {
-            primitive: "box",
-            width: config.width,
-            height: config.height,
-            depth: config.depth
-          })
-          .addComponent(Parent, { value: window.entityScene });
-      }
+      entity
+        .addComponent(GLTFModel, {
+          url: config.model + ".glb",
+          onLoaded: model => {
+            let min = model.children[0].geometry.boundingBox.min;
+            let max = model.children[0].geometry.boundingBox.max;
+
+            let w = Math.abs(min.x) + Math.abs(max.x);
+            let h = Math.abs(min.y) + Math.abs(max.y);
+            let d = Math.abs(min.z) + Math.abs(max.z);
+
+            if (config.scale) {
+              model.children[0].scale.multiplyScalar(config.scale);
+              w*=config.scale;
+              h*=config.scale;
+              d*=config.scale;
+            }
+
+            entity.addComponent(Shape, {
+              primitive: "box",
+              width: w,
+              height: h,
+              depth: d
+            });
+          }
+        })
+        /*
+        .addComponent(Geometry, {
+          primitive: "box",
+          width: config.width,
+          height: config.height,
+          depth: config.depth
+        })
+        .addComponent(Shape, {
+          primitive: "box",
+          width: config.width,
+          height: config.height,
+          depth: config.depth
+        })
+        */
+        .addComponent(Parent, { value: window.entityScene });
 
       entity.addComponent(RigidBody, {
         weight: 0.0,

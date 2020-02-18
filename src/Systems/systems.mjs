@@ -5,7 +5,6 @@ export { GameStateSystem } from "./GameStateSystem.js";
 export { BallGeneratorSystem } from "./BallGeneratorSystem.js";
 export { DissolveSystem } from "./DissolveSystem.js";
 export { RotatingSystem } from "./RotatingSystem.js";
-export { ExplosiveMeshSystem } from "./ExplosiveMeshSystem.js";
 export { ElementSystem } from "./ElementSystem.js";
 export { OutputSystem } from "./OutputSystem.js";
 export { LevelManager } from "./LevelManager.js";

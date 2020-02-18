@@ -41,7 +41,6 @@ import {
 import {
   GeometrySystem,
   GLTFLoaderSystem,
-  EnvironmentSystem,
   TextGeometrySystem,
   VRControllerSystem,
   VisibilitySystem,
@@ -59,13 +58,11 @@ function initGame() {
 
   world
     .registerSystem(InputSystem)
-    .registerSystem(GLTFLoaderSystem)
     .registerSystem(LevelManager)
     .registerSystem(RaycasterSystem)
     .registerSystem(UISystem)
     .registerSystem(DissolveSystem)
     .registerSystem(ElementSystem)
-    .registerSystem(EnvironmentSystem)
     .registerSystem(BallGeneratorSystem)
     .registerSystem(BallSystem)
     .registerSystem(VRControllerInteraction)
@@ -80,6 +77,7 @@ function initGame() {
     .registerSystem(RotatingSystem)
     .registerSystem(OutputSystem)
     .registerSystem(TextGeometrySystem)
+    .registerSystem(GLTFLoaderSystem)
     .registerSystem(GeometrySystem);
 
   let data = initializeDefault(world, { vr: true });
@@ -87,15 +85,19 @@ function initGame() {
   var scene = data.entities.scene.getComponent(Object3D).value;
   window.entityScene = data.entities.scene;
 
+  let level = 1;
+
   // Singleton entity
   world
-    .createEntity()
-    .addComponent(Environment)
+    .createEntity("singleton")
     .addComponent(Scene, { value: data.entities.scene })
     .addComponent(GameState, {
       levelStartTime: performance.now(),
       gameStartTime: performance.now()
-    });
+    })
+    .addComponent(Level, { value: level });
+
+  world.getSystem(PhysicsSystem).stop();
 
   init(data);
 
@@ -115,18 +117,27 @@ function initGame() {
 
     window.world = world;
     window.Level = Level;
-    // @Hack to workaround singletonComponents
-    world.entity = world.createEntity();
-    let level = 1;
-    world.entity.addComponent(Level, { value: level });
 
     // Scene
     createScene(data);
 
-    world
-      .createEntity("button")
+    let startButton = world
+      .createEntity("startbutton")
       .addComponent(UI, {})
-      .addComponent(Button, {})
+      .addComponent(Button, {
+        onClick: () => {
+          console.log("Let's gooo", this);
+          world.getSystem(GameStateSystem).playGame();
+          setTimeout(() => {
+            startButton.addComponent(Visible, { value: false });
+          }, 300);
+          /*
+          this.world.entityManager
+            .getEntityByName("singleton")
+            .getMutableComponent(GameState).playing = true;
+            */
+        }
+      })
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Position, { value: new Vector3(-1, 1, -1) });
 
@@ -196,16 +207,12 @@ function initGame() {
         position: { x: -5, y: 0, z: -1 },
         rotation: { x: 0, y: 0.4, z: 0 }
       });
-    /*
+
     world
       .createEntity()
-      .addComponent(GLTFModel, { url: "BouncyFrame.glb" })
-      .addComponent(Transform, {
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      })
+      .addComponent(GLTFModel, { url: "set.glb" })
       .addComponent(Parent, { value: data.entities.scene });
-
+/*
     world
       .createEntity()
       .addComponent(GLTFModel, { url: "BouncyFrame.glb" })

@@ -58,17 +58,6 @@ export class Rotating {
   }
 }
 
-export class ExplosiveMesh {
-  constructor() {
-    this.reset();
-  }
-
-  reset() {
-    this.value = 0;
-    this.speed = 1;
-  }
-}
-
 export class Dissolve {
   constructor() {
     this.value = 1;
@@ -87,6 +76,7 @@ export class GameState {
   }
   reset() {
     this.playing = false;
+    this.prevPlaying = false;
     this.levelFinished = false;
     this.numBallsFailed = 0;
     this.levelStartTime = 0;
@@ -178,6 +168,7 @@ export class Raycaster {
   }
 
   reset() {
+    this.enabled = true;
     this.currentEntity = null;
   }
 }

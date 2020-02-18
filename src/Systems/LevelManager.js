@@ -3,6 +3,7 @@ import { Text } from "ecsy-three";
 import {
   Level,
   Target,
+  GLTFModel,
   Geometry,
   BallGenerator,
   Active,
@@ -67,13 +68,7 @@ export class LevelManager extends System {
       window.target = this.world
         .createEntity()
         .addComponent(Target)
-        .addComponent(Geometry, {
-          primitive: "torus",
-          radius: 0.3,
-          tube: 0.02,
-          radialSegments: 8,
-          tubularSegments: 30
-        })
+        .addComponent(GLTFModel, { url: "target.glb" })
         .addComponent(Transform, {
           position: t.position,
           rotation: t.rotation

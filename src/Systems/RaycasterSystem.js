@@ -28,18 +28,20 @@ export class RaycasterSystem extends System {
 
     this.queries.raycasters.added.forEach(raycaster => {
       var raycaster = new THREE.Raycaster();
-
-      console.log(">>>>");
     });
 
     this.queries.raycasters.results.forEach(raycaster => {
+      let raycasterComponent = raycaster.getComponent(Raycaster);
+      if (!raycasterComponent.enabled) {
+        return;
+      }
+
       var objects = this.queries.receivers.results.map(entity => {
         var object = entity.getComponent(Object3D).value;
         object.userData.entity = entity;
         return object;
       });
 
-      let raycasterComponent = raycaster.getComponent(Raycaster);
       let raycast = raycasterComponent.value;
 
       var tempMatrix = new THREE.Matrix4();
@@ -61,14 +63,7 @@ export class RaycasterSystem extends System {
       let controllerInputState = inputState.vrcontrollers.get(
         vrcontrollerGroup
       );
-/*
-      console.log(
-        controllerInputState,
-        controllerInputState && controllerInputState.selected
-          ? ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-          : ""
-      );
-*/
+
       if (intersections.length > 0) {
         let intersection = intersections[0];
         let object = intersection.object;
@@ -88,7 +83,8 @@ export class RaycasterSystem extends System {
           receiverHandler.onHover && receiverHandler.onHover(intersection);
 
           if (controllerInputState && controllerInputState.selectStart) {
-            receiverHandler.onSelectStart && receiverHandler.onSelectStart(intersection);
+            receiverHandler.onSelectStart &&
+              receiverHandler.onSelectStart(intersection);
           }
 
           raycasterComponent.currentEntity = entity;

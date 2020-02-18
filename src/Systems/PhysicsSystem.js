@@ -20,6 +20,7 @@ export class PhysicsSystem extends System {
 
   execute(delta) {
     this.queries.entities.added.forEach(entity => {
+      console.log('>>>> Added!');
       var object = entity.getComponent(Object3D).value;
       const body = this._setupRigidBody(this._createRigidBody(entity), entity);
       body.object3D = object;

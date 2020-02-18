@@ -27,7 +27,7 @@ export class CameraRigSystem extends System {
         .addComponent(Camera, {
           fov: 90,
           aspect: window.innerWidth / window.innerHeight,
-          near: 1,
+          near: 0.1,
           far: 1000,
           layers: 1,
           handleResize: true
