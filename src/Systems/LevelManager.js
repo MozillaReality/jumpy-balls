@@ -1,15 +1,15 @@
 import { System } from "ecsy";
 import * as THREE from "three";
-import { Text } from "ecsy-three";
+import { Text, Position } from "ecsy-three";
 import {
   Level,
   Target,
+  Transform,
   GLTFModel,
   GameState,
   BallGenerator,
   Active,
   Parent,
-  Transform,
   LevelItem,
   Element
 } from "../Components/components.js";
@@ -68,16 +68,12 @@ export class LevelManager extends System {
         .addComponent(GLTFModel, {
           url: "cannon.glb",
           onLoaded: model => {
-            model.scale.multiplyScalar(-1);
+            //model.scale.multiplyScalar(-1);
+            model.lookAt(linearVelocity);
           }
         })
-        .addComponent(Transform, {
-          position: g.position,
-          rotation: {
-            x: THREE.Math.radToDeg(g.linearVelocity.x),
-            y: THREE.Math.radToDeg(g.linearVelocity.y),
-            z: THREE.Math.radToDeg(g.linearVelocity.z)
-          }
+        .addComponent(Position, {
+          value: new THREE.Vector3().copy(g.position)
         })
         .addComponent(LevelItem)
         .addComponent(Parent, { value: window.entityScene });
