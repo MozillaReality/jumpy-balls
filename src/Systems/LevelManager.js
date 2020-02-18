@@ -54,7 +54,7 @@ export class LevelManager extends System {
 
       this.world
         .createEntity()
-        .addComponent(Geometry, { primitive: "sphere", radius: 0.15 })
+        .addComponent(GLTFModel, { url: "cannon.glb" })
         .addComponent(Transform, {
           position: g.position,
           rotation: { x: 0, y: 0, z: 0 }
@@ -77,6 +77,7 @@ export class LevelManager extends System {
         .addComponent(Parent, { value: window.entityScene });
     });
 
+    // Boxes (draggable and fixed)
     level.elements.forEach(element => {
       this.world
         .createEntity()

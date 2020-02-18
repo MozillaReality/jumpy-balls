@@ -4,7 +4,6 @@ import {
   Element,
   GLTFModel,
   Parent,
-  Geometry,
   Shape,
   Draggable,
   RigidBody
