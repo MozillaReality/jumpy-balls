@@ -119,7 +119,7 @@ function initGame() {
     // Scene
     createScene(data);
     world.getSystem(GameStateSystem).playGame();
-
+/*
     let startButton = world
       .createEntity("startbutton")
       .addComponent(UI)
@@ -130,16 +130,12 @@ function initGame() {
           setTimeout(() => {
             startButton.addComponent(Visible, { value: false });
           }, 300);
-          /*
-          this.world.entityManager
-            .getEntityByName("singleton")
-            .getMutableComponent(GameState).playing = true;
-            */
+          //this.world.entityManager.getEntityByName("singleton").getMutableComponent(GameState).playing = true;
         }
       })
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Position, { value: new Vector3(-1, 1, -1) });
-
+*/
     world
       .createEntity("numberBallsText")
       .addComponent(Text, {

@@ -8,6 +8,7 @@ import {
   Parent,
   Object3D,
   Raycaster,
+  RaycastReceiver,
   WebGLRendererContext
 } from "../Components/components.js";
 import { VRControllerBasicBehaviour } from "ecsy-three";
@@ -20,6 +21,26 @@ export class VRControllerInteraction extends System {
   execute() {
     this.queries.dragging.results.forEach(entity => {
       this.reposition(entity.getComponent(Object3D).value, true);
+    });
+
+    this.queries.objects.added.forEach(entity => {
+      let object = entity.getComponent(Object3D).value;
+      entity.addComponent(RaycastReceiver, {
+        onHover: () => {
+          console.log("Hovering", object);
+        },
+        onEnter: () => {
+          console.log("Entering");
+          object.children[0].material.emissive.b = 1;
+        },
+        onLeave: () => {
+          console.log("Leaving");
+          object.children[0].material.emissive.b = 0;
+        },
+        onSelectStart: () => {
+          console.log("Start!");
+        }
+      });
     });
 
     this.queries.controllers.added.forEach(entity => {
@@ -236,7 +257,12 @@ VRControllerInteraction.queries = {
       added: true
     }
   },
-  objects: { components: [Draggable, Object3D] },
+  objects: {
+    components: [Draggable, Object3D],
+    listen: {
+      added: true
+    }
+  },
   dragging: { components: [Dragging] },
   rendererContext: {
     components: [WebGLRendererContext],
