@@ -73,7 +73,7 @@ export class GameStateSystem extends System {
         if (worldSingleton.getComponent(Level).value !== currentLevel) {
           return;
         }
-        this.queries.entities.results.forEach(generator => {
+        this.queries.ballGenerators.results.forEach(generator => {
           generator.addComponent(Active);
         });
       }, 1000);
@@ -120,7 +120,7 @@ export class GameStateSystem extends System {
 }
 
 GameStateSystem.queries = {
-  entities: { components: [BallGenerator] },
+  ballGenerators: { components: [BallGenerator] },
   gameState: {
     components: [GameState],
     listen: {

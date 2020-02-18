@@ -1,4 +1,5 @@
 import { System } from "ecsy";
+import * as THREE from "three";
 import { Text } from "ecsy-three";
 import {
   Level,
@@ -52,12 +53,17 @@ export class LevelManager extends System {
         .addComponent(Active)
         .addComponent(LevelItem);
 
-      this.world
+      // Cannon
+      false && this.world
         .createEntity()
-        .addComponent(GLTFModel, { url: "cannon.glb" })
+        .addComponent(GLTFModel, { url: "cannon.glb", onLoaded: model => {
+            model.scale.multiplyScalar(-1);
+          }
+        })
         .addComponent(Transform, {
           position: g.position,
-          rotation: { x: 0, y: 0, z: 0 }
+          rotation: { x: THREE.Math.radToDeg(g.linearVelocity.x), y:
+            THREE.Math.radToDeg(g.linearVelocity.y), z: THREE.Math.radToDeg(g.linearVelocity.z )}
         })
         .addComponent(LevelItem)
         .addComponent(Parent, { value: window.entityScene });
