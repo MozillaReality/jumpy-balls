@@ -99,21 +99,15 @@ export class BallGenerator {
 
 export class Ball {
   constructor() {
-    //this.position = new THREE.Vector3();
     this.radius = 0.4;
-    //this.linearVelocity = new THREE.Vector3();
   }
 
   reset() {
-//    this.position.copy(0, 0, 0);
     this.radius = 0.4;
-  //  this.linearVelocity.set(0, 0, 0);
   }
 
   copy(src) {
-    //this.position.copy(src.position);
     this.radius = src.radius;
-    //this.linearVelocity.copy(src.linearVelocity);
   }
 }
 

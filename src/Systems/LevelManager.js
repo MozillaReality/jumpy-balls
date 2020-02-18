@@ -58,6 +58,10 @@ export class LevelManager extends System {
         ballGenerator.addComponent(Active);
       }
 
+      let linearVelocity = new THREE.Vector3()
+        .copy(g.linearVelocity)
+        .normalize();
+
       // Cannon
       this.world
         .createEntity()

@@ -1,4 +1,3 @@
-/* global THREE */
 import { System } from "ecsy";
 import {
   Element,
@@ -58,18 +57,19 @@ export class ElementSystem extends System {
         .addComponent(GLTFModel, {
           url: config.model + ".glb",
           onLoaded: model => {
+            // Compute the boundingbox size to create the physics shape for it
             let min = model.children[0].geometry.boundingBox.min;
             let max = model.children[0].geometry.boundingBox.max;
 
-            let w = Math.abs(min.x) + Math.abs(max.x);
-            let h = Math.abs(min.y) + Math.abs(max.y);
-            let d = Math.abs(min.z) + Math.abs(max.z);
+            let w = Math.abs(max.x - min.x);
+            let h = Math.abs(max.y - min.y);
+            let d = Math.abs(max.z - min.z);
 
             if (config.scale) {
               model.children[0].scale.multiplyScalar(config.scale);
-              w*=config.scale;
-              h*=config.scale;
-              d*=config.scale;
+              w *= config.scale;
+              h *= config.scale;
+              d *= config.scale;
             }
 
             entity.addComponent(Shape, {
@@ -80,16 +80,15 @@ export class ElementSystem extends System {
             });
           }
         })
-
+        .addComponent(RigidBody, {
+          weight: 0.0,
+          restitution: config.restitution,
+          friction: 0.5,
+          linearDamping: 0.0,
+          angularDamping: 0.0
+        })
         .addComponent(Parent, { value: window.entityScene });
 
-      entity.addComponent(RigidBody, {
-        weight: 0.0,
-        restitution: config.restitution,
-        friction: 0.5,
-        linearDamping: 0.0,
-        angularDamping: 0.0
-      });
       if (config.draggable) {
         entity.addComponent(Draggable);
       }
