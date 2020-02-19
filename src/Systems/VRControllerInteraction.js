@@ -31,11 +31,11 @@ export class VRControllerInteraction extends System {
         },
         onEnter: () => {
           console.log("Entering");
-          object.children[0].material.emissive.b = 1;
+          object.children[0].material.emissive.set(0x224455);
         },
         onLeave: () => {
           console.log("Leaving");
-          object.children[0].material.emissive.b = 0;
+          object.children[0].material.emissive.set(0x000000);
         },
         onSelectStart: () => {
           console.log("Start!");
