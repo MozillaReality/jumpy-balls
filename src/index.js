@@ -148,6 +148,7 @@ function initGame() {
         anchor: "left",
         textAlign: "center",
         baseline: "center",
+        font: "assets/PatrickHand-Regular.ttf",
         maxWidth: 10,
         lineHeight: 1.3,
         text: "Balls counter!"
@@ -164,7 +165,7 @@ function initGame() {
         textAlign: "center",
         baseline: "center",
         maxWidth: 10,
-        //font: "assets/fonts/GamjaFlower-Regular-latin.ttf",
+        font: "assets/PatrickHand-Regular.ttf",
         lineHeight: 1.3,
         text: "Level: " + level
       })
@@ -180,6 +181,7 @@ function initGame() {
         textAlign: "center",
         baseline: "center",
         maxWidth: 10,
+        font: "assets/PatrickHand-Regular.ttf",
         lineHeight: 1.3,
         text: "Balls counter!"
       })
