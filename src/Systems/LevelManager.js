@@ -40,6 +40,8 @@ export class LevelManager extends System {
       levelLabel.getMutableComponent(Text).text = levelId;
     }
 
+    let levelGroup = this.world.entityManager.getEntityByName("levelGroup");
+
     this.clearCurrentLevel();
     var level = levels[levelId];
 
@@ -72,7 +74,7 @@ export class LevelManager extends System {
           onLoaded: model => {
             //model.scale.multiplyScalar(-1);
             model.lookAt(linearVelocity);
-            const material = model.getChildByName('cannon').material;
+            const material = model.getChildByName("cannon").material;
             material.envMap = Materials.environmentMap;
           }
         })
@@ -80,7 +82,7 @@ export class LevelManager extends System {
           value: new THREE.Vector3().copy(g.position)
         })
         .addComponent(LevelItem)
-        .addComponent(Parent, { value: window.entityScene });
+        .addComponent(Parent, { value: levelGroup });
     });
 
     // Targets
@@ -99,7 +101,7 @@ export class LevelManager extends System {
           rotation: t.rotation
         })
         .addComponent(LevelItem)
-        .addComponent(Parent, { value: window.entityScene });
+        .addComponent(Parent, { value: levelGroup });
     });
 
     // Boxes (draggable and fixed)
@@ -111,7 +113,8 @@ export class LevelManager extends System {
           position: element.position,
           rotation: element.rotation
         })
-        .addComponent(LevelItem);
+        .addComponent(LevelItem)
+        .addComponent(Parent, { value: levelGroup });
     });
   }
 }

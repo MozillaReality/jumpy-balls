@@ -21,6 +21,12 @@ import {
   WebGLRendererContext
 } from "./Components/components.js";
 
+// For debugging
+import * as Components from "./Components/components.js";
+window.Components = Components;
+import * as Systems from "./Systems/systems.mjs";
+window.Systems = Systems;
+
 import {
   BallGeneratorSystem,
   CameraRigSystem,
@@ -61,6 +67,7 @@ function initGame() {
 
   world
     .registerSystem(InputSystem)
+    .registerSystem(GameStateSystem)
     .registerSystem(LevelManager)
     .registerSystem(RaycasterSystem)
     .registerSystem(UISystem)
@@ -70,7 +77,6 @@ function initGame() {
     .registerSystem(VRControllerInteraction)
     .registerSystem(VRControllerSystem)
     .registerSystem(CameraRigSystem)
-    .registerSystem(GameStateSystem)
     .registerSystem(PhysicsSystem)
     .registerSystem(VisibilitySystem)
     .registerSystem(FloorCollisionSystem)
@@ -121,14 +127,8 @@ function initGame() {
     //scene.add( new THREE.CameraHelper( light.shadow.camera ) );
 
     window.world = world;
-    window.Level = Level;
 
-    // Scene
     createScene(data);
-
-    if (urlParams.has("autostart")) {
-      world.getSystem(GameStateSystem).playGame();
-    }
 
     let startButton = world
       .createEntity("startbutton")
@@ -143,7 +143,12 @@ function initGame() {
         }
       })
       .addComponent(Parent, { value: data.entities.scene })
-      .addComponent(Position, { value: new Vector3(-1, 1, -1) });
+      .addComponent(Position, { value: new Vector3(-1, 1, -1) })
+      .addComponent(Visible, { value: !urlParams.has("autostart") });
+
+    if (urlParams.has("autostart")) {
+      world.getSystem(GameStateSystem).playGame();
+    }
 
     // @todo This first one remove
     world.execute(0.016, 0);
@@ -156,19 +161,18 @@ function initGame() {
   function createScene(data) {
     createFloor(data);
 
-    var text = world.createEntity();
-    text.addComponent(TextGeometry, { text: "" }).addComponent(Transform, {
-      position: { x: 0, y: 0, z: -3 },
-      rotation: { x: 0, y: -0.4, z: 0 }
-    });
+    let playingGroup = world
+      .createEntity("playingGroup")
+      .addComponent(Object3D, { value: new THREE.Group() })
+      .addComponent(Parent, { value: data.entities.scene })
+      .addComponent(Visible, { value: true });
 
+    // Scene
     world
-      .createEntity()
-      .addComponent(TextGeometry, { text: "mozilla" })
-      .addComponent(Transform, {
-        position: { x: -5, y: 0, z: -1 },
-        rotation: { x: 0, y: 0.4, z: 0 }
-      });
+      .createEntity("levelGroup")
+      .addComponent(Object3D, { value: new THREE.Group() })
+      .addComponent(Parent, { value: playingGroup })
+      .addComponent(Visible, { value: true });
 
     world
       .createEntity()
@@ -186,9 +190,23 @@ function initGame() {
       .addComponent(Parent, { value: data.entities.scene });
 
     // panels
+    world
+      .createEntity("finished")
+      .addComponent(
+        Text,
+        getTextParameters(
+          "Finished!\nyour time: 12:30\nballs used: 20",
+          "#ffffff",
+          0.6,
+          "center"
+        )
+      )
+      .addComponent(Parent, { value: data.entities.scene })
+      .addComponent(Position, { value: new Vector3(0, 2, -0.5) })
+      .addComponent(Visible, { value: false });
 
     const panelLevel = world
-      .createEntity()
+      .createEntity("panelLevel")
       .addComponent(GLTFModel, {
         url: "panellevel.glb",
         onLoaded: model => {
@@ -215,10 +233,10 @@ function initGame() {
           //model.children[0].lookAt(data.entities.camera.getComponent(Object3D).value);
         }
       })
-      .addComponent(Parent, { value: data.entities.scene });
+      .addComponent(Parent, { value: playingGroup });
 
     const panelInfo = world
-      .createEntity()
+      .createEntity("panelInfo")
       .addComponent(GLTFModel, {
         url: "panelinfo.glb",
         onLoaded: model => {
@@ -282,7 +300,7 @@ function initGame() {
           //model.children[0].lookAt(data.entities.camera.getComponent(Object3D).value);
         }
       })
-      .addComponent(Parent, { value: data.entities.scene });
+      .addComponent(Parent, { value: playingGroup });
 
     /*
     world

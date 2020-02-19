@@ -51,7 +51,9 @@ export class BallGeneratorSystem extends System {
           linearVelocity: ballGeneratorComponent.linearVelocity
         })
         .addComponent(Active)
-        .addComponent(Parent, { value: window.entityScene });
+        .addComponent(Parent, {
+          value: this.world.entityManager.getEntityByName("playingGroup")
+        });
 
       generator.removeComponent(Active);
     });

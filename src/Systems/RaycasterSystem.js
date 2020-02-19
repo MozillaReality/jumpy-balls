@@ -76,7 +76,7 @@ export class RaycasterSystem extends System {
         if (entity) {
           const receiverHandler = entity.getComponent(RaycastReceiver);
 
-          if (!receiverHandler.hovering) {
+          if (receiverHandler && !receiverHandler.hovering) {
             receiverHandler.hovering = true;
             receiverHandler.onEnter(intersection);
           }
@@ -99,7 +99,7 @@ export class RaycasterSystem extends System {
             RaycastReceiver
           );
 
-          if (receiverHandler.hovering) {
+          if (receiverHandler && receiverHandler.hovering) {
             receiverHandler.hovering = false;
             receiverHandler.onLeave && receiverHandler.onLeave();
           }

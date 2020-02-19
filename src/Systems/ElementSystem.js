@@ -2,7 +2,6 @@ import { System } from "ecsy";
 import {
   Element,
   GLTFModel,
-  Parent,
   Shape,
   Draggable,
   RigidBody
@@ -89,8 +88,7 @@ export class ElementSystem extends System {
           friction: 0.5,
           linearDamping: 0.0,
           angularDamping: 0.0
-        })
-        .addComponent(Parent, { value: window.entityScene });
+        });
 
       if (config.draggable) {
         entity.addComponent(Draggable);

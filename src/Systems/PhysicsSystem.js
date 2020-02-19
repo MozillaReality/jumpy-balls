@@ -64,11 +64,16 @@ export class PhysicsSystem extends System {
   }
 
   _removeRigidBody(entity) {
-    var object = entity.getRemovedComponent(Object3D).value;
-    var body = object.userData.body;
-    this._physicsWorld.removeRigidBody(body);
-    Ammo.destroy(body);
-    delete object.userData.body;
+    var component = entity.getRemovedComponent(Object3D);
+    if (component) {
+      let object = component.value;
+      var body = object.userData.body;
+      this._physicsWorld.removeRigidBody(body);
+      Ammo.destroy(body);
+      delete object.userData.body;
+    } else {
+      console.warn(">>>>>>>>>>>>>>> Not found");
+    }
   }
 
   _createWorld() {

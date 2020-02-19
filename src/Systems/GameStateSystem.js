@@ -4,6 +4,7 @@ import { Text } from "ecsy-three";
 import {
   BallGenerator,
   Dissolve,
+  Visible,
   Target,
   Cleared,
   Active,
@@ -12,22 +13,64 @@ import {
   FloorCollided,
   GameState
 } from "../Components/components.js";
-import { PhysicsSystem } from "../Systems/systems.mjs";
+import { LevelManager, PhysicsSystem } from "../Systems/systems.mjs";
 
 export class GameStateSystem extends System {
+  setVisibilityByName(name, value) {
+    return;
+    this.world.entityManager
+      .getEntityByName(name)
+      .getMutableComponent(Visible).value = value;
+  }
+
+  finish() {
+    this.stopGame();
+    // Remove level
+    this.setVisibilityByName("startbutton", true);
+    this.setVisibilityByName("finished", true);
+    this.setVisibilityByName("playingGroup", false);
+    this.world.getSystem(LevelManager).clearCurrentLevel();
+    this.world.entityManager
+      .getEntityByName("singleton")
+      .getMutableComponent(Level).value = 1;
+  }
+
   playGame() {
-    this.world.getSystem(PhysicsSystem).play();
-    this.queries.gameState.results[0].getMutableComponent(
+    this.setVisibilityByName("startbutton", false);
+    this.setVisibilityByName("finished", false);
+    this.setVisibilityByName("playingGroup", true);
+
+    let gameState = this.queries.gameState.results[0].getMutableComponent(
       GameState
-    ).playing = true;
+    );
+
+    gameState.playing = true;
+    gameState.numBallsFailed = 0;
+    gameState.numBallsTotal = 0;
+    gameState.levelStartTime = performance.now();
+    gameState.gameStartTime = performance.now();
+
+    this.updateTexts(gameState);
 
     this.queries.ballGenerators.results.forEach(generator => {
       generator.addComponent(Active);
     });
+
+    this.world.getSystem(PhysicsSystem).play();
+  }
+
+  updateTexts(gameState) {
+    let entity = this.world.entityManager.getEntityByName("numberBalls");
+
+    if (entity) {
+      entity.getMutableComponent(
+        Text
+      ).text = `${gameState.numBallsFailed}/${gameState.numBallsTotal}`;
+    }
   }
 
   stopGame() {
-    this.world.getSystem(PhysicsSystem).stop();
+    //  this.world.getSystem(PhysicsSystem).stop();
     this.queries.gameState.results[0].getMutableComponent(
       GameState
     ).playing = false;
@@ -45,6 +88,10 @@ export class GameStateSystem extends System {
     });
 */
     var gameState = this.queries.gameState.results[0].getComponent(GameState);
+    if (!gameState.playing) {
+      return;
+    }
+
     let elapsedTimeCurrent = performance.now() - gameState.levelStartTime;
     let elapsedTimeTotal = performance.now() - gameState.gameStartTime;
 
@@ -54,24 +101,27 @@ export class GameStateSystem extends System {
     if (timer) {
       timer.getMutableComponent(Text).text = new Date(elapsedTimeCurrent)
         .toISOString()
-        .substr(14, 5)
+        .substr(14, 5);
     }
 
     let timerTotal = this.world.entityManager.getEntityByName("timerTotal");
     if (timerTotal) {
       timerTotal.getMutableComponent(Text).text = new Date(elapsedTimeTotal)
         .toISOString()
-        .substr(14, 5)
+        .substr(14, 5);
     }
 
     // If a ball collided with the floor, reactivate the generator to throw another ball
     this.queries.ballFloorCollided.added.forEach(ball => {
       // @todo this.component.numBallsFailed++
+      console.log("Failed!!!");
       gameState.numBallsFailed++;
 
       this.world.entityManager
         .getEntityByName("numberBalls")
-        .getMutableComponent(Text).text = `${gameState.numBallsFailed}/${gameState.numBallsTotal}`;
+        .getMutableComponent(
+          Text
+        ).text = `${gameState.numBallsFailed}/${gameState.numBallsTotal}`;
 
       // @todo here we should just activate the collided ball's generator
       // Wait 2s before reactivating the ball generator
@@ -89,6 +139,7 @@ export class GameStateSystem extends System {
       setTimeout(() => {
         if (
           !ball ||
+          !ball.alive ||
           worldSingleton.getComponent(Level).value !== currentLevel
         ) {
           return;
@@ -99,24 +150,24 @@ export class GameStateSystem extends System {
     });
 
     this.queries.targetCleared.added.forEach(() => {
-/*      this.world.entityManager
+      /*      this.world.entityManager
         .getEntityByName("numberBalls")
         .getMutableComponent(Text).text = `Level cleared!`;
 */
       setTimeout(() => {
         var levelComponent = worldSingleton.getMutableComponent(Level);
         if (levelComponent.value === levels.length - 1) {
-          levelComponent.value = 0;
+          levelComponent.value = 1;
+          this.finish();
         } else {
           levelComponent.value++;
-/*
+          /*
           this.world.entityManager
             .getEntityByName("numberBalls")
             .getMutableComponent(Text).text = `Level: ${levelComponent.value}`;
 */
           gameState.levelStartTime = performance.now();
 
-          // threeContext.scene.background.set(0x333333);
           gameState.levelFinished = false;
         }
       }, 2000);

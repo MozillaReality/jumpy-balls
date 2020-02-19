@@ -124,6 +124,7 @@ export const levels = [
       }
     ]
   },
+  /*
   // 4
   {
     targets: [
@@ -163,5 +164,5 @@ export const levels = [
         rotation: { x: 0, y: 0, z: 0.1 }
       }
     ]
-  }
+  }*/
 ];
