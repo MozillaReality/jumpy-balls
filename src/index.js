@@ -54,6 +54,8 @@ import { Vector3 } from "three";
 
 var world;
 
+const urlParams = new URLSearchParams(window.location.search);
+
 function initGame() {
   world = new World();
 
@@ -86,7 +88,7 @@ function initGame() {
   var scene = data.entities.scene.getComponent(Object3D).value;
   window.entityScene = data.entities.scene;
 
-  let level = 1;
+  let level = urlParams.has("level") ? parseInt(urlParams.get("level")) : 1;
 
   // Singleton entity
   world
@@ -103,12 +105,11 @@ function initGame() {
   init(data);
 
   function init(data) {
-
     scene.fog = new THREE.FogExp2(new THREE.Color(0x5ac5dc), 0.05);
 
-    scene.add(new THREE.HemisphereLight(0xCCCCCC, 0x707070));
+    scene.add(new THREE.HemisphereLight(0xcccccc, 0x707070));
 
-    var light = new THREE.DirectionalLight(0xAAAAAA);
+    var light = new THREE.DirectionalLight(0xaaaaaa);
     light.position.set(0.2, 1.7, 0.7);
     light.castShadow = true;
     light.shadow.camera.top = 1;
@@ -124,7 +125,10 @@ function initGame() {
 
     // Scene
     createScene(data);
-    world.getSystem(GameStateSystem).playGame();
+
+    if (urlParams.has("autostart")) {
+      world.getSystem(GameStateSystem).playGame();
+    }
 
     let startButton = world
       .createEntity("startbutton")
@@ -144,7 +148,9 @@ function initGame() {
     // @todo This first one remove
     world.execute(0.016, 0);
 
-    data.entities.renderer.getComponent(WebGLRendererContext).value.outputEncoding = THREE.sRGBEncoding;
+    data.entities.renderer.getComponent(
+      WebGLRendererContext
+    ).value.outputEncoding = THREE.sRGBEncoding;
   }
 
   function createScene(data) {
@@ -169,13 +175,13 @@ function initGame() {
       .addComponent(GLTFModel, {
         url: "set.glb",
         onLoaded: model => {
-            const cloudsMaterial = model.getChildByName('clouds').material;
-            cloudsMaterial.transparent = true;
-            cloudsMaterial.fog = false;
-            const skyMaterial = model.getChildByName('sky').material;
-            skyMaterial.fog = false;
-            //model.getChildByName('floor').receiveShadow = true;
-          }
+          const cloudsMaterial = model.getChildByName("clouds").material;
+          cloudsMaterial.transparent = true;
+          cloudsMaterial.fog = false;
+          const skyMaterial = model.getChildByName("sky").material;
+          skyMaterial.fog = false;
+          //model.getChildByName('floor').receiveShadow = true;
+        }
       })
       .addComponent(Parent, { value: data.entities.scene });
 
@@ -190,13 +196,19 @@ function initGame() {
           model.children[0].renderOrder = 1;
           world
             .createEntity("levelLabel")
-            .addComponent(Text, getTextParameters("Level", '#20b4d6', 0.09, 'center'))
+            .addComponent(
+              Text,
+              getTextParameters("Level", "#20b4d6", 0.09, "center")
+            )
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(0, 0.13, 0.01) });
 
           world
             .createEntity("level")
-            .addComponent(Text, getTextParameters('12', '#90cdeb', 0.2, 'center'))
+            .addComponent(
+              Text,
+              getTextParameters("1", "#90cdeb", 0.2, "center")
+            )
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(0, 0, 0.01) });
 
@@ -204,7 +216,6 @@ function initGame() {
         }
       })
       .addComponent(Parent, { value: data.entities.scene });
-
 
     const panelInfo = world
       .createEntity()
@@ -216,38 +227,55 @@ function initGame() {
 
           world
             .createEntity("numberBallsLabel")
-            .addComponent(Text, getTextParameters("Balls", '#c0095d', 0.13, 'center'))
+            .addComponent(
+              Text,
+              getTextParameters("Balls", "#c0095d", 0.13, "center")
+            )
             .addComponent(ParentObject3D, { value: model.children[0] })
-            .addComponent(Position, { value: new Vector3(-0.29, 0.20, 0.01) });
+            .addComponent(Position, { value: new Vector3(-0.29, 0.2, 0.01) });
 
           world
             .createEntity("numberBalls")
-            .addComponent(Text, getTextParameters("0/0", '#f9258b', 0.15, 'center'))
+            .addComponent(
+              Text,
+              getTextParameters("0/0", "#f9258b", 0.15, "center")
+            )
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(-0.31, 0, 0.01) });
 
           world
             .createEntity("timeLabel")
-            .addComponent(Text, getTextParameters("Time", '#836000', 0.14, 'center'))
+            .addComponent(
+              Text,
+              getTextParameters("Time", "#836000", 0.14, "center")
+            )
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(0.25, 0.22, 0.01) });
 
           world
             .createEntity("totalTimeLabel")
-            .addComponent(Text, getTextParameters("Total", '#836000', 0.08, 'center'))
+            .addComponent(
+              Text,
+              getTextParameters("Total", "#836000", 0.08, "center")
+            )
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(0.1, -0.16, 0.01) });
 
-
           world
             .createEntity("timer")
-            .addComponent(Text, getTextParameters("00:00", '#ebb808', 0.18, 'center'))
+            .addComponent(
+              Text,
+              getTextParameters("00:00", "#ebb808", 0.18, "center")
+            )
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(0.25, 0.04, 0.01) });
 
           world
             .createEntity("timerTotal")
-            .addComponent(Text, getTextParameters("00:00", '#ebb808', 0.09, 'left'))
+            .addComponent(
+              Text,
+              getTextParameters("00:00", "#ebb808", 0.09, "left")
+            )
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(0.25, -0.095, 0.01) });
 
@@ -256,7 +284,7 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene });
 
-/*
+    /*
     world
       .createEntity()
       .addComponent(GLTFModel, { url: "BouncyFrame.glb" })
@@ -300,22 +328,20 @@ function initGame() {
 
   function getTextParameters(text, color, size, align) {
     return {
-        color: color || '0xFFFFFF',
-        fontSize: size || 0.5,
-        anchor: align || 'center',
-        textAlign: align || 'center',
-        baseline: align || 'center',
-        font: "assets/WetinCaroWant.ttf",
-        maxWidth: 10,
-        lineHeight: 1.3,
-        text: text || 'LOREM IPSUM'
-      };
+      color: color || "0xFFFFFF",
+      fontSize: size || 0.5,
+      anchor: align || "center",
+      textAlign: align || "center",
+      baseline: align || "center",
+      font: "assets/WetinCaroWant.ttf",
+      maxWidth: 10,
+      lineHeight: 1.3,
+      text: text || "LOREM IPSUM"
+    };
   }
-
 }
 
 Ammo().then(initGame);
-
 
 /*
 
