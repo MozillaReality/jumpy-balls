@@ -35,9 +35,10 @@ export class LevelManager extends System {
   }
 
   initializeLevel(levelId) {
-    this.world.entityManager
-      .getEntityByName("level")
-      .getMutableComponent(Text).text = `Level ${levelId}`;
+    let levelLabel = this.world.entityManager.getEntityByName("level");
+    if (levelLabel) {
+      levelLabel.getMutableComponent(Text).text = levelId;
+    }
 
     this.clearCurrentLevel();
     var level = levels[levelId];

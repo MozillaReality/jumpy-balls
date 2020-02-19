@@ -8,6 +8,7 @@ import {
   Level,
   Object3D,
   Parent,
+  ParentObject3D,
   RigidBody,
   Scene,
   Shape,
@@ -140,54 +141,6 @@ function initGame() {
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Position, { value: new Vector3(-1, 1, -1) });
 
-    world
-      .createEntity("numberBallsText")
-      .addComponent(Text, {
-        color: "#ffffff",
-        fontSize: 0.5,
-        anchor: "left",
-        textAlign: "center",
-        baseline: "center",
-        font: "assets/PatrickHand-Regular.ttf",
-        maxWidth: 10,
-        lineHeight: 1.3,
-        text: "Balls counter!"
-      })
-      .addComponent(Parent, { value: data.entities.scene })
-      .addComponent(Position, { value: new Vector3(-1, 2, -1) });
-
-    world
-      .createEntity("level")
-      .addComponent(Text, {
-        color: "#ffffff",
-        fontSize: 0.5,
-        anchor: "left",
-        textAlign: "center",
-        baseline: "center",
-        maxWidth: 10,
-        font: "assets/PatrickHand-Regular.ttf",
-        lineHeight: 1.3,
-        text: "Level: " + level
-      })
-      .addComponent(Parent, { value: data.entities.scene })
-      .addComponent(Position, { value: new Vector3(-1, 3, -1) });
-
-    world
-      .createEntity("timer")
-      .addComponent(Text, {
-        color: "#ffffff",
-        fontSize: 0.5,
-        anchor: "left",
-        textAlign: "center",
-        baseline: "center",
-        maxWidth: 10,
-        font: "assets/PatrickHand-Regular.ttf",
-        lineHeight: 1.3,
-        text: "Balls counter!"
-      })
-      .addComponent(Parent, { value: data.entities.scene })
-      .addComponent(Position, { value: new Vector3(-1, 4, -1) });
-
     // @todo This first one remove
     world.execute(0.016, 0);
 
@@ -195,7 +148,6 @@ function initGame() {
   }
 
   function createScene(data) {
-    // world.createEntity().addComponent(Sky);
     createFloor(data);
 
     var text = world.createEntity();
@@ -226,6 +178,84 @@ function initGame() {
           }
       })
       .addComponent(Parent, { value: data.entities.scene });
+
+    // panels
+
+    const panelLevel = world
+      .createEntity()
+      .addComponent(GLTFModel, {
+        url: "panellevel.glb",
+        onLoaded: model => {
+          model.children[0].material.transparent = true;
+          model.children[0].renderOrder = 1;
+          world
+            .createEntity("levelLabel")
+            .addComponent(Text, getTextParameters("Level", '#20b4d6', 0.09, 'center'))
+            .addComponent(ParentObject3D, { value: model.children[0] })
+            .addComponent(Position, { value: new Vector3(0, 0.13, 0.01) });
+
+          world
+            .createEntity("level")
+            .addComponent(Text, getTextParameters('12', '#90cdeb', 0.2, 'center'))
+            .addComponent(ParentObject3D, { value: model.children[0] })
+            .addComponent(Position, { value: new Vector3(0, 0, 0.01) });
+
+          //model.children[0].lookAt(data.entities.camera.getComponent(Object3D).value);
+        }
+      })
+      .addComponent(Parent, { value: data.entities.scene });
+
+
+    const panelInfo = world
+      .createEntity()
+      .addComponent(GLTFModel, {
+        url: "panelinfo.glb",
+        onLoaded: model => {
+          model.children[0].material.transparent = true;
+          model.children[0].renderOrder = 1;
+
+          world
+            .createEntity("numberBallsLabel")
+            .addComponent(Text, getTextParameters("Balls", '#c0095d', 0.13, 'center'))
+            .addComponent(ParentObject3D, { value: model.children[0] })
+            .addComponent(Position, { value: new Vector3(-0.29, 0.20, 0.01) });
+
+          world
+            .createEntity("numberBalls")
+            .addComponent(Text, getTextParameters("0/0", '#f9258b', 0.15, 'center'))
+            .addComponent(ParentObject3D, { value: model.children[0] })
+            .addComponent(Position, { value: new Vector3(-0.31, 0, 0.01) });
+
+          world
+            .createEntity("timeLabel")
+            .addComponent(Text, getTextParameters("Time", '#836000', 0.14, 'center'))
+            .addComponent(ParentObject3D, { value: model.children[0] })
+            .addComponent(Position, { value: new Vector3(0.25, 0.22, 0.01) });
+
+          world
+            .createEntity("totalTimeLabel")
+            .addComponent(Text, getTextParameters("Total", '#836000', 0.08, 'center'))
+            .addComponent(ParentObject3D, { value: model.children[0] })
+            .addComponent(Position, { value: new Vector3(0.1, -0.16, 0.01) });
+
+
+          world
+            .createEntity("timer")
+            .addComponent(Text, getTextParameters("00:00", '#ebb808', 0.18, 'center'))
+            .addComponent(ParentObject3D, { value: model.children[0] })
+            .addComponent(Position, { value: new Vector3(0.25, 0.04, 0.01) });
+
+          world
+            .createEntity("timerTotal")
+            .addComponent(Text, getTextParameters("00:00", '#ebb808', 0.09, 'left'))
+            .addComponent(ParentObject3D, { value: model.children[0] })
+            .addComponent(Position, { value: new Vector3(0.25, -0.095, 0.01) });
+
+          //model.children[0].lookAt(data.entities.camera.getComponent(Object3D).value);
+        }
+      })
+      .addComponent(Parent, { value: data.entities.scene });
+
 /*
     world
       .createEntity()
@@ -267,6 +297,42 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene });
   }
+
+  function getTextParameters(text, color, size, align) {
+    return {
+        color: color || '0xFFFFFF',
+        fontSize: size || 0.5,
+        anchor: align || 'center',
+        textAlign: align || 'center',
+        baseline: align || 'center',
+        font: "assets/WetinCaroWant.ttf",
+        maxWidth: 10,
+        lineHeight: 1.3,
+        text: text || 'LOREM IPSUM'
+      };
+  }
+
 }
 
 Ammo().then(initGame);
+
+
+/*
+
+// Object position helper
+
+window.addEventListener('wheel', ev => {
+  var v;
+  var pos = world.entityManager.getEntityByName("numberBalls").getMutableComponent(Position);
+  if (ev.shiftKey) {
+    v = pos.value.x + ev.deltaX / 100;
+    pos.value.x = v;
+  } else {
+    v = pos.value.y + ev.deltaY / 100;
+    pos.value.y = v;
+  }
+  console.log(
+    `${Math.floor(pos.value.x * 100) / 100}, ${Math.floor(pos.value.y * 100) / 100}`
+    );
+});
+*/

@@ -50,15 +50,19 @@ export class GameStateSystem extends System {
 
     let worldSingleton = this.world.entityManager.getEntityByName("singleton");
 
-    this.world.entityManager
-      .getEntityByName("timer")
-      .getMutableComponent(Text).text = `current level: ${new Date(
-      elapsedTimeCurrent
-    )
-      .toISOString()
-      .substr(14, 5)}\ntotal: ${new Date(elapsedTimeTotal)
-      .toISOString()
-      .substr(14, 5)}`;
+    let timer = this.world.entityManager.getEntityByName("timer");
+    if (timer) {
+      timer.getMutableComponent(Text).text = new Date(elapsedTimeCurrent)
+        .toISOString()
+        .substr(14, 5)
+    }
+
+    let timerTotal = this.world.entityManager.getEntityByName("timerTotal");
+    if (timerTotal) {
+      timerTotal.getMutableComponent(Text).text = new Date(elapsedTimeTotal)
+        .toISOString()
+        .substr(14, 5)
+    }
 
     // If a ball collided with the floor, reactivate the generator to throw another ball
     this.queries.ballFloorCollided.added.forEach(ball => {
@@ -66,8 +70,8 @@ export class GameStateSystem extends System {
       gameState.numBallsFailed++;
 
       this.world.entityManager
-        .getEntityByName("numberBallsText")
-        .getMutableComponent(Text).text = `balls: ${gameState.numBallsFailed}`;
+        .getEntityByName("numberBalls")
+        .getMutableComponent(Text).text = `${gameState.numBallsFailed}/${gameState.numBallsTotal}`;
 
       // @todo here we should just activate the collided ball's generator
       // Wait 2s before reactivating the ball generator
@@ -95,21 +99,21 @@ export class GameStateSystem extends System {
     });
 
     this.queries.targetCleared.added.forEach(() => {
-      this.world.entityManager
-        .getEntityByName("numberBallsText")
+/*      this.world.entityManager
+        .getEntityByName("numberBalls")
         .getMutableComponent(Text).text = `Level cleared!`;
-
+*/
       setTimeout(() => {
         var levelComponent = worldSingleton.getMutableComponent(Level);
         if (levelComponent.value === levels.length - 1) {
           levelComponent.value = 0;
         } else {
           levelComponent.value++;
-
+/*
           this.world.entityManager
-            .getEntityByName("numberBallsText")
+            .getEntityByName("numberBalls")
             .getMutableComponent(Text).text = `Level: ${levelComponent.value}`;
-
+*/
           gameState.levelStartTime = performance.now();
 
           // threeContext.scene.background.set(0x333333);

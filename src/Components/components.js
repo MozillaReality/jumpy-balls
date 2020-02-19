@@ -4,6 +4,7 @@ import { TagComponent } from "ecsy";
 export {
   Object3D,
   Parent,
+  ParentObject3D,
   Environment,
   Visible,
   CameraRig,
@@ -79,6 +80,7 @@ export class GameState {
     this.prevPlaying = false;
     this.levelFinished = false;
     this.numBallsFailed = 0;
+    this.numBallsTotal = 0;
     this.levelStartTime = 0;
     this.gameStartTime = 0;
   }
