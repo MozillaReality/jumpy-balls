@@ -16,7 +16,8 @@ import {
   Transform,
   Visible,
   UI,
-  Button
+  Button,
+  WebGLRendererContext
 } from "./Components/components.js";
 
 import {
@@ -100,10 +101,13 @@ function initGame() {
   init(data);
 
   function init(data) {
-    scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
 
-    var light = new THREE.DirectionalLight(0xffffff);
-    light.position.set(0, 4, 0);
+    scene.fog = new THREE.FogExp2(new THREE.Color(0x5ac5dc), 0.05);
+
+    scene.add(new THREE.HemisphereLight(0xCCCCCC, 0x707070));
+
+    var light = new THREE.DirectionalLight(0xAAAAAA);
+    light.position.set(0.2, 1.7, 0.7);
     light.castShadow = true;
     light.shadow.camera.top = 1;
     light.shadow.camera.bottom = -1;
@@ -184,6 +188,8 @@ function initGame() {
 
     // @todo This first one remove
     world.execute(0.016, 0);
+
+    data.entities.renderer.getComponent(WebGLRendererContext).value.outputEncoding = THREE.sRGBEncoding;
   }
 
   function createScene(data) {
@@ -206,7 +212,17 @@ function initGame() {
 
     world
       .createEntity()
-      .addComponent(GLTFModel, { url: "set.glb" })
+      .addComponent(GLTFModel, {
+        url: "set.glb",
+        onLoaded: model => {
+            const cloudsMaterial = model.getChildByName('clouds').material;
+            cloudsMaterial.transparent = true;
+            cloudsMaterial.fog = false;
+            const skyMaterial = model.getChildByName('sky').material;
+            skyMaterial.fog = false;
+            //model.getChildByName('floor').receiveShadow = true;
+          }
+      })
       .addComponent(Parent, { value: data.entities.scene });
 /*
     world

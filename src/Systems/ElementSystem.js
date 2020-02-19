@@ -7,6 +7,7 @@ import {
   Draggable,
   RigidBody
 } from "../Components/components.js";
+import * as Materials from "../materials.js";
 
 export class ElementSystem extends System {
   execute() {
@@ -71,6 +72,8 @@ export class ElementSystem extends System {
               h *= config.scale;
               d *= config.scale;
             }
+
+            model.children[0].material.envMap = Materials.environmentMap;
 
             entity.addComponent(Shape, {
               primitive: "box",

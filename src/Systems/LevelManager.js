@@ -14,6 +14,7 @@ import {
   Element
 } from "../Components/components.js";
 import { levels } from "../levels.js";
+import * as Materials from "../materials.js";
 
 export class LevelManager extends System {
   execute() {
@@ -70,6 +71,8 @@ export class LevelManager extends System {
           onLoaded: model => {
             //model.scale.multiplyScalar(-1);
             model.lookAt(linearVelocity);
+            const material = model.getChildByName('cannon').material;
+            material.envMap = Materials.environmentMap;
           }
         })
         .addComponent(Position, {
@@ -84,7 +87,12 @@ export class LevelManager extends System {
       window.target = this.world
         .createEntity()
         .addComponent(Target)
-        .addComponent(GLTFModel, { url: "target.glb" })
+        .addComponent(GLTFModel, {
+          url: "target.glb",
+          onLoaded: model => {
+            model.children[0].material.envMap = Materials.environmentMap;
+          }
+        })
         .addComponent(Transform, {
           position: t.position,
           rotation: t.rotation
