@@ -5,13 +5,11 @@ import {
   VRController,
   Draggable,
   Dragging,
-  Parent,
   Object3D,
   Raycaster,
   RaycastReceiver,
   WebGLRendererContext
 } from "../Components/components.js";
-import { VRControllerBasicBehaviour } from "ecsy-three";
 
 var raycaster = new THREE.Raycaster();
 var tempMatrix = new THREE.Matrix4();

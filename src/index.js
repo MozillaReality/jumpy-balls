@@ -81,6 +81,7 @@ function initGame() {
 
   let data = initializeDefault(world, { vr: true });
 
+  console.log(data);
   var scene = data.entities.scene.getComponent(Object3D).value;
   window.entityScene = data.entities.scene;
 
