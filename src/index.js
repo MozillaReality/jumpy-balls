@@ -123,14 +123,13 @@ function initGame() {
 
     // Scene
     createScene(data);
-    //world.getSystem(GameStateSystem).playGame();
+    world.getSystem(GameStateSystem).playGame();
 
     let startButton = world
       .createEntity("startbutton")
       .addComponent(UI)
       .addComponent(Button, {
         onClick: () => {
-          console.log("Let's gooo", this);
           world.getSystem(GameStateSystem).playGame();
           setTimeout(() => {
             startButton.addComponent(Visible, { value: false });

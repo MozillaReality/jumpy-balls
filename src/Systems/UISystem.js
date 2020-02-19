@@ -88,7 +88,6 @@ export class UISystem extends System {
             .yoyo(true)
             .easing(TWEEN.Easing.Quadratic.Out)
             .start();
-          console.log("Clicking!");
           button.onClick && button.onClick();
         }
       });

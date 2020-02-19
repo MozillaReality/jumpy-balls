@@ -10,6 +10,7 @@ import {
   RaycastReceiver,
   WebGLRendererContext
 } from "../Components/components.js";
+import { InputSystem } from "../Systems/InputSystem.js";
 
 var raycaster = new THREE.Raycaster();
 var tempMatrix = new THREE.Matrix4();
@@ -26,17 +27,23 @@ export class VRControllerInteraction extends System {
       entity.addComponent(RaycastReceiver, {
         onHover: () => {},
         onEnter: () => {
-          console.log("Entering");
-          object.children[0].material.emissive.set(0x224455);
+          object.material.emissive.set(0x224455);
         },
         onLeave: () => {
-          console.log("Leaving");
-          object.children[0].material.emissive.set(0x000000);
+          object.material.emissive.set(0x000000);
         },
-        onSelectStart: this.onSelectStart.bind(this),
-        onSelectEnd: this.onSelectEnd.bind(this)
+        onSelectStart: this.onSelectStart.bind(this)
+        //onSelectEnd: this.onSelectEnd.bind(this)
       });
     });
+
+    this.world
+      .getSystem(InputSystem)
+      .inputStateComponent.vrcontrollers.forEach((state, controller) => {
+        if (state.selectEnd) {
+          this.onSelectEnd(controller);
+        }
+      });
 
     this.queries.controllers.added.forEach(entity => {
       entity.addComponent(Raycaster, { value: raycaster });
@@ -68,53 +75,28 @@ export class VRControllerInteraction extends System {
     var controller = obj;
     tempMatrix.getInverse(controller.matrixWorld);
 
-    var object = intersection.object;
+    var object = intersection.object.parent;
     //object.userData.entity.addComponent(Dragging);
     object.matrix.premultiply(tempMatrix);
     object.matrix.decompose(object.position, object.quaternion, object.scale);
-    object.material.emissive.b = 1;
+    object.children[0].material.emissive.b = 1;
     object.userData.previousParent = object.parent;
     controller.add(object);
 
     controller.userData.selected = object;
   }
 
-  onSelectEnd(intersection, obj) {
-    var controller = obj;
-
+  onSelectEnd(controller) {
     if (controller.userData.selected !== undefined) {
       var object = controller.userData.selected;
       object.userData.entity.removeComponent(Dragging);
 
       object.matrix.premultiply(controller.matrixWorld);
       object.matrix.decompose(object.position, object.quaternion, object.scale);
-      object.material.emissive.b = 0;
+      object.children[0].material.emissive.b = 0;
       object.userData.previousParent.add(object);
 
       controller.userData.selected = undefined;
-
-      // Reposition
-      // @todo This should be moved to the physics system
-      /*
-      const initialTransform = new Ammo.btTransform();
-      initialTransform.setIdentity();
-      initialTransform.setOrigin(
-        new Ammo.btVector3(
-          object.position.x,
-          object.position.y,
-          object.position.z
-        )
-      );
-      initialTransform.setRotation(
-        new Ammo.btQuaternion(
-          object.quaternion.x,
-          object.quaternion.y,
-          object.quaternion.z,
-          object.quaternion.w
-        )
-      );
-      object.userData.body.setWorldTransform(initialTransform);
-      */
       this.reposition(object);
     }
   }
