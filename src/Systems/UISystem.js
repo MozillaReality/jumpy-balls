@@ -93,8 +93,8 @@ export class UISystem extends System {
         }
       });
 
-      let width = 2;
-      let height = 2;
+      let width = 0.5;
+      let height = 0.2;
       let depth = 0.1;
 
       child
@@ -110,7 +110,7 @@ export class UISystem extends System {
       child2
         .addComponent(Text, {
           color: "#ffffff",
-          fontSize: 0.6,
+          fontSize: 0.15,
           anchor: "center",
           textAlign: "center",
           baseline: "center",

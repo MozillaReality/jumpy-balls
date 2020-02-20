@@ -4,6 +4,7 @@ import { Text } from "ecsy-three";
 import {
   BallGenerator,
   Dissolve,
+  Object3D,
   Raycaster,
   Play,
   Visible,
@@ -38,6 +39,10 @@ export class GameStateSystem extends System {
     this.queries.raycasters.results.forEach(entity => {
       entity.getMutableComponent(Raycaster).layerMask = 4;
     });
+
+    let panel = this.world.entityManager.getEntityByName("panelInfo").getComponent(Object3D).value.children[0];
+    panel.position.set(0,1.6,-2);
+    panel.scale.set(3,3,3);
   }
 
   playGame() {

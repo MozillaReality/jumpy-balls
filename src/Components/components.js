@@ -3,12 +3,14 @@ import { TagComponent } from "ecsy";
 
 export {
   Object3D,
+  Scale,
   Parent,
   ParentObject3D,
   Environment,
   Visible,
   CameraRig,
   Camera,
+  Position,
   Draggable,
   Scene,
   Dragging,

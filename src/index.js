@@ -4,6 +4,7 @@ import { World } from "ecsy";
 import {
   GameState,
   Geometry,
+  Scale,
   Level,
   Object3D,
   Parent,
@@ -12,6 +13,7 @@ import {
   Animation,
   Scene,
   Play,
+  Position,
   Shape,
   GLTFLoader,
   Transform,
@@ -26,6 +28,7 @@ import * as Components from "./Components/components.js";
 window.Components = Components;
 import * as Systems from "./Systems/systems.mjs";
 window.Systems = Systems;
+window.THREE = THREE;
 
 import {
   BallGeneratorSystem,
@@ -53,7 +56,6 @@ import {
   VRControllerSystem,
   VisibilitySystem,
   SDFTextSystem,
-  Position,
   Text,
   initializeDefault
 } from "ecsy-three";
@@ -301,9 +303,13 @@ function initGame() {
           //model.children[0].lookAt(data.entities.camera.getComponent(Object3D).value);
         }
       })
-      .addComponent(Parent, { value: playingGroup })
+      .addComponent(Parent, { value: data.entities.scene /*playingGroup*/ })
       .addComponent(Animation)
       .addComponent(Play);
+
+    //panelInfo
+      //.addComponent(Position, {value: new Vector3(3, 1, 1)})
+      //.addComponent(Scale, { value: new Vector3(3, 3, 3) });
 
     /*
     world
