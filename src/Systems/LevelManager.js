@@ -5,11 +5,12 @@ import {
   Level,
   Target,
   Transform,
-  GLTFModel,
+  GLTFLoader,
   GameState,
   BallGenerator,
   Active,
   Parent,
+  Animation,
   LevelItem,
   Element
 } from "../Components/components.js";
@@ -49,6 +50,10 @@ export class LevelManager extends System {
     let worldSingleton = this.world.entityManager.getEntityByName("singleton");
 
     level.generators.forEach(g => {
+      let linearVelocity = new THREE.Vector3()
+        .copy(g.linearVelocity)
+        .normalize();
+
       // Ball generator
       let ballGenerator = this.world
         .createEntity()
@@ -56,33 +61,37 @@ export class LevelManager extends System {
           position: g.position,
           linearVelocity: g.linearVelocity
         })
-        .addComponent(LevelItem);
-
-      if (worldSingleton.getComponent(GameState).playing) {
-        ballGenerator.addComponent(Active);
-      }
-
-      let linearVelocity = new THREE.Vector3()
-        .copy(g.linearVelocity)
-        .normalize();
-
-      // Cannon
-      this.world
-        .createEntity()
-        .addComponent(GLTFModel, {
+        .addComponent(LevelItem)
+        .addComponent(GLTFLoader, {
           url: "cannon.glb",
-          onLoaded: model => {
+          onLoaded: (model, gltf) => {
             //model.scale.multiplyScalar(-1);
             model.lookAt(linearVelocity);
             const material = model.getChildByName("cannon").material;
             material.envMap = Materials.environmentMap;
+
+            let mixer = (model.userData.mixer = new THREE.AnimationMixer(
+              model
+            ));
+            const clip = THREE.AnimationClip.findByName(
+              gltf.animations,
+              "cannonAction"
+            );
+            const action = mixer.clipAction(clip, model);
+            //action.loop = THREE.LoopOnce;
+            model.userData.animationClip = action;
           }
         })
+        .addComponent(Animation)
         .addComponent(Position, {
           value: new THREE.Vector3().copy(g.position)
         })
         .addComponent(LevelItem)
         .addComponent(Parent, { value: levelGroup });
+
+        if (worldSingleton.getComponent(GameState).playing) {
+          ballGenerator.addComponent(Active);
+        }
     });
 
     // Targets
@@ -90,7 +99,7 @@ export class LevelManager extends System {
       window.target = this.world
         .createEntity()
         .addComponent(Target)
-        .addComponent(GLTFModel, {
+        .addComponent(GLTFLoader, {
           url: "target.glb",
           onLoaded: model => {
             model.children[0].material.envMap = Materials.environmentMap;

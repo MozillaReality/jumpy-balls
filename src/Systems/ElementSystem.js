@@ -1,7 +1,7 @@
 import { System } from "ecsy";
 import {
   Element,
-  GLTFModel,
+  GLTFLoader,
   Shape,
   Draggable,
   RigidBody
@@ -57,7 +57,7 @@ export class ElementSystem extends System {
       const config = elementTypes[component.type];
 
       entity
-        .addComponent(GLTFModel, {
+        .addComponent(GLTFLoader, {
           url: config.model + ".glb",
           onLoaded: model => {
             // Compute the boundingbox size to create the physics shape for it

@@ -4,7 +4,7 @@ import {
   Object3D,
   Active,
   LevelItem,
-  GLTFModel,
+  GLTFLoader,
   Shape,
   Parent,
   RigidBody,
@@ -22,7 +22,7 @@ export class BallGeneratorSystem extends System {
       // Ball dispatcher object
       var ball = this.world.createEntity();
       ball
-        .addComponent(GLTFModel, {
+        .addComponent(GLTFLoader, {
           url: "ball.glb",
           onLoaded: model => {
             ball.getMutableComponent(Object3D).value = model.children[0];

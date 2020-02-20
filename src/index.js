@@ -12,7 +12,7 @@ import {
   RigidBody,
   Scene,
   Shape,
-  GLTFModel,
+  GLTFLoader,
   TextGeometry,
   Transform,
   Visible,
@@ -33,6 +33,7 @@ import {
   DissolveSystem,
   ElementSystem,
   FloorCollisionSystem,
+  AnimationSystem,
   GameStateSystem,
   LevelManager,
   OutputSystem,
@@ -69,6 +70,7 @@ function initGame() {
     .registerSystem(InputSystem)
     .registerSystem(GameStateSystem)
     .registerSystem(LevelManager)
+    .registerSystem(AnimationSystem)
     .registerSystem(RaycasterSystem)
     .registerSystem(UISystem)
     .registerSystem(DissolveSystem)
@@ -90,7 +92,6 @@ function initGame() {
 
   let data = initializeDefault(world, { vr: true });
 
-  console.log(data);
   var scene = data.entities.scene.getComponent(Object3D).value;
   window.entityScene = data.entities.scene;
 
@@ -176,7 +177,7 @@ function initGame() {
 
     world
       .createEntity()
-      .addComponent(GLTFModel, {
+      .addComponent(GLTFLoader, {
         url: "set.glb",
         onLoaded: model => {
           const cloudsMaterial = model.getChildByName("clouds").material;
@@ -207,7 +208,7 @@ function initGame() {
 
     const panelLevel = world
       .createEntity("panelLevel")
-      .addComponent(GLTFModel, {
+      .addComponent(GLTFLoader, {
         url: "panellevel.glb",
         onLoaded: model => {
           model.children[0].material.transparent = true;
@@ -237,7 +238,7 @@ function initGame() {
 
     const panelInfo = world
       .createEntity("panelInfo")
-      .addComponent(GLTFModel, {
+      .addComponent(GLTFLoader, {
         url: "panelinfo.glb",
         onLoaded: model => {
           model.children[0].material.transparent = true;
@@ -305,7 +306,7 @@ function initGame() {
     /*
     world
       .createEntity()
-      .addComponent(GLTFModel, { url: "BouncyFrame.glb" })
+      .addComponent(GLTFLoader, { url: "BouncyFrame.glb" })
       .addComponent(Transform, {
         position: { x: 1, y: 2, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }

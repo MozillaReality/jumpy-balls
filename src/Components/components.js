@@ -17,6 +17,7 @@ export {
   WebGLRendererContext,
   Geometry,
   GLTFModel,
+  GLTFLoader,
   RenderPass,
   VRController,
   Material,
@@ -183,3 +184,9 @@ export class InputState {
 
   reset() {}
 }
+
+export class Animation {
+
+}
+
+export class Play extends TagComponent {}

@@ -5,6 +5,7 @@ import {
   BallGenerator,
   Dissolve,
   Raycaster,
+  Play,
   Visible,
   Target,
   Cleared,
@@ -134,6 +135,10 @@ export class GameStateSystem extends System {
       // Wait 2s before reactivating the ball generator
       let currentLevel = worldSingleton.getComponent(Level).value;
 
+      this.queries.ballGenerators.results.forEach(generator => {
+        generator.addComponent(Play);
+      });
+
       setTimeout(() => {
         if (worldSingleton.getComponent(Level).value !== currentLevel) {
           return;
@@ -141,7 +146,7 @@ export class GameStateSystem extends System {
         this.queries.ballGenerators.results.forEach(generator => {
           generator.addComponent(Active);
         });
-      }, 1000);
+      }, 1900);
 
       setTimeout(() => {
         if (
