@@ -190,3 +190,5 @@ export class Animation {
 }
 
 export class Play extends TagComponent {}
+
+export class Stop extends TagComponent {}

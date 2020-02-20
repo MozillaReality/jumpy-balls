@@ -156,9 +156,9 @@ export class GameStateSystem extends System {
         ) {
           return;
         }
-
-        ball.addComponent(Dissolve);
       }, 2000);
+
+      ball.addComponent(Dissolve);
     });
 
     this.queries.targetCleared.added.forEach(() => {

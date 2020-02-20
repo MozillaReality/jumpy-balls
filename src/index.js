@@ -2,7 +2,6 @@
 import * as THREE from "three";
 import { World } from "ecsy";
 import {
-  Environment,
   GameState,
   Geometry,
   Level,
@@ -10,10 +9,11 @@ import {
   Parent,
   ParentObject3D,
   RigidBody,
+  Animation,
   Scene,
+  Play,
   Shape,
   GLTFLoader,
-  TextGeometry,
   Transform,
   Visible,
   UI,
@@ -301,7 +301,9 @@ function initGame() {
           //model.children[0].lookAt(data.entities.camera.getComponent(Object3D).value);
         }
       })
-      .addComponent(Parent, { value: playingGroup });
+      .addComponent(Parent, { value: playingGroup })
+      .addComponent(Animation)
+      .addComponent(Play);
 
     /*
     world

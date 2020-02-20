@@ -1,6 +1,12 @@
 import { System } from "ecsy";
 import * as THREE from "three";
-import { Play, Active, GLTFModel, Animation } from "../Components/components.js";
+import {
+  Play,
+  Stop,
+  Active,
+  GLTFModel,
+  Animation
+} from "../Components/components.js";
 
 class AnimationMixerComponent {
   constructor() {}
@@ -16,7 +22,7 @@ class AnimationActionsComponent {
 
 export class AnimationSystem extends System {
   execute(delta) {
-    this.queries.entities.results.forEach(entity => {
+    this.queries.entities.added.forEach(entity => {
       let gltf = entity.getComponent(GLTFModel).value;
       let mixer = new THREE.AnimationMixer(gltf.scene);
       entity.addComponent(AnimationMixerComponent, {
@@ -39,14 +45,26 @@ export class AnimationSystem extends System {
       entity.getComponent(AnimationMixerComponent).value.update(delta);
     });
 
-    this.queries.queuedClips.results.forEach(entity => {
-      let animations = entity.getComponent(AnimationActionsComponent).animations;
+    this.queries.playClips.results.forEach(entity => {
+      let animations = entity.getComponent(AnimationActionsComponent)
+        .animations;
       animations.forEach(actionClip => {
         actionClip.setDuration(2);
+        actionClip.clampWhenFinished = true;
         actionClip.reset();
         actionClip.play();
       });
       entity.removeComponent(Play);
+    });
+
+    this.queries.stopClips.results.forEach(entity => {
+      let animations = entity.getComponent(AnimationActionsComponent)
+        .animations;
+      animations.forEach(actionClip => {
+        actionClip.reset();
+        actionClip.stop();
+      });
+      entity.removeComponent(Stop);
     });
   }
 }
@@ -55,15 +73,16 @@ AnimationSystem.queries = {
   entities: {
     components: [Animation, GLTFModel],
     listen: {
-      added: true,
-      removed: true,
-      changed: true // [Animation]
+      added: true
     }
   },
   mixers: {
     components: [AnimationMixerComponent]
   },
-  queuedClips: {
+  playClips: {
     components: [AnimationActionsComponent, Play]
+  },
+  stopClips: {
+    components: [AnimationActionsComponent, Stop]
   }
 };
