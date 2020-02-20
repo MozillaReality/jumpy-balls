@@ -165,7 +165,7 @@ function initGame() {
       .createEntity("playingGroup")
       .addComponent(Object3D, { value: new THREE.Group() })
       .addComponent(Parent, { value: data.entities.scene })
-      .addComponent(Visible, { value: true });
+      .addComponent(Visible, { value: urlParams.has("autostart") });
 
     // Scene
     world

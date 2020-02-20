@@ -50,7 +50,6 @@ export class RaycasterSystem extends System {
       if (objects.length === 0) {
         return;
       }
-      console.log(objects);
 
       let raycast = raycasterComponent.value;
 
