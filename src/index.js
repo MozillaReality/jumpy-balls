@@ -146,7 +146,7 @@ function initGame() {
         }
       })
       .addComponent(Parent, { value: data.entities.scene })
-      .addComponent(Position, { value: new Vector3(-1, 1, -1) })
+      .addComponent(Position, { value: new Vector3(0, 0.5, -1) })
       .addComponent(Visible, { value: !urlParams.has("autostart") });
 
     if (urlParams.has("autostart")) {
@@ -192,22 +192,6 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene });
 
-    // panels
-    world
-      .createEntity("finished")
-      .addComponent(
-        Text,
-        getTextParameters(
-          "Finished!\nyour time: 12:30\nballs used: 20",
-          "#ffffff",
-          0.6,
-          "center"
-        )
-      )
-      .addComponent(Parent, { value: data.entities.scene })
-      .addComponent(Position, { value: new Vector3(0, 2, -0.5) })
-      .addComponent(Visible, { value: false });
-
     const panelLevel = world
       .createEntity("panelLevel")
       .addComponent(GLTFLoader, {
@@ -244,7 +228,21 @@ function initGame() {
         url: "panelinfo.glb",
         onLoaded: model => {
           model.children[0].material.transparent = true;
-          model.children[0].renderOrder = 1;
+          model.children[0].children[0].material.transparent = true;
+          model.children[0].children[0].renderOrder = 1;
+          model.children[0].renderOrder = 2;
+
+          // panels
+          let finishedPanel = model.children[0].children[0];
+          world
+            .createEntity("finished")
+            .addComponent(
+              Text,
+              getTextParameters("Finished!", "#ffffff", 0.2, "center")
+            )
+            .addComponent(ParentObject3D, { value: finishedPanel })
+            .addComponent(Position, { value: new Vector3(0, 0.1, -0.1) })
+            .addComponent(Visible, { value: true });
 
           world
             .createEntity("numberBallsLabel")
@@ -305,8 +303,7 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene /*playingGroup*/ })
       .addComponent(Animation)
-      .addComponent(Visible, { value: false })
-      .addComponent(Play);
+      .addComponent(Visible, { value: false });
 
     //panelInfo
     //.addComponent(Position, {value: new Vector3(3, 1, 1)})

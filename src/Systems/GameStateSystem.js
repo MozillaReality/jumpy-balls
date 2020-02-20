@@ -1,9 +1,11 @@
 import { System } from "ecsy";
 import { levels } from "../levels.js";
 import { Text } from "ecsy-three";
+import * as THREE from "three";
 import {
   BallGenerator,
   Dissolve,
+  Stop,
   Object3D,
   Raycaster,
   Play,
@@ -20,9 +22,10 @@ import { LevelManager, PhysicsSystem } from "../Systems/systems.mjs";
 
 export class GameStateSystem extends System {
   setVisibilityByName(name, value) {
-    this.world.entityManager
-      .getEntityByName(name)
-      .getMutableComponent(Visible).value = value;
+    let entity = this.world.entityManager.getEntityByName(name);
+    if (entity) {
+      entity.getMutableComponent(Visible).value = value;
+    }
   }
 
   finish() {
@@ -40,9 +43,16 @@ export class GameStateSystem extends System {
       entity.getMutableComponent(Raycaster).layerMask = 4;
     });
 
-    let panel = this.world.entityManager.getEntityByName("panelInfo").getComponent(Object3D).value.children[0];
-    panel.position.set(0,1.6,-2);
-    panel.scale.set(3,3,3);
+    let panelInfoEntity = this.world.entityManager.getEntityByName("panelInfo");
+    panelInfoEntity.addComponent(Play);
+    let panel = panelInfoEntity.getComponent(Object3D).value.children[0];
+
+    if (!panel.userData.oldPosition) {
+      panel.userData.oldPosition = new THREE.Vector3();
+    }
+    panel.userData.oldPosition.copy(panel.position);
+    panel.position.set(0, 1.6, -2);
+    panel.scale.set(3, 3, 3);
   }
 
   playGame() {
@@ -71,6 +81,16 @@ export class GameStateSystem extends System {
       generator.addComponent(Active);
     });
 
+    let panelInfoEntity = this.world.entityManager.getEntityByName("panelInfo");
+    panelInfoEntity.addComponent(Stop);
+    let panel = panelInfoEntity.getComponent(Object3D);
+    if (panel) {
+      panel = panel.value.children[0];
+      if (panel.userData.oldPosition) {
+        panel.position.copy(panel.userData.oldPosition);
+      }
+      panel.scale.set(1, 1, 1);
+    }
     this.world.getSystem(PhysicsSystem).play();
   }
 
