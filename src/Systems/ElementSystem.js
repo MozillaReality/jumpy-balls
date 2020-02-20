@@ -22,7 +22,8 @@ export class ElementSystem extends System {
           height: 0.03,
           depth: 0.15,
           restitution: 1,
-          draggable: true
+          draggable: true,
+          scale: 1
         },
         {
           model: "rubber",
@@ -30,7 +31,8 @@ export class ElementSystem extends System {
           height: 0.03,
           depth: 0.4,
           restitution: 2,
-          draggable: true
+          draggable: true,
+          scale: 1
         },
         {
           model: "wood",
@@ -38,7 +40,8 @@ export class ElementSystem extends System {
           height: 0.1,
           depth: 0.2,
           restitution: 0.8,
-          draggable: true
+          draggable: true,
+          scale: 1
         },
         {
           model: "static",
