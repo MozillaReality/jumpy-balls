@@ -18,7 +18,6 @@ import { LevelManager, PhysicsSystem } from "../Systems/systems.mjs";
 
 export class GameStateSystem extends System {
   setVisibilityByName(name, value) {
-    return;
     this.world.entityManager
       .getEntityByName(name)
       .getMutableComponent(Visible).value = value;
