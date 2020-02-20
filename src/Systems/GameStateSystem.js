@@ -49,6 +49,7 @@ export class GameStateSystem extends System {
     this.setVisibilityByName("startbutton", false);
     this.setVisibilityByName("finished", false);
     this.setVisibilityByName("playingGroup", true);
+    this.setVisibilityByName("panelInfo", true);
 
     this.queries.raycasters.results.forEach(entity => {
       entity.getMutableComponent(Raycaster).layerMask = 2;

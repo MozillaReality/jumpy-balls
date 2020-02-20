@@ -305,11 +305,12 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene /*playingGroup*/ })
       .addComponent(Animation)
+      .addComponent(Visible, { value: false })
       .addComponent(Play);
 
     //panelInfo
-      //.addComponent(Position, {value: new Vector3(3, 1, 1)})
-      //.addComponent(Scale, { value: new Vector3(3, 3, 3) });
+    //.addComponent(Position, {value: new Vector3(3, 1, 1)})
+    //.addComponent(Scale, { value: new Vector3(3, 3, 3) });
 
     /*
     world
