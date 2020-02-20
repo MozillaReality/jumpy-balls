@@ -25,6 +25,7 @@ export class VRControllerInteraction extends System {
     this.queries.objects.added.forEach(entity => {
       let object = entity.getComponent(Object3D).value.children[0];
       entity.addComponent(RaycastReceiver, {
+        layerMask: 2,
         onHover: () => {},
         onEnter: () => {
           object.material.emissive.set(0x224455);
@@ -46,7 +47,7 @@ export class VRControllerInteraction extends System {
       });
 
     this.queries.controllers.added.forEach(entity => {
-      entity.addComponent(Raycaster, { value: raycaster });
+      entity.addComponent(Raycaster, { value: raycaster, layerMask: 4 });
 
       /*
       let geometry = new THREE.BufferGeometry();

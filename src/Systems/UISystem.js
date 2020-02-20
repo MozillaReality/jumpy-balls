@@ -34,6 +34,7 @@ export class UISystem extends System {
       let group = new THREE.Object3D();
       entity.addComponent(Object3D, { value: group });
       entity.addComponent(RaycastReceiver, {
+        layerMask: 4,
         onHover: () => {},
         onEnter: () => {
           let obj = child.getComponent(Object3D).value;

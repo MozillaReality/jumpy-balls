@@ -36,11 +36,21 @@ export class RaycasterSystem extends System {
         return;
       }
 
-      var objects = this.queries.receivers.results.map(entity => {
-        var object = entity.getComponent(Object3D).value;
-        object.userData.entity = entity;
-        return object;
-      });
+      var objects = this.queries.receivers.results
+        .filter(entity => {
+          var mask = entity.getComponent(RaycastReceiver).layerMask;
+          return (mask & raycasterComponent.layerMask) !== 0;
+        })
+        .map(entity => {
+          var object = entity.getComponent(Object3D).value;
+          object.userData.entity = entity;
+          return object;
+        });
+
+      if (objects.length === 0) {
+        return;
+      }
+      console.log(objects);
 
       let raycast = raycasterComponent.value;
 

@@ -4,6 +4,7 @@ import { Text } from "ecsy-three";
 import {
   BallGenerator,
   Dissolve,
+  Raycaster,
   Visible,
   Target,
   Cleared,
@@ -33,12 +34,20 @@ export class GameStateSystem extends System {
     this.world.entityManager
       .getEntityByName("singleton")
       .getMutableComponent(Level).value = 1;
+
+    this.queries.raycasters.results.forEach(entity => {
+      entity.getMutableComponent(Raycaster).layerMask = 4;
+    });
   }
 
   playGame() {
     this.setVisibilityByName("startbutton", false);
     this.setVisibilityByName("finished", false);
     this.setVisibilityByName("playingGroup", true);
+
+    this.queries.raycasters.results.forEach(entity => {
+      entity.getMutableComponent(Raycaster).layerMask = 2;
+    });
 
     let gameState = this.queries.gameState.results[0].getMutableComponent(
       GameState
@@ -114,7 +123,6 @@ export class GameStateSystem extends System {
     // If a ball collided with the floor, reactivate the generator to throw another ball
     this.queries.ballFloorCollided.added.forEach(ball => {
       // @todo this.component.numBallsFailed++
-      console.log("Failed!!!");
       gameState.numBallsFailed++;
 
       this.world.entityManager
@@ -197,5 +205,8 @@ GameStateSystem.queries = {
     listen: {
       added: true
     }
+  },
+  raycasters: {
+    components: [Raycaster]
   }
 };

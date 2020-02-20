@@ -156,6 +156,8 @@ export class RaycastReceiver {
     this.onSelectStart = null;
     this.onSelect = null;
     this.onSelectEnd = null;
+
+    this.layerMask = 0;
   }
 }
 export class Raycaster {
@@ -166,6 +168,8 @@ export class Raycaster {
   reset() {
     this.enabled = true;
     this.currentEntity = null;
+
+    this.layerMask = 0;
   }
 }
 
