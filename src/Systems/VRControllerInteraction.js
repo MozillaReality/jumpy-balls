@@ -50,7 +50,7 @@ export class VRControllerInteraction extends System {
 
     this.queries.controllers.added.forEach(entity => {
       entity.addComponent(Raycaster, { value: raycaster, layerMask: 4 });
-/*
+
       var geometry = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(0, 0, 0),
         new THREE.Vector3(0, 0, -1)
@@ -65,7 +65,6 @@ export class VRControllerInteraction extends System {
         .createEntity("linex")
         .addComponent(Object3D, { value: line })
         .addComponent(ParentObject3D, { value: obj });
-*/        
     });
 
     this.cleanIntersected();
