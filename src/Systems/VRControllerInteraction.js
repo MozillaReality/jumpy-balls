@@ -28,15 +28,21 @@ export class VRControllerInteraction extends System {
       let object = entity.getComponent(Object3D).value.children[0];
       entity.addComponent(RaycastReceiver, {
         layerMask: 2,
-        onHover: () => {},
+        onHover: (intersection, raycasterEntity) => {
+          let lineParent = raycasterEntity.getComponent(Object3D).value;
+          let line = lineParent.getObjectByName("line");
+          line.scale.z = intersection.distance;
+        },
         onEnter: () => {
           object.material.emissive.set(0x224455);
         },
-        onLeave: () => {
+        onLeave: raycasterEntity => {
+          let lineParent = raycasterEntity.getComponent(Object3D).value;
+          let line = lineParent.getObjectByName("line");
+          line.scale.z = 10;
           object.material.emissive.set(0x000000);
         },
         onSelectStart: this.onSelectStart.bind(this)
-        //onSelectEnd: this.onSelectEnd.bind(this)
       });
     });
 
@@ -49,7 +55,7 @@ export class VRControllerInteraction extends System {
       });
 
     this.queries.controllers.added.forEach(entity => {
-      entity.addComponent(Raycaster, { value: raycaster, layerMask: 4 });
+      entity.addComponent(Raycaster, { value: raycaster, layerMask: 6 /* 4 */ });
 
       var geometry = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(0, 0, 0),
@@ -57,7 +63,7 @@ export class VRControllerInteraction extends System {
       ]);
       var line = new THREE.Line(geometry);
       line.name = "line";
-      line.scale.z = 10;
+      line.scale.z = 5;
 
       let obj = entity.getComponent(Object3D).value.children[0];
 
@@ -161,39 +167,6 @@ export class VRControllerInteraction extends System {
       );
       */
     }
-  }
-
-  intersectObjects(controller) {
-    // Do not highlight when already selected
-    if (controller.userData.selected !== undefined) return;
-    var line = controller.getObjectByName("line");
-    var intersections = this.getIntersections(controller);
-
-    if (intersections.length > 0) {
-      var intersection = intersections[0];
-      var object = intersection.object;
-      object.material.emissive.r = 1;
-      intersected.push(object);
-
-      line.scale.z = intersection.distance;
-    } else {
-      line.scale.z = 5;
-    }
-  }
-
-  getIntersections(controller) {
-    tempMatrix.identity().extractRotation(controller.matrixWorld);
-
-    raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-    raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
-    // @fixme expensive
-    var objects = this.queries.objects.results.map(entity => {
-      var object = entity.getComponent(Object3D).value;
-      object.userData.entity = entity;
-      return object;
-    });
-
-    return raycaster.intersectObjects(objects);
   }
 
   cleanIntersected() {

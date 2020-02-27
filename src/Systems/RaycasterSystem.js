@@ -87,9 +87,10 @@ export class RaycasterSystem extends System {
 
           if (receiverHandler && !receiverHandler.hovering) {
             receiverHandler.hovering = true;
-            receiverHandler.onEnter(intersection);
+            receiverHandler.onEnter(intersection, raycaster);
           }
-          receiverHandler.onHover && receiverHandler.onHover(intersection);
+
+          receiverHandler.onHover && receiverHandler.onHover(intersection, raycaster);
 
           if (controllerInputState) {
             if (
@@ -110,7 +111,7 @@ export class RaycasterSystem extends System {
 
           if (receiverHandler && receiverHandler.hovering) {
             receiverHandler.hovering = false;
-            receiverHandler.onLeave && receiverHandler.onLeave();
+            receiverHandler.onLeave && receiverHandler.onLeave(raycaster);
           }
 
           raycasterComponent.currentEntity = null;
