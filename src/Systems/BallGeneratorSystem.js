@@ -12,7 +12,7 @@ import {
   BallGenerator
 } from "../Components/components.js";
 
-const RADIUS = 0.1;
+const RADIUS = 0.03;
 
 export class BallGeneratorSystem extends System {
   execute() {

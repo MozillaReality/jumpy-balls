@@ -28,12 +28,12 @@ export const levels = [
     elements: [
       {
         type: WOOD,
-        position: { x: -0.5, y: 1.2, z: -0.3 },
+        position: { x: -0.9, y: 1.2, z: -0.3 },
         rotation: { x: 0, y: 0, z: 6 }
       },
       {
         type: METAL,
-        position: { x: -0.2, y: 0.8, z: -0.3 },
+        position: { x: -0.5, y: 0.8, z: -0.3 },
         rotation: { x: 0, y: 0, z: -0.3 }
       },
       {
