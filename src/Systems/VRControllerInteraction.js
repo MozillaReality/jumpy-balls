@@ -4,6 +4,8 @@ import { System } from "ecsy";
 import {
   VRController,
   Draggable,
+  Parent,
+  ParentObject3D,
   Dragging,
   Object3D,
   Raycaster,
@@ -48,25 +50,22 @@ export class VRControllerInteraction extends System {
 
     this.queries.controllers.added.forEach(entity => {
       entity.addComponent(Raycaster, { value: raycaster, layerMask: 4 });
-
-      /*
-      let geometry = new THREE.BufferGeometry();
-      geometry.setAttribute(
-        "position",
-        new THREE.Float32BufferAttribute([0, 0, 0, 0, 0, -1], 3)
-      );
-
+/*
+      var geometry = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(0, 0, -1)
+      ]);
       var line = new THREE.Line(geometry);
       line.name = "line";
-      line.scale.z = 5;
-      controller.add(line);
+      line.scale.z = 10;
 
-      let geometry2 = new THREE.BoxBufferGeometry(0.1, 0.1, 0.1);
-      let material2 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-      let cube = new THREE.Mesh(geometry2, material2);
-      controller.name = "VRController";
-      controller.add(cube);
-*/
+      let obj = entity.getComponent(Object3D).value.children[0];
+
+      this.world
+        .createEntity("linex")
+        .addComponent(Object3D, { value: line })
+        .addComponent(ParentObject3D, { value: obj });
+*/        
     });
 
     this.cleanIntersected();

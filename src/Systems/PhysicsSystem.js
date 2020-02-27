@@ -28,7 +28,7 @@ export class PhysicsSystem extends System {
     });
 
     // this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
-    this._physicsWorld.stepSimulation(delta, 2, 1 / 60);
+    this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
 
     const entities = this.queries.entities.results;
     for (let i = 0, il = entities.length; i < il; i++) {
