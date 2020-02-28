@@ -14,3 +14,4 @@ export { UISystem } from "./UISystem.js";
 export { RaycasterSystem } from "./RaycasterSystem.js";
 export { InputSystem } from "./InputSystem.js";
 export { AnimationSystem } from "./AnimationSystem.js";
+export { SoundSystem } from "./SoundSystem.js";

@@ -4,7 +4,6 @@ import { World } from "ecsy";
 import {
   GameState,
   Geometry,
-  Scale,
   Level,
   Object3D,
   Parent,
@@ -12,7 +11,6 @@ import {
   RigidBody,
   Animation,
   Scene,
-  Play,
   Position,
   Shape,
   GLTFLoader,
@@ -45,6 +43,7 @@ import {
   TargetSystem,
   RaycasterSystem,
   UISystem,
+  SoundSystem,
   InputSystem,
   VRControllerInteraction
 } from "./Systems/systems.mjs";
@@ -76,12 +75,13 @@ function initGame() {
     .registerSystem(RaycasterSystem)
     .registerSystem(UISystem)
     .registerSystem(DissolveSystem)
-    .registerSystem(ElementSystem)
     .registerSystem(BallGeneratorSystem)
     .registerSystem(VRControllerSystem)
     .registerSystem(VRControllerInteraction)
     .registerSystem(CameraRigSystem)
     .registerSystem(PhysicsSystem)
+    .registerSystem(ElementSystem)
+    .registerSystem(SoundSystem)
     .registerSystem(VisibilitySystem)
     .registerSystem(FloorCollisionSystem)
     .registerSystem(TargetSystem)

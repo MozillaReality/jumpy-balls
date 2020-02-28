@@ -4,28 +4,23 @@ import { System } from "ecsy";
 import {
   Transform,
   Shape,
+  Ball,
   Colliding,
+  CollisionStart,
+  CollisionStop,
   Object3D,
   RigidBody
 } from "../Components/components.js";
-import PositionalAudioPolyphonic from "../vendor/PositionalAudioPolyphonic.js";
 
 var quaternion = new THREE.Quaternion();
 var euler = new THREE.Euler();
-
-let listener = new THREE.AudioListener();
-const sound = new PositionalAudioPolyphonic(listener, 10);
-const audioLoader = new THREE.AudioLoader();
-audioLoader.load("/assets/metal.ogg", buffer => {
-  sound.setBuffer(buffer);
-});
-
 
 export class PhysicsSystem extends System {
   init() {
     this.epsilon = 10e-6;
     this.collisions = new Map();
     this.collisionKeys = [];
+    this.frame = 0;
 
     this._physicsWorld = this._createWorld();
     this._transform = new Ammo.btTransform();
@@ -35,6 +30,8 @@ export class PhysicsSystem extends System {
   }
 
   execute(delta) {
+    this.frame++;
+
     this.queries.entities.added.forEach(entity => {
       var object = entity.getComponent(Object3D).value;
       const body = this._setupRigidBody(this._createRigidBody(entity), entity);
@@ -52,7 +49,13 @@ export class PhysicsSystem extends System {
     for (let k = 0; k < this.collisionKeys.length; k++) {
       this.collisions.get(this.collisionKeys[k]).length = 0;
     }
-  */
+    */
+
+    this.queries.collisionsStart.results.forEach(entity => {
+      entity.removeComponent(CollisionStart);
+    });
+
+//    this.collisions.clear();
 
     const numManifolds = this.dispatcher.getNumManifolds();
     for (let i = 0; i < numManifolds; i++) {
@@ -68,13 +71,15 @@ export class PhysicsSystem extends System {
           let entity0 = this.bodyToEntity.get(body0ptr);
           let entity1 = this.bodyToEntity.get(body1ptr);
           if (!entity0.hasComponent(Colliding)) {
-            entity0.addComponent(Colliding);
+            entity0.addComponent(Colliding, { collidingFrame: this.frame });
+            entity0.addComponent(CollisionStart);
           }
+
           let colliding = entity0.getMutableComponent(Colliding);
           if (colliding.collidingWith.indexOf(entity1) === -1) {
             colliding.collidingWith.push(entity1);
-            sound.play();
           }
+          break;
         }
       }
     }
@@ -111,9 +116,20 @@ export class PhysicsSystem extends System {
       this._removeRigidBody(entity);
     });
 
+    this.queries.collisionsStop.results.forEach(entity => {
+      //console.log("Colliding!", entity.id, entity.getComponent(Colliding));
+      entity.removeComponent(CollisionStop);
+    });
+
     this.queries.collisions.results.forEach(entity => {
-      console.log("Colliding!", entity.id, entity.getComponent(Colliding));
-      entity.removeComponent(Colliding);
+      let colliding = entity.getComponent(Colliding);
+      if (colliding.collidingFrame !== this.frame) {
+        // console.log("Collision out!");
+        entity.removeComponent(Colliding);
+        entity.addComponent(CollisionStop);
+      } else {
+        // console.log("Colliding!", entity.id, entity.getComponent(Colliding));
+      }
     });
   }
 
@@ -142,6 +158,7 @@ export class PhysicsSystem extends System {
       solver,
       config
     );
+    //world.setGravity(new Ammo.btVector3(0, -9.8, 0));
     world.setGravity(new Ammo.btVector3(0, -9.8, 0));
     // world.getSolverInfo().set_m_numIterations(10);
 
@@ -231,6 +248,17 @@ PhysicsSystem.queries = {
     listen: {
       added: true
     }
+  },
+  collisionsStart: {
+    components: [CollisionStart],
+    listen: {
+      added: true
+    }
+  },
+  collisionsStop: {
+    components: [CollisionStop],
+    listen: {
+      added: true
+    }
   }
-
 };

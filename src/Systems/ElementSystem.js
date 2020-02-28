@@ -1,12 +1,18 @@
 import { System } from "ecsy";
+import * as THREE from "three";
 import {
   Element,
   GLTFLoader,
   Shape,
+  Ball,
+  Colliding,
+  CollisionStart,
   Draggable,
+  Sound,
   RigidBody
 } from "../Components/components.js";
 import * as Materials from "../materials.js";
+import PositionalAudioPolyphonic from "../vendor/PositionalAudioPolyphonic.js";
 
 export class ElementSystem extends System {
   execute() {
@@ -20,25 +26,29 @@ export class ElementSystem extends System {
           model: "metal",
           restitution: 1,
           draggable: true,
-          scale: 1
+          scale: 1,
+          sound: "metal.ogg"
         },
         {
           model: "rubber",
           restitution: 2,
           draggable: true,
-          scale: 1
+          scale: 1,
+          sound: "rubber.ogg"
         },
         {
           model: "wood",
           restitution: 0.8,
           draggable: true,
-          scale: 1
+          scale: 1,
+          sound: "wood.ogg"
         },
         {
           model: "static",
           restitution: 0.1,
           draggable: false,
-          scale: 0.3
+          scale: 0.3,
+          sound: "static.ogg"
         }
       ];
 
@@ -71,6 +81,10 @@ export class ElementSystem extends System {
               height: h,
               depth: d
             });
+
+            entity.addComponent(Sound, {
+              url: config.sound
+            });
           }
         })
         .addComponent(RigidBody, {
@@ -79,12 +93,23 @@ export class ElementSystem extends System {
           friction: 0.5,
           linearDamping: 0.0,
           angularDamping: 0.0
-        });
+        })
 
       if (config.draggable) {
         entity.addComponent(Draggable);
       }
     }
+
+    this.queries.colliding.results.forEach(entity => {
+      let collision = entity.getComponent(Colliding);
+      let hasBall = entity.hasComponent(Ball);
+      let ball = hasBall ? entity : collision.collidingWith[0];
+      let block = !hasBall ? entity : collision.collidingWith[0];
+
+      if (block.hasComponent(Sound)) {
+        block.getComponent(Sound).sound.play();
+      }
+    });
   }
 }
 
@@ -94,5 +119,8 @@ ElementSystem.queries = {
     listen: {
       added: true
     }
+  },
+  colliding: {
+    components: [CollisionStart]
   }
 };

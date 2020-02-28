@@ -50,6 +50,26 @@ export class Cleared extends TagComponent {}
 export class Colliding {
   constructor() {
     this.collidingWith = [];
+    this.collidingFrame = 0;
+  }
+  reset() {
+    this.collidingWith.length = 0;
+    this.collidingFrame = 0;
+  }
+}
+
+export class CollisionStart {
+  constructor() {
+    this.collidingWith = [];
+  }
+  reset() {
+    this.collidingWith.length = 0;
+  }
+}
+
+export class CollisionStop {
+  constructor() {
+    this.collidingWith = [];
   }
   reset() {
     this.collidingWith.length = 0;
@@ -203,3 +223,14 @@ export class Animation {
 export class Play extends TagComponent {}
 
 export class Stop extends TagComponent {}
+
+export class Sound {
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.sound = null;
+    this.url = "";
+  }
+}
