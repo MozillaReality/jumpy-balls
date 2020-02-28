@@ -264,55 +264,55 @@ function initGame() {
             .createEntity("numberBallsLabel")
             .addComponent(
               Text,
-              getTextParameters("Balls", "#c0095d", 0.13, "center")
+              getTextParameters("Balls", "#c0095d", 0.2, "center")
             )
             .addComponent(ParentObject3D, { value: model.children[0] })
-            .addComponent(Position, { value: new Vector3(-0.29, 0.2, 0.01) });
+            .addComponent(Position, { value: new Vector3(-0.4, 0.26, 0.01) });
 
           world
             .createEntity("numberBalls")
             .addComponent(
               Text,
-              getTextParameters("0/0", "#f9258b", 0.15, "center")
+              getTextParameters("0/0", "#f9258b", 0.2, "center")
             )
             .addComponent(ParentObject3D, { value: model.children[0] })
-            .addComponent(Position, { value: new Vector3(-0.31, 0, 0.01) });
+            .addComponent(Position, { value: new Vector3(-0.4, 0, 0.01) });
 
           world
             .createEntity("timeLabel")
             .addComponent(
               Text,
-              getTextParameters("Time", "#836000", 0.14, "center")
+              getTextParameters("Time", "#836000", 0.2, "center")
             )
             .addComponent(ParentObject3D, { value: model.children[0] })
-            .addComponent(Position, { value: new Vector3(0.25, 0.22, 0.01) });
+            .addComponent(Position, { value: new Vector3(0.4, 0.28, 0.01) });
 
           world
             .createEntity("totalTimeLabel")
             .addComponent(
               Text,
-              getTextParameters("Total", "#836000", 0.08, "center")
+              getTextParameters("Total", "#836000", 0.095, "center")
             )
             .addComponent(ParentObject3D, { value: model.children[0] })
-            .addComponent(Position, { value: new Vector3(0.1, -0.16, 0.01) });
+            .addComponent(Position, { value: new Vector3(0.16, -0.21, 0.01) });
 
           world
             .createEntity("timer")
             .addComponent(
               Text,
-              getTextParameters("00:00", "#ebb808", 0.18, "center")
+              getTextParameters("00:00", "#ebb808", 0.22, "center")
             )
             .addComponent(ParentObject3D, { value: model.children[0] })
-            .addComponent(Position, { value: new Vector3(0.25, 0.04, 0.01) });
+            .addComponent(Position, { value: new Vector3(0.4, 0.04, 0.01) });
 
           world
             .createEntity("timerTotal")
             .addComponent(
               Text,
-              getTextParameters("00:00", "#ebb808", 0.09, "left")
+              getTextParameters("00:00", "#ebb808", 0.12, "left")
             )
             .addComponent(ParentObject3D, { value: model.children[0] })
-            .addComponent(Position, { value: new Vector3(0.25, -0.095, 0.01) });
+            .addComponent(Position, { value: new Vector3(0.36, -0.13, 0.01) });
 
           //model.children[0].lookAt(data.entities.camera.getComponent(Object3D).value);
         }
