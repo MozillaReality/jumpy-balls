@@ -135,11 +135,22 @@ function initGame() {
 
     createScene(data);
 
+    var listener = new THREE.AudioListener();
+
+    var audio = new THREE.Audio(listener);
+
+    var mediaElement = new Audio("/assets/sounds/music.ogg");
+    mediaElement.loop = true;
+
+    audio.setMediaElementSource(mediaElement);
+
     let startButton = world
       .createEntity("startbutton")
       .addComponent(UI)
       .addComponent(Button, {
         onClick: () => {
+          mediaElement.play();
+
           world.getSystem(GameStateSystem).playGame();
           setTimeout(() => {
             startButton.addComponent(Visible, { value: false });
@@ -149,6 +160,7 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Position, { value: new Vector3(0, 0.5, -1) })
+      .addComponent(Sound, { url: "click.ogg" })
       .addComponent(Visible, { value: !urlParams.has("autostart") });
 
     if (urlParams.has("autostart")) {
@@ -205,16 +217,16 @@ function initGame() {
             .createEntity("levelLabel")
             .addComponent(
               Text,
-              getTextParameters("Level", "#20b4d6", 0.09, "center")
+              getTextParameters("Level", "#20b4d6", 0.12, "center")
             )
             .addComponent(ParentObject3D, { value: model.children[0] })
-            .addComponent(Position, { value: new Vector3(0, 0.13, 0.01) });
+            .addComponent(Position, { value: new Vector3(0, 0.2, 0.01) });
 
           world
             .createEntity("level")
             .addComponent(
               Text,
-              getTextParameters("1", "#90cdeb", 0.2, "center")
+              getTextParameters("1", "#90cdeb", 0.3, "center")
             )
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(0, 0, 0.01) });
@@ -222,7 +234,8 @@ function initGame() {
           //model.children[0].lookAt(data.entities.camera.getComponent(Object3D).value);
         }
       })
-      .addComponent(Parent, { value: playingGroup });
+      .addComponent(Parent, { value: playingGroup })
+      .addComponent(Position, { value: new Vector3(0, 3, -6) });
 
     const panelInfo = world
       .createEntity("panelInfo")
@@ -305,7 +318,7 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene /*playingGroup*/ })
       .addComponent(Animation)
-      .addComponent(Position, { value: new Vector3(2, 2, -2) })
+      .addComponent(Position, { value: new Vector3(0, 2, -6) })
       .addComponent(Visible, { value: false });
   }
 

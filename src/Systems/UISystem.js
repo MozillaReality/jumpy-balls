@@ -5,6 +5,7 @@ import TWEEN from "../vendor/tween.module.min.js";
 import { Position, Text } from "ecsy-three";
 import {
   UI,
+  Sound,
   Parent,
   Geometry,
   Button,
@@ -33,7 +34,7 @@ export class UISystem extends System {
 
       let group = new THREE.Object3D();
       entity.addComponent(Object3D, { value: group });
-      entity.addComponent(RaycastReceiver, {
+      child.addComponent(RaycastReceiver, {
         layerMask: 4,
         onHover: () => {},
         onEnter: () => {
@@ -89,6 +90,10 @@ export class UISystem extends System {
             .yoyo(true)
             .easing(TWEEN.Easing.Quadratic.Out)
             .start();
+
+          if (entity.hasComponent(Sound)) {
+            entity.getComponent(Sound).sound.play();
+          }
           button.onClick && button.onClick();
         }
       });

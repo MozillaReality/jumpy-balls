@@ -34,7 +34,7 @@ export class ElementSystem extends System {
         },
         {
           model: "rubber",
-          restitution: 2,
+          restitution: 2.5,
           draggable: true,
           scale: 1,
           sound: "rubber.ogg"

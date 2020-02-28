@@ -84,15 +84,17 @@ export class LevelManager extends System {
           }
         })
         .addComponent(Animation)
+        .addComponent(Sound, { url: "cannon.ogg" })
         .addComponent(Position, {
           value: new THREE.Vector3().copy(g.position)
         })
         .addComponent(LevelItem)
         .addComponent(Parent, { value: levelGroup });
-
+/*
         if (worldSingleton.getComponent(GameState).playing) {
           ballGenerator.addComponent(Active);
         }
+        */
     });
 
     // Targets

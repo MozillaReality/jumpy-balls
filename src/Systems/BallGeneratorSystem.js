@@ -7,6 +7,7 @@ import {
   GLTFLoader,
   Shape,
   Parent,
+  Sound,
   RigidBody,
   Transform,
   BallGenerator
@@ -17,6 +18,11 @@ const RADIUS = 0.03;
 export class BallGeneratorSystem extends System {
   execute() {
     this.queries.entities.added.forEach(generator => {
+      let soundComponent = generator.getComponent(Sound);
+      if (soundComponent.sound) {
+        soundComponent.sound.play();
+      }
+
       var ballGeneratorComponent = generator.getComponent(BallGenerator);
 
       // Ball dispatcher object
