@@ -7,7 +7,7 @@ The GLTFs are exported with textures embedded inside, so only the .glb files are
 
 * Font: https://www.dafont.com/es/wetincarowant.font?fpp=100
 
-Sounds
+Sounds:
 
 * https://freesound.org/people/bareform/sounds/218721/
 * https://freesound.org/people/andrutzab/sounds/199690/
