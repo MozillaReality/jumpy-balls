@@ -4,12 +4,14 @@ import { World } from "ecsy";
 import {
   GameState,
   Geometry,
+  Sound,
   Level,
   Object3D,
   Parent,
   ParentObject3D,
   RigidBody,
   Animation,
+  Floor,
   Scene,
   Position,
   Shape,
@@ -79,8 +81,8 @@ function initGame() {
     .registerSystem(VRControllerSystem)
     .registerSystem(VRControllerInteraction)
     .registerSystem(CameraRigSystem)
-    .registerSystem(PhysicsSystem)
     .registerSystem(ElementSystem)
+    .registerSystem(PhysicsSystem)
     .registerSystem(SoundSystem)
     .registerSystem(VisibilitySystem)
     .registerSystem(FloorCollisionSystem)
@@ -303,8 +305,8 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene /*playingGroup*/ })
       .addComponent(Animation)
+      .addComponent(Position, { value: new Vector3(2, 2, -2) })
       .addComponent(Visible, { value: false });
-
   }
 
   function createFloor(data) {
@@ -327,6 +329,8 @@ function initGame() {
         position: { x: 0, y: -0.05, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       })
+      .addComponent(Floor)
+      .addComponent(Sound, { url: "miss.ogg" })
       .addComponent(RigidBody, {
         weight: 0.0,
         restitution: 1.0,

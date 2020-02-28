@@ -4,6 +4,7 @@ import { Text, Position } from "ecsy-three";
 import {
   Level,
   Target,
+  Sound,
   Transform,
   GLTFLoader,
   GameState,
@@ -110,7 +111,8 @@ export class LevelManager extends System {
           rotation: t.rotation
         })
         .addComponent(LevelItem)
-        .addComponent(Parent, { value: levelGroup });
+        .addComponent(Parent, { value: levelGroup })
+        .addComponent(Sound, { url: "target.ogg" });
     });
 
     // Boxes (draggable and fixed)

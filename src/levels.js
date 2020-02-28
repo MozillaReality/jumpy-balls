@@ -15,6 +15,7 @@ export const levels = [
     targets: [
       {
         position: { x: 0.4, y: 0.8, z: -0.3 },
+        //position: { x: -0.8, y: 0.8, z: -0.3 },
         rotation: { x: 0, y: Math.PI / 2, z: 0 }
       }
     ],

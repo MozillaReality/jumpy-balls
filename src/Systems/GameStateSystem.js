@@ -5,6 +5,7 @@ import * as THREE from "three";
 import {
   BallGenerator,
   Dissolve,
+  Sound,
   Stop,
   Object3D,
   Raycaster,
@@ -187,11 +188,14 @@ export class GameStateSystem extends System {
       ball.addComponent(Dissolve);
     });
 
-    this.queries.targetCleared.added.forEach(() => {
+    this.queries.targetCleared.added.forEach(entity => {
       /*      this.world.entityManager
         .getEntityByName("numberBalls")
         .getMutableComponent(Text).text = `Level cleared!`;
 */
+
+      entity.getComponent(Sound).sound.play();
+      
       setTimeout(() => {
         var levelComponent = worldSingleton.getMutableComponent(Level);
         if (levelComponent.value === levels.length - 1) {

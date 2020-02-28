@@ -12,6 +12,7 @@ import {
  */
 export class FloorCollisionSystem extends System {
   execute() {
+    return;
     var gameState = this.queries.gameState.results[0].getComponent(GameState);
 
     if (gameState.levelFinished) {

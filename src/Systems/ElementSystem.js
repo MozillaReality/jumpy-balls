@@ -3,6 +3,9 @@ import * as THREE from "three";
 import {
   Element,
   GLTFLoader,
+  Active,
+  FloorCollided,
+  Floor,
   Shape,
   Ball,
   Colliding,
@@ -93,7 +96,7 @@ export class ElementSystem extends System {
           friction: 0.5,
           linearDamping: 0.0,
           angularDamping: 0.0
-        })
+        });
 
       if (config.draggable) {
         entity.addComponent(Draggable);
@@ -106,8 +109,17 @@ export class ElementSystem extends System {
       let ball = hasBall ? entity : collision.collidingWith[0];
       let block = !hasBall ? entity : collision.collidingWith[0];
 
-      if (block.hasComponent(Sound)) {
-        block.getComponent(Sound).sound.play();
+      if (block.hasComponent(Floor)) {
+        if (ball.hasComponent(Active)) {
+          block.getComponent(Sound).sound.play();
+          ball.removeComponent(Active);
+          // Wait a bit before spawning a new bullet from the generator
+          ball.addComponent(FloorCollided);
+        }
+      } else {
+        if (block.hasComponent(Sound)) {
+          block.getComponent(Sound).sound.play();
+        }
       }
     });
   }

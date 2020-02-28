@@ -234,3 +234,5 @@ export class Sound {
     this.url = "";
   }
 }
+
+export class Floor extends TagComponent {}
