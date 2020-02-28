@@ -141,6 +141,7 @@ function initGame() {
 
     var mediaElement = new Audio("/assets/sounds/music.ogg");
     mediaElement.loop = true;
+    audio.setVolume(0.2);
 
     audio.setMediaElementSource(mediaElement);
 
