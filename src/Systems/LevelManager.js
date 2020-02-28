@@ -98,11 +98,13 @@ export class LevelManager extends System {
 
       if (worldSingleton.getComponent(GameState).playing) {
         // ballGenerator.addComponent(Active);
-        ballGenerator.addComponent(Play);
-
         setTimeout(() => {
-          ballGenerator.addComponent(Active);
-        }, 2300);
+          ballGenerator.addComponent(Play);
+
+          setTimeout(() => {
+            ballGenerator.addComponent(Active);
+          }, 1900);
+        }, 2000);
       }
     });
 
