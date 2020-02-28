@@ -4,31 +4,80 @@ import { System } from "ecsy";
 import {
   Transform,
   Shape,
+  Colliding,
   Object3D,
   RigidBody
 } from "../Components/components.js";
+import PositionalAudioPolyphonic from "../vendor/PositionalAudioPolyphonic.js";
 
 var quaternion = new THREE.Quaternion();
 var euler = new THREE.Euler();
 
+let listener = new THREE.AudioListener();
+const sound = new PositionalAudioPolyphonic(listener, 10);
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load("/assets/metal.ogg", buffer => {
+  sound.setBuffer(buffer);
+});
+
+
 export class PhysicsSystem extends System {
   init() {
+    this.epsilon = 10e-6;
+    this.collisions = new Map();
+    this.collisionKeys = [];
+
     this._physicsWorld = this._createWorld();
     this._transform = new Ammo.btTransform();
     this._quaternion = new Ammo.btQuaternion(0, 0, 0, 1);
+
+    this.bodyToEntity = new Map();
   }
 
   execute(delta) {
     this.queries.entities.added.forEach(entity => {
       var object = entity.getComponent(Object3D).value;
       const body = this._setupRigidBody(this._createRigidBody(entity), entity);
+
+      body.setCcdMotionThreshold(0.01);
+      body.setCcdSweptSphereRadius(0.01);
+
       body.object3D = object;
       object.userData.body = body;
       this._physicsWorld.addRigidBody(body);
     });
 
-    // this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
     this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
+    /*
+    for (let k = 0; k < this.collisionKeys.length; k++) {
+      this.collisions.get(this.collisionKeys[k]).length = 0;
+    }
+  */
+
+    const numManifolds = this.dispatcher.getNumManifolds();
+    for (let i = 0; i < numManifolds; i++) {
+      const persistentManifold = this.dispatcher.getManifoldByIndexInternal(i);
+      const numContacts = persistentManifold.getNumContacts();
+      const body0ptr = Ammo.getPointer(persistentManifold.getBody0());
+      const body1ptr = Ammo.getPointer(persistentManifold.getBody1());
+
+      for (let j = 0; j < numContacts; j++) {
+        const manifoldPoint = persistentManifold.getContactPoint(j);
+        const distance = manifoldPoint.getDistance();
+        if (distance <= this.epsilon) {
+          let entity0 = this.bodyToEntity.get(body0ptr);
+          let entity1 = this.bodyToEntity.get(body1ptr);
+          if (!entity0.hasComponent(Colliding)) {
+            entity0.addComponent(Colliding);
+          }
+          let colliding = entity0.getMutableComponent(Colliding);
+          if (colliding.collidingWith.indexOf(entity1) === -1) {
+            colliding.collidingWith.push(entity1);
+            sound.play();
+          }
+        }
+      }
+    }
 
     const entities = this.queries.entities.results;
     for (let i = 0, il = entities.length; i < il; i++) {
@@ -61,6 +110,11 @@ export class PhysicsSystem extends System {
     this.queries.entities.removed.forEach(entity => {
       this._removeRigidBody(entity);
     });
+
+    this.queries.collisions.results.forEach(entity => {
+      console.log("Colliding!", entity.id, entity.getComponent(Colliding));
+      entity.removeComponent(Colliding);
+    });
   }
 
   _removeRigidBody(entity) {
@@ -69,6 +123,7 @@ export class PhysicsSystem extends System {
       let object = component.value;
       var body = object.userData.body;
       this._physicsWorld.removeRigidBody(body);
+      this.bodyToEntity.delete(Ammo.getPointer(body));
       Ammo.destroy(body);
       delete object.userData.body;
     } else {
@@ -78,11 +133,11 @@ export class PhysicsSystem extends System {
 
   _createWorld() {
     const config = new Ammo.btDefaultCollisionConfiguration();
-    const dispatcher = new Ammo.btCollisionDispatcher(config);
+    this.dispatcher = new Ammo.btCollisionDispatcher(config);
     const cache = new Ammo.btDbvtBroadphase();
     const solver = new Ammo.btSequentialImpulseConstraintSolver();
     const world = new Ammo.btDiscreteDynamicsWorld(
-      dispatcher,
+      this.dispatcher,
       cache,
       solver,
       config
@@ -142,7 +197,10 @@ export class PhysicsSystem extends System {
       shape,
       localInertia
     );
-    return new Ammo.btRigidBody(info);
+    var body = new Ammo.btRigidBody(info);
+    this.bodyToEntity.set(Ammo.getPointer(body), entity);
+
+    return body;
   }
 
   _setupRigidBody(body, entity) {
@@ -166,5 +224,13 @@ PhysicsSystem.queries = {
       added: true,
       removed: true
     }
+  },
+
+  collisions: {
+    components: [Colliding],
+    listen: {
+      added: true
+    }
   }
+
 };

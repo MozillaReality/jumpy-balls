@@ -47,6 +47,15 @@ export class Level {
 export class FloorCollided extends TagComponent {}
 export class Cleared extends TagComponent {}
 
+export class Colliding {
+  constructor() {
+    this.collidingWith = [];
+  }
+  reset() {
+    this.collidingWith.length = 0;
+  }
+}
+
 export class Element {
   constructor() {}
   reset() {}
