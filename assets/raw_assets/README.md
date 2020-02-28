@@ -9,6 +9,7 @@ The GLTFs are exported with textures embedded inside, so only the .glb files are
 
 Sounds:
 
+* https://freesound.org/people/Slaking_97/sounds/455109/
 * https://freesound.org/people/bareform/sounds/218721/
 * https://freesound.org/people/andrutzab/sounds/199690/
 * https://freesound.org/people/ultradust/sounds/167385/
