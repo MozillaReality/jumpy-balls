@@ -23,7 +23,7 @@ export class BallGeneratorSystem extends System {
       var ball = this.world.createEntity();
       ball
         .addComponent(GLTFLoader, {
-          url: "ball.glb",
+          url: "/assets/models/ball.glb",
           onLoaded: model => {
             ball.getMutableComponent(Object3D).value = model.children[0];
           }

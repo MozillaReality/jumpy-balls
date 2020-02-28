@@ -180,7 +180,7 @@ function initGame() {
     world
       .createEntity()
       .addComponent(GLTFLoader, {
-        url: "set.glb",
+        url: "/assets/models/set.glb",
         onLoaded: model => {
           const cloudsMaterial = model.getChildByName("clouds").material;
           cloudsMaterial.transparent = true;
@@ -195,7 +195,7 @@ function initGame() {
     const panelLevel = world
       .createEntity("panelLevel")
       .addComponent(GLTFLoader, {
-        url: "panellevel.glb",
+        url: "/assets/models/panellevel.glb",
         onLoaded: model => {
           model.children[0].material.transparent = true;
           model.children[0].renderOrder = 1;
@@ -225,7 +225,7 @@ function initGame() {
     const panelInfo = world
       .createEntity("panelInfo")
       .addComponent(GLTFLoader, {
-        url: "panelinfo.glb",
+        url: "/assets/models/panelinfo.glb",
         onLoaded: model => {
           model.children[0].material.transparent = true;
           model.children[0].children[0].material.transparent = true;
@@ -305,20 +305,6 @@ function initGame() {
       .addComponent(Animation)
       .addComponent(Visible, { value: false });
 
-    //panelInfo
-    //.addComponent(Position, {value: new Vector3(3, 1, 1)})
-    //.addComponent(Scale, { value: new Vector3(3, 3, 3) });
-
-    /*
-    world
-      .createEntity()
-      .addComponent(GLTFLoader, { url: "BouncyFrame.glb" })
-      .addComponent(Transform, {
-        position: { x: 1, y: 2, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      })
-      .addComponent(Parent, { value: data.entities.scene });
-*/
   }
 
   function createFloor(data) {
@@ -358,7 +344,7 @@ function initGame() {
       anchor: align || "center",
       textAlign: align || "center",
       baseline: align || "center",
-      font: "assets/WetinCaroWant.ttf",
+      font: "assets/fonts/WetinCaroWant.ttf",
       maxWidth: 10,
       lineHeight: 1.3,
       text: text || "LOREM IPSUM"

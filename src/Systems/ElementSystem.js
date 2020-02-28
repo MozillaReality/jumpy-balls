@@ -56,7 +56,7 @@ export class ElementSystem extends System {
 
       entity
         .addComponent(GLTFLoader, {
-          url: config.model + ".glb",
+          url: "/assets/models/" + config.model + ".glb",
           onLoaded: model => {
             let mesh = model.children[0];
             let geometry = mesh.geometry;
