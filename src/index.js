@@ -119,7 +119,7 @@ function initGame() {
     scene.add(new THREE.HemisphereLight(0xcccccc, 0x707070));
 
     var light = new THREE.DirectionalLight(0xaaaaaa);
-    light.position.set(0.2, 1.7, 0.7);
+    light.position.set(0.2, 1.7, -0.7);
     light.castShadow = true;
     light.shadow.camera.top = 1;
     light.shadow.camera.bottom = -1;
