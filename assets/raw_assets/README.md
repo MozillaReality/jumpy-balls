@@ -17,4 +17,6 @@ Sounds
 * https://freesound.org/people/rhodesmas/sounds/342751/
 * https://freesound.org/people/170084/sounds/410326/
 * https://freesound.org/people/kwahmah_02/sounds/256116/
-
+* https://freesound.org/people/soundslikewillem/sounds/184519/
+* https://freesound.org/people/Slaking_97/sounds/455109/
+* https://freesound.org/people/velkstar/sounds/425209/
