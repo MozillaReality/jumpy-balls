@@ -189,13 +189,8 @@ export class GameStateSystem extends System {
     });
 
     this.queries.targetCleared.added.forEach(entity => {
-      /*      this.world.entityManager
-        .getEntityByName("numberBalls")
-        .getMutableComponent(Text).text = `Level cleared!`;
-*/
-
       entity.getComponent(Sound).sound.play();
-      
+
       setTimeout(() => {
         var levelComponent = worldSingleton.getMutableComponent(Level);
         if (levelComponent.value === levels.length - 1) {
@@ -203,11 +198,6 @@ export class GameStateSystem extends System {
           this.finish();
         } else {
           levelComponent.value++;
-          /*
-          this.world.entityManager
-            .getEntityByName("numberBalls")
-            .getMutableComponent(Text).text = `Level: ${levelComponent.value}`;
-*/
           gameState.levelStartTime = performance.now();
 
           gameState.levelFinished = false;

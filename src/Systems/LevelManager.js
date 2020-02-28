@@ -4,6 +4,7 @@ import { Text, Position } from "ecsy-three";
 import {
   Level,
   Target,
+  Play,
   Sound,
   Transform,
   GLTFLoader,
@@ -37,6 +38,10 @@ export class LevelManager extends System {
   }
 
   initializeLevel(levelId) {
+    if (levelId > levels.length) {
+      levelId = 0;
+    }
+
     let levelLabel = this.world.entityManager.getEntityByName("level");
     if (levelLabel) {
       levelLabel.getMutableComponent(Text).text = levelId;
@@ -90,11 +95,15 @@ export class LevelManager extends System {
         })
         .addComponent(LevelItem)
         .addComponent(Parent, { value: levelGroup });
-/*
-        if (worldSingleton.getComponent(GameState).playing) {
+
+      if (worldSingleton.getComponent(GameState).playing) {
+        // ballGenerator.addComponent(Active);
+        ballGenerator.addComponent(Play);
+
+        setTimeout(() => {
           ballGenerator.addComponent(Active);
-        }
-        */
+        }, 2300);
+      }
     });
 
     // Targets
