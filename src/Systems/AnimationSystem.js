@@ -49,7 +49,7 @@ export class AnimationSystem extends System {
       let animations = entity.getComponent(AnimationActionsComponent)
         .animations;
       animations.forEach(actionClip => {
-        actionClip.setDuration(2);
+        actionClip.setDuration(2.35);
         actionClip.clampWhenFinished = true;
         actionClip.reset();
         actionClip.play();
