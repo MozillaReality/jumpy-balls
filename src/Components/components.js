@@ -217,7 +217,7 @@ export class InputState {
 }
 
 export class Animation {
-
+  reset() {}
 }
 
 export class Play extends TagComponent {}

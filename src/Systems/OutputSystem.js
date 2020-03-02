@@ -74,5 +74,5 @@ export class OutputSystem extends System {
 OutputSystem.queries = {
   elements: { components: [Element] },
   targets: { components: [Target] },
-  generators: { components: [BallGenerator] },
+  generators: { components: [BallGenerator] }
 };

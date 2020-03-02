@@ -83,7 +83,7 @@ export class VRControllerInteraction extends System {
       let obj = entity.getComponent(Object3D).value.children[0];
 
       this.world
-        .createEntity("linex")
+        .createEntity()
         .addComponent(Object3D, { value: line })
         .addComponent(ParentObject3D, { value: obj });
     });
