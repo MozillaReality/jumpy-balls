@@ -111,16 +111,17 @@ export class UISystem extends System {
 
       child2
         .addComponent(Text, {
-          color: "#ffffff",
-          fontSize: 0.15,
+          color: "#999",
+          font: "assets/fonts/WetinCaroWant.ttf",
+          fontSize: 0.14,
           anchor: "center",
           textAlign: "center",
           baseline: "center",
           maxWidth: 10,
           lineHeight: 0,
-          text: "Start"
+          text: "START"
         })
-        .addComponent(Position, { value: new THREE.Vector3(0, 0.05, 0.1) })
+        .addComponent(Position, { value: new THREE.Vector3(0, 0.05, 0.01) })
         .addComponent(Parent, { value: entity });
     }
   }

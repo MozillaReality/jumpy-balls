@@ -23,6 +23,8 @@ import {
   WebGLRendererContext
 } from "./Components/components.js";
 
+import * as Materials from "./materials.js";
+
 // For debugging
 import * as Components from "./Components/components.js";
 window.Components = Components;
@@ -152,7 +154,7 @@ function initGame() {
         url: "/assets/models/startbutton.glb",
         append: true,
         onLoaded: model => {
-          model.children[0].material.transparent = true;
+          model.children[0].material = Materials.UIMaterial;
           model.children[0].material.color.setRGB(0.7, 0.7, 0.7);
         }
       })
@@ -232,7 +234,7 @@ function initGame() {
       .addComponent(GLTFLoader, {
         url: "/assets/models/panellevel.glb",
         onLoaded: model => {
-          model.children[0].material.transparent = true;
+          model.children[0].material = Materials.UIMaterial;
           model.children[0].renderOrder = 1;
           world
             .createEntity("levelLabel")
