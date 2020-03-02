@@ -25,6 +25,9 @@ import {
 
 import * as Materials from "./materials.js";
 
+import WebXRPolyfill from 'webxr-polyfill';
+const polyfill = new WebXRPolyfill();
+
 // For debugging
 import * as Components from "./Components/components.js";
 window.Components = Components;
