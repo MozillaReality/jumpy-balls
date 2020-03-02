@@ -49,7 +49,7 @@ export const levels = [
   {
     targets: [{
         position: { x: 0.5, y: 1.4, z: 0 },
-        rotation: { x: 0, y: 3, z: 0 }
+        rotation: { x: 0, y: Math.PI / 2, z: 0 }
     }],
     generators: [{
         position: { x: -0.5, y: 1, z: 0 },
@@ -81,52 +81,52 @@ export const levels = [
   // 4
   {
     targets: [{
-        position: { x: 1.4, y: 1, z: 0 },
+        position: { x: 0.6, y: 1.4, z: 0 },
         rotation: { x: 0, y: Math.PI / 2, z: 0 }
     }],
     generators: [{
-        position: { x: -1.4, y: 1, z: 0 },
-        linearVelocity: { x: 2, y: 2, z: 0 }
+        position: { x: -0.7, y: 1, z: 0 },
+        linearVelocity: { x: 2, y: -1, z: 0 }
     }],
     elements: [
       {
         type: WOOD,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: 0.3, y: 0.7, z: 0 },
+        rotation: { x: -0.2, y: 0.5, z: -2 }
       },
       {
         type: RUBBER,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: -0.5, y: 0.8, z: 0 },
+        rotation: { x: 1.4, y: 1.4, z: -1.5 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0, y: 0.6, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.1, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.3, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.5, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 0.4, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 0.2, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       }
     ]
@@ -134,37 +134,42 @@ export const levels = [
   // 5
   {
     targets: [{
-        position: { x: 1.4, y: 1, z: 0 },
+        position: { x: 0.1, y: 1.6, z: 0 },
         rotation: { x: 0, y: Math.PI / 2, z: 0 }
     }],
     generators: [{
-        position: { x: -1.4, y: 1, z: 0 },
-        linearVelocity: { x: 2, y: 2, z: 0 }
+        position: { x: 0, y: 0.4, z: 0 },
+        linearVelocity: { x: -3, y: 0.5, z: 0 }
     }],
     elements: [
       {
         type: WOOD,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0.1, y: 0.6, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: RUBBER,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 1, y: 1, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: -0.22, y: 1.2, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.2, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0.22, y: 1.2, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0.44, y: 1.2, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       }
     ]
@@ -172,8 +177,8 @@ export const levels = [
   // 6
   {
     targets: [{
-        position: { x: 1.4, y: 1, z: 0 },
-        rotation: { x: 0, y: Math.PI / 2, z: 0 }
+        position: { x: 0.6, y: 1.6, z: 0 },
+        rotation: { x: Math.PI / 2, y: 0.3, z: 0 }
     }],
     generators: [{
         position: { x: -1.4, y: 1, z: 0 },
@@ -182,17 +187,32 @@ export const levels = [
     elements: [
       {
         type: WOOD,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: 0.4, y: 0.5, z: 0 },
+        rotation: { x: 0.08, y: 0, z: 0.2 }
       },
       {
         type: RUBBER,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: 0.6, y: 0.7, z: 0 },
+        rotation: { x: 0.3, y: 0, z: -0.1 }
       },
       {
         type: RUBBER,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: -0.5, y: 0.96, z: 0 },
+        rotation: { x: 0.5, y: 0, z: 0.7 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0, y: 0.4, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0, y: 0.6, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0, y: 0.8, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
@@ -202,37 +222,22 @@ export const levels = [
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.2, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.4, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.6, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.8, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       }
     ]
@@ -240,62 +245,62 @@ export const levels = [
   // 7
   {
     targets: [{
-        position: { x: 1.4, y: 1, z: 0 },
+        position: { x: 0, y: 1, z: 0 },
         rotation: { x: 0, y: Math.PI / 2, z: 0 }
     }],
     generators: [{
-        position: { x: -1.4, y: 1, z: 0 },
-        linearVelocity: { x: 2, y: 2, z: 0 }
+        position: { x: 0.8, y: 1.7, z: 0 },
+        linearVelocity: { x: -0.4, y: 3, z: 0 }
     }],
     elements: [
       {
-        type: WOOD,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
         type: METAL,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: -0.7, y: 1.5, z: 0 },
+        rotation: { x: 0.2, y: 0, z: -0.3 }
+      },
+      {
+        type: WOOD,
+        position: { x: 0.6, y: 0.4, z: 0 },
+        rotation: { x: 0, y: 0, z: 0.6 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0, y: 1.4, z: 0 },
+        rotation: { x: 0.1, y: 0, z: 0 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0, y: 0.6, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0.4, y: 1, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: -0.4, y: 1, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: -0.2, y: 1.2, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: -0.2, y: 0.8, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0.2, y: 1.2, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0.2, y: 0.8, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       }
     ]
@@ -303,112 +308,132 @@ export const levels = [
   // 8
   {
     targets: [{
-        position: { x: 1.4, y: 1, z: 0 },
-        rotation: { x: 0, y: Math.PI / 2, z: 0 }
+        position: { x: -0.5, y: 1.9, z: 0 },
+        rotation: { x: Math.PI / 2, y: 0, z: 0 }
     }],
     generators: [{
-        position: { x: -1.4, y: 1, z: 0 },
-        linearVelocity: { x: 2, y: 2, z: 0 }
+        position: { x: -0.25, y: 0.75, z: 0 },
+        linearVelocity: { x: 3, y: 1, z: 0 }
     }],
     elements: [
       {
         type: WOOD,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0.8, y: 1.4, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: RUBBER,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: -0.4, y: 0.67, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.8, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.4, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.2, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.0, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 0.6, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 0.4, z: 0 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.8, z: 0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.6, z: 0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.4, z: 0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.2, z: 0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.0, z: 0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 0.8, z: 0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 0.6, z: 0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 0.4, z: 0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.8, z: -0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.6, z: -0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.4, z: -0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
+        position: { x: 0, y: 1.2, z: -0.2 },
+        rotation: { x: 0, y: 0, z: 0 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0, y: 1.0, z: -0.2 },
+        rotation: { x: 0, y: 0, z: 0 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0, y: 0.8, z: -0.2 },
+        rotation: { x: 0, y: 0, z: 0 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0, y: 0.6, z: -0.2 },
+        rotation: { x: 0, y: 0, z: 0 }
+      },
+      {
+        type: STATIC,
+        position: { x: 0, y: 0.4, z: -0.2 },
         rotation: { x: 0, y: 0, z: 0 }
       }
     ]
@@ -416,12 +441,12 @@ export const levels = [
   // 9
   {
     targets: [{
-        position: { x: 1.4, y: 1, z: 0 },
+        position: { x: 1.2, y: 1.7, z: 0 },
         rotation: { x: 0, y: Math.PI / 2, z: 0 }
     }],
     generators: [{
-        position: { x: -1.4, y: 1, z: 0 },
-        linearVelocity: { x: 2, y: 2, z: 0 }
+        position: { x: -1.2, y: 0.8, z: 0 },
+        linearVelocity: { x: 2, y: 2, z: 1.5 }
     }],
     elements: [
       {
@@ -489,12 +514,12 @@ export const levels = [
   // 10
   {
     targets: [{
-        position: { x: 1.4, y: 1, z: 0 },
+        position: { x: 1.2, y: 0.8, z: 0 },
         rotation: { x: 0, y: Math.PI / 2, z: 0 }
     }],
     generators: [{
-        position: { x: -1.4, y: 1, z: 0 },
-        linearVelocity: { x: 2, y: 2, z: 0 }
+        position: { x: -1.2, y: 1.7, z: 0 },
+        linearVelocity: { x: 0.4, y: 1, z: -1.5 }
     }],
     elements: [
       {
