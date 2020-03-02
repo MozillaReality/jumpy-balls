@@ -18,7 +18,7 @@ var raycaster = new THREE.Raycaster();
 var tempMatrix = new THREE.Matrix4();
 var intersected = [];
 
-function setEmmisive(object, color, channel) {
+function setEmisive(object, color, channel) {
   object.traverse(child => {
     if (child.material && child.material.emissive) {
       if (channel) {
@@ -46,13 +46,13 @@ export class VRControllerInteraction extends System {
           line.scale.z = intersection.distance;
         },
         onEnter: () => {
-          setEmmisive(object, 0x224455);
+          setEmisive(object, 0x224455);
         },
         onLeave: raycasterEntity => {
           let lineParent = raycasterEntity.getComponent(Object3D).value;
           let line = lineParent.getObjectByName("line");
           line.scale.z = 10;
-          setEmmisive(object, 0x000000);
+          setEmisive(object, 0x000000);
         },
         onSelectStart: this.onSelectStart.bind(this)
       });
@@ -99,7 +99,7 @@ export class VRControllerInteraction extends System {
     //object.userData.entity.addComponent(Dragging);
     object.matrix.premultiply(tempMatrix);
     object.matrix.decompose(object.position, object.quaternion, object.scale);
-    setEmmisive(object, 1, "b");
+    setEmisive(object, 1, "b");
     //object.children[0].material.emissive.b = 1;
     object.userData.previousParent = object.parent;
     controller.add(object);
@@ -114,7 +114,7 @@ export class VRControllerInteraction extends System {
 
       object.matrix.premultiply(controller.matrixWorld);
       object.matrix.decompose(object.position, object.quaternion, object.scale);
-      setEmmisive(object, 0, "b");
+      setEmisive(object, 0, "b");
       //object.children[0].material.emissive.b = 0;
       object.userData.previousParent.add(object);
 

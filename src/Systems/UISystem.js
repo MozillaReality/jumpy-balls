@@ -13,6 +13,14 @@ import {
   Object3D
 } from "../Components/components.js";
 
+function setColor(object, color) {
+  object.traverse(child => {
+    if (child.material) {
+      child.material.color.setRGB(color, color, color);
+    }
+  });
+}
+
 export class UISystem extends System {
   execute(delta, time) {
     TWEEN.update();
@@ -29,17 +37,17 @@ export class UISystem extends System {
       const component = entity.getComponent(UI);
       const button = entity.getComponent(Button);
 
-      let child = this.world.createEntity();
+      //let child = this.world.createEntity();
       let child2 = this.world.createEntity();
 
       let group = new THREE.Object3D();
       entity.addComponent(Object3D, { value: group });
-      child.addComponent(RaycastReceiver, {
+      entity.addComponent(RaycastReceiver, {
         layerMask: 4,
         onHover: () => {},
         onEnter: () => {
-          let obj = child.getComponent(Object3D).value;
-          obj.material.color.setRGB(1, 1, 0);
+          let obj = entity.getComponent(Object3D).value;
+          setColor(obj, 1);
           var tween = new TWEEN.Tween(obj.scale)
             .to(
               {
@@ -54,8 +62,8 @@ export class UISystem extends System {
             .start();
         },
         onLeave: () => {
-          let obj = child.getComponent(Object3D).value;
-          obj.material.color.setRGB(1, 1, 1);
+          let obj = entity.getComponent(Object3D).value;
+          setColor(obj, 0.7);
           var tween = new TWEEN.Tween(obj.scale)
             .to(
               {
@@ -70,10 +78,11 @@ export class UISystem extends System {
             .start();
         },
         onSelectStart: () => {
-          let obj = child.getComponent(Object3D).value;
-          obj.material.color.setRGB(1, 1, 0.8);
+          let obj = entity.getComponent(Object3D).value;
+          setColor(obj, 1);
+
           setTimeout(() => {
-            obj.material.color.setRGB(1, 1, 0);
+            setColor(obj, 0.7);
           }, 300);
 
           var tween = new TWEEN.Tween(obj.scale)
@@ -89,28 +98,16 @@ export class UISystem extends System {
             //.delay(500)
             .yoyo(true)
             .easing(TWEEN.Easing.Quadratic.Out)
-            .start();
+            .start()
+            .onComplete(() => {
+              button.onClick && button.onClick();
+            });
 
           if (entity.hasComponent(Sound)) {
             entity.getComponent(Sound).sound.play();
           }
-          button.onClick && button.onClick();
         }
       });
-
-      let width = 0.5;
-      let height = 0.2;
-      let depth = 0.1;
-
-      child
-        .addComponent(Geometry, {
-          primitive: "box",
-          width: width,
-          height: height,
-          depth: depth
-        })
-        //.addComponent(Position, { value: new THREE.Vector3(width / 2, 0, 0) })
-        .addComponent(Parent, { value: entity });
 
       child2
         .addComponent(Text, {

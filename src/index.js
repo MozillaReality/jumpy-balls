@@ -148,6 +148,14 @@ function initGame() {
     let startButton = world
       .createEntity("startbutton")
       .addComponent(UI)
+      .addComponent(GLTFLoader, {
+        url: "/assets/models/startbutton.glb",
+        append: true,
+        onLoaded: model => {
+          model.children[0].material.transparent = true;
+          model.children[0].material.color.setRGB(0.7, 0.7, 0.7);
+        }
+      })
       .addComponent(Button, {
         onClick: () => {
           mediaElement.play();
@@ -207,7 +215,7 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene });
 
-    world
+      world
       .createEntity("help")
       .addComponent(GLTFLoader, {
         url: "/assets/models/help.glb",
@@ -219,7 +227,7 @@ function initGame() {
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Visible, { value: true });
 
-    const panelLevel = world
+      const panelLevel = world
       .createEntity("panelLevel")
       .addComponent(GLTFLoader, {
         url: "/assets/models/panellevel.glb",
