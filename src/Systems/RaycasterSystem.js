@@ -77,7 +77,9 @@ export class RaycasterSystem extends System {
 
       if (intersections.length > 0) {
         // @hack to fix on the sdf text mesh
-        let intersection = intersections[0].object.parent ? intersections[0] : intersections[1];
+        let intersection = intersections[0].object.parent
+          ? intersections[0]
+          : intersections[1];
 
         let object = intersection.object;
         let entity = object.userData.entity;
@@ -94,7 +96,8 @@ export class RaycasterSystem extends System {
             receiverHandler.onEnter(intersection, raycaster);
           }
 
-          receiverHandler.onHover && receiverHandler.onHover(intersection, raycaster);
+          receiverHandler.onHover &&
+            receiverHandler.onHover(intersection, raycaster);
 
           if (controllerInputState) {
             if (
