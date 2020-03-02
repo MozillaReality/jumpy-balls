@@ -215,7 +215,7 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene });
 
-      world
+    world
       .createEntity("help")
       .addComponent(GLTFLoader, {
         url: "/assets/models/help.glb",
@@ -227,7 +227,7 @@ function initGame() {
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Visible, { value: true });
 
-      const panelLevel = world
+    const panelLevel = world
       .createEntity("panelLevel")
       .addComponent(GLTFLoader, {
         url: "/assets/models/panellevel.glb",

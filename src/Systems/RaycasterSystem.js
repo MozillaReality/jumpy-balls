@@ -43,7 +43,9 @@ export class RaycasterSystem extends System {
         })
         .map(entity => {
           var object = entity.getComponent(Object3D).value;
-          object.userData.entity = entity;
+          object.traverse(child => {
+            child.userData.entity = entity;
+          });
           return object;
         });
 
@@ -74,7 +76,9 @@ export class RaycasterSystem extends System {
       );
 
       if (intersections.length > 0) {
-        let intersection = intersections[0];
+        // @hack to fix on the sdf text mesh
+        let intersection = intersections[0].object.parent ? intersections[0] : intersections[1];
+
         let object = intersection.object;
         let entity = object.userData.entity;
         while (!entity && object.parent) {
