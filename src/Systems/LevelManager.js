@@ -10,6 +10,7 @@ import {
   GLTFLoader,
   GameState,
   BallGenerator,
+  Draggable,
   Active,
   Parent,
   Animation,
@@ -18,6 +19,9 @@ import {
 } from "../Components/components.js";
 import { levels } from "../levels.js";
 import * as Materials from "../materials.js";
+
+const urlParams = new URLSearchParams(window.location.search);
+var editMode = urlParams.has("edit");
 
 export class LevelManager extends System {
   execute() {
@@ -96,6 +100,10 @@ export class LevelManager extends System {
         .addComponent(LevelItem)
         .addComponent(Parent, { value: levelGroup });
 
+      if (editMode) {
+        ballGenerator.addComponent(Draggable);
+      }
+
       if (worldSingleton.getComponent(GameState).playing) {
         // ballGenerator.addComponent(Active);
         setTimeout(() => {
@@ -110,7 +118,7 @@ export class LevelManager extends System {
 
     // Targets
     level.targets.forEach(t => {
-      window.target = this.world
+      let target = this.world
         .createEntity()
         .addComponent(Target)
         .addComponent(GLTFLoader, {
@@ -126,6 +134,10 @@ export class LevelManager extends System {
         .addComponent(LevelItem)
         .addComponent(Parent, { value: levelGroup })
         .addComponent(Sound, { url: "target.ogg" });
+
+      if (editMode) {
+        target.addComponent(Draggable);
+      }
     });
 
     // Boxes (draggable and fixed)

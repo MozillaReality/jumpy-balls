@@ -18,6 +18,18 @@ var raycaster = new THREE.Raycaster();
 var tempMatrix = new THREE.Matrix4();
 var intersected = [];
 
+function setEmmisive(object, color, channel) {
+  object.traverse(child => {
+    if (child.material && child.material.emissive) {
+      if (channel) {
+        child.material.emissive[channel] = color;
+      } else {
+        child.material.emissive.set(color);
+      }
+    }
+  });
+}
+
 export class VRControllerInteraction extends System {
   execute() {
     this.queries.dragging.results.forEach(entity => {
@@ -34,13 +46,13 @@ export class VRControllerInteraction extends System {
           line.scale.z = intersection.distance;
         },
         onEnter: () => {
-          object.material.emissive.set(0x224455);
+          setEmmisive(object, 0x224455);
         },
         onLeave: raycasterEntity => {
           let lineParent = raycasterEntity.getComponent(Object3D).value;
           let line = lineParent.getObjectByName("line");
           line.scale.z = 10;
-          object.material.emissive.set(0x000000);
+          setEmmisive(object, 0x000000);
         },
         onSelectStart: this.onSelectStart.bind(this)
       });
@@ -55,7 +67,10 @@ export class VRControllerInteraction extends System {
       });
 
     this.queries.controllers.added.forEach(entity => {
-      entity.addComponent(Raycaster, { value: raycaster, layerMask: 6 /* 4 */ });
+      entity.addComponent(Raycaster, {
+        value: raycaster,
+        layerMask: 6 /* 4 */
+      });
 
       var geometry = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(0, 0, 0),
@@ -84,7 +99,8 @@ export class VRControllerInteraction extends System {
     //object.userData.entity.addComponent(Dragging);
     object.matrix.premultiply(tempMatrix);
     object.matrix.decompose(object.position, object.quaternion, object.scale);
-    object.children[0].material.emissive.b = 1;
+    setEmmisive(object, 1, "b");
+    //object.children[0].material.emissive.b = 1;
     object.userData.previousParent = object.parent;
     controller.add(object);
 
@@ -98,7 +114,8 @@ export class VRControllerInteraction extends System {
 
       object.matrix.premultiply(controller.matrixWorld);
       object.matrix.decompose(object.position, object.quaternion, object.scale);
-      object.children[0].material.emissive.b = 0;
+      setEmmisive(object, 0, "b");
+      //object.children[0].material.emissive.b = 0;
       object.userData.previousParent.add(object);
 
       controller.userData.selected = undefined;
@@ -107,6 +124,10 @@ export class VRControllerInteraction extends System {
   }
 
   reposition(object, world) {
+    if (!object.userData.body) {
+      return;
+    }
+
     if (world) {
       var position = new THREE.Vector3();
       var scale = new THREE.Vector3();
