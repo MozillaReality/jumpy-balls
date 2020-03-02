@@ -57,6 +57,7 @@ export class GameStateSystem extends System {
   }
 
   playGame() {
+    this.setVisibilityByName("help", false);
     this.setVisibilityByName("startbutton", false);
     this.setVisibilityByName("finished", false);
     this.setVisibilityByName("playingGroup", true);

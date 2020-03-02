@@ -207,6 +207,18 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene });
 
+    world
+      .createEntity("help")
+      .addComponent(GLTFLoader, {
+        url: "/assets/models/help.glb",
+        onLoaded: model => {
+          model.children[0].material.transparent = true;
+        }
+      })
+      .addComponent(Position, { value: new THREE.Vector3(0, 1.5, -1.5) })
+      .addComponent(Parent, { value: data.entities.scene })
+      .addComponent(Visible, { value: true });
+
     const panelLevel = world
       .createEntity("panelLevel")
       .addComponent(GLTFLoader, {

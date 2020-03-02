@@ -46,7 +46,7 @@ export class TargetSystem extends System {
         ) {
           ball.removeComponent(Active);
           target.addComponent(Rotating, { speed: new THREE.Vector3(0, 30, 0) });
-          //target.addComponent(Cleared);
+          target.addComponent(Cleared);
         }
       }
     }
