@@ -29,7 +29,7 @@ export class ElementSystem extends System {
       const elementTypes = [
         {
           model: "metal",
-          restitution: 1,
+          restitution: 1.7,
           draggable: true,
           scale: 1,
           sound: "metal.ogg"
@@ -43,17 +43,17 @@ export class ElementSystem extends System {
         },
         {
           model: "wood",
-          restitution: 0.8,
+          restitution: 1,
           draggable: true,
           scale: 1,
           sound: "wood.ogg"
         },
         {
           model: "static",
-          restitution: 0.1,
+          restitution: 0.05,
           draggable: editMode,
-          scale: 0.3,
-          sound: "static.ogg"
+          scale: 0.2,
+          sound: ""
         }
       ];
 

@@ -347,8 +347,8 @@ function initGame() {
       .addComponent(Sound, { url: "miss.ogg" })
       .addComponent(RigidBody, {
         weight: 0.0,
-        restitution: 1.0,
-        friction: 1.0,
+        restitution: 0.3,
+        friction: 3.0,
         linearDamping: 0.0,
         angularDamping: 0.0
       })

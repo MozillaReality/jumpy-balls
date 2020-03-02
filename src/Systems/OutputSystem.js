@@ -3,6 +3,13 @@ import { System } from "ecsy";
 import { Element, BallGenerator, Target, Object3D } from "../Components/components.js";
 
 export class OutputSystem extends System {
+
+  trimDecimals(v) {
+    v.x = Math.floor(v.x * 10) / 10;
+    v.y = Math.floor(v.y * 10) / 10;
+    v.z = Math.floor(v.z * 10) / 10;
+  }
+
   outputJSON() {
     var json = {
       targets: [],
@@ -23,6 +30,9 @@ export class OutputSystem extends System {
         z: object.rotation._z
       };
 
+      this.trimDecimals(item.position);
+      this.trimDecimals(item.rotation);
+
       json.elements.push(item);
     });
 
@@ -36,6 +46,9 @@ export class OutputSystem extends System {
         z: object.rotation._z
       };
 
+      this.trimDecimals(item.position);
+      this.trimDecimals(item.rotation);
+
       json.targets.push(item);
     });
 
@@ -45,6 +58,9 @@ export class OutputSystem extends System {
       var object = entity.getComponent(Object3D).value; // @todo Transform
       item.position = JSON.parse(JSON.stringify(object.position));
       item.linearVelocity = generator.linearVelocity;
+
+      this.trimDecimals(item.position);
+      this.trimDecimals(item.linearVelocity);
 
       json.generators.push(item);
     });
