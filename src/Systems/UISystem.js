@@ -112,7 +112,7 @@ export class UISystem extends System {
       child2
         .addComponent(Text, {
           color: "#999",
-          font: "assets/fonts/WetinCaroWant.ttf",
+          font: "../assets/fonts/WetinCaroWant.ttf",
           fontSize: 0.14,
           anchor: "center",
           textAlign: "center",
