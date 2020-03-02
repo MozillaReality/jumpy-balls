@@ -15,7 +15,9 @@ import {
   RigidBody
 } from "../Components/components.js";
 import * as Materials from "../materials.js";
-import PositionalAudioPolyphonic from "../vendor/PositionalAudioPolyphonic.js";
+
+const urlParams = new URLSearchParams(window.location.search);
+var editMode = urlParams.has("edit");
 
 export class ElementSystem extends System {
   execute() {
@@ -49,7 +51,7 @@ export class ElementSystem extends System {
         {
           model: "static",
           restitution: 0.1,
-          draggable: false,
+          draggable: editMode,
           scale: 0.3,
           sound: "static.ogg"
         }
