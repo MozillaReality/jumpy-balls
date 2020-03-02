@@ -265,8 +265,8 @@ function initGame() {
       .addComponent(GLTFLoader, {
         url: "/assets/models/panelinfo.glb",
         onLoaded: model => {
-          model.children[0].material.transparent = true;
-          model.children[0].children[0].material.transparent = true;
+          model.children[0].material = Materials.UIMaterial;
+          model.children[0].children[0].material = Materials.UIMaterial;
           model.children[0].children[0].renderOrder = 1;
           model.children[0].renderOrder = 2;
 
