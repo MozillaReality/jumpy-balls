@@ -258,7 +258,7 @@ function initGame() {
         }
       })
       .addComponent(Parent, { value: playingGroup })
-      .addComponent(Position, { value: new Vector3(0, 3, -6) });
+      .addComponent(Position, { value: new Vector3(0, 3.2, -6) });
 
     const panelInfo = world
       .createEntity("panelInfo")

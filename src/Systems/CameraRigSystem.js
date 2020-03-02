@@ -18,7 +18,10 @@ export class CameraRigSystem extends System {
   execute() {
     this.queries.entities.added.forEach(entity => {
       var cameraRig = new THREE.Group();
-      entity.addComponent(Object3D, { value: cameraRig });
+      entity
+        .addComponent(Object3D, { value: cameraRig })
+        .addComponent(Position, { value: new THREE.Vector3(0, 0, 0.5) });
+
       this.world
         .createEntity()
         .addComponent(Position, {
