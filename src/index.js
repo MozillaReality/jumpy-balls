@@ -141,7 +141,7 @@ function initGame() {
 
     var audio = new THREE.Audio(listener);
 
-    var mediaElement = new Audio("/assets/sounds/music.ogg");
+    var mediaElement = new Audio("../assets/sounds/music.ogg");
     mediaElement.loop = true;
     audio.setVolume(0.2);
 
@@ -151,7 +151,7 @@ function initGame() {
       .createEntity("startbutton")
       .addComponent(UI)
       .addComponent(GLTFLoader, {
-        url: "/assets/models/startbutton.glb",
+        url: "../assets/models/startbutton.glb",
         append: true,
         onLoaded: model => {
           model.children[0].material = Materials.UIMaterial;
@@ -205,7 +205,7 @@ function initGame() {
     world
       .createEntity()
       .addComponent(GLTFLoader, {
-        url: "/assets/models/set.glb",
+        url: "../assets/models/set.glb",
         onLoaded: model => {
           const cloudsMaterial = model.getChildByName("clouds").material;
           cloudsMaterial.transparent = true;
@@ -220,7 +220,7 @@ function initGame() {
     world
       .createEntity("help")
       .addComponent(GLTFLoader, {
-        url: "/assets/models/help.glb",
+        url: "../assets/models/help.glb",
         onLoaded: model => {
           model.children[0].material.transparent = true;
         }
@@ -232,7 +232,7 @@ function initGame() {
     const panelLevel = world
       .createEntity("panelLevel")
       .addComponent(GLTFLoader, {
-        url: "/assets/models/panellevel.glb",
+        url: "../assets/models/panellevel.glb",
         onLoaded: model => {
           model.children[0].material = Materials.UIMaterial;
           model.children[0].renderOrder = 1;
@@ -263,7 +263,7 @@ function initGame() {
     const panelInfo = world
       .createEntity("panelInfo")
       .addComponent(GLTFLoader, {
-        url: "/assets/models/panelinfo.glb",
+        url: "../assets/models/panelinfo.glb",
         onLoaded: model => {
           model.children[0].material = Materials.UIMaterial;
           model.children[0].children[0].material = Materials.UIMaterial;

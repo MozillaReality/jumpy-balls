@@ -73,7 +73,7 @@ export class LevelManager extends System {
         })
         .addComponent(LevelItem)
         .addComponent(GLTFLoader, {
-          url: "/assets/models/cannon.glb",
+          url: "../assets/models/cannon.glb",
           onLoaded: (model, gltf) => {
             //model.scale.multiplyScalar(-1);
             model.lookAt(linearVelocity);
@@ -122,7 +122,7 @@ export class LevelManager extends System {
         .createEntity()
         .addComponent(Target)
         .addComponent(GLTFLoader, {
-          url: "/assets/models/target.glb",
+          url: "../assets/models/target.glb",
           onLoaded: model => {
             model.children[0].material.envMap = Materials.environmentMap;
           }
