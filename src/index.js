@@ -146,7 +146,7 @@ function initGame() {
 
     var mediaElement = new Audio("assets/sounds/JosSs - Wehehey (Looped).ogg");
     mediaElement.loop = true;
-    audio.setVolume(0.2);
+    audio.setVolume(0.6);
 
     audio.setMediaElementSource(mediaElement);
 
