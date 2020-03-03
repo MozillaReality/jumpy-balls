@@ -70,7 +70,21 @@ var world;
 
 const urlParams = new URLSearchParams(window.location.search);
 
+function detectWebXR() {
+  if ('xr' in navigator) {
+    navigator.xr.isSessionSupported('immersive-vr').then( supported => {
+      if (!supported) document.getElementById('no-webxr').classList.remove('hidden');
+    } );
+
+  } else {
+    document.getElementById('no-webxr').classList.remove('hidden');
+  }
+}
+
 function initGame() {
+
+  detectWebXR();
+
   world = new World();
 
   world

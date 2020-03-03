@@ -51,18 +51,59 @@
   <meta name="og:type" content="website">
 
 	<style>
+
+    @font-face{
+        font-family: 'WetinCaroWant';
+        src: url('assets/fonts/WetinCaroWant.ttf');
+    }
 		body {
-			font-family: Monospace;
+			font-family: 'WetinCaroWant', sans-serif;
 			background-color: #101010;
 			color: #fff;
 			margin: 0px;
 			overflow: hidden;
 		}
 		a {
-			color: #f00;
+			color: #229bca;
+      text-decoration: none;
+      padding: 3px;
 		}
+    a:hover{
+      color: #43c4f7;
+      border-bottom: 2px solid #43c4f7;
+    }
+    #no-webxr {
+      font-size: 18px;
+      margin-top: 3rem;
+      letter-spacing: 1px;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      line-height: 2rem;
+    }
+    #no-webxr div {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1.2rem 2rem;
+      border-radius: 20px;
+    }
+    .hidden {
+      display: none !important;
+    }
+
 	</style>
 	<script src="src/vendor/ammo.js"></script>
 </head>
+<body>
+
+  <div id="no-webxr" class="hidden">
+    <div>
+      WebXR not available! Please use a VR headset<br>
+      <a href="https://www.youtube.com/watch?v=uXBDogyGXTQ">(Watch preview video)</a>
+    </div>
+  </div>
+
 <script type="module" src="build/bundle.js"></script>
+</body>
 </html>
