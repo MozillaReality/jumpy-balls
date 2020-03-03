@@ -81,7 +81,7 @@ export const levels = [
   // 4
   {
     targets: [{
-        position: { x: 0.6, y: 1.4, z: 0 },
+        position: { x: 0.6, y: 1.2, z: 0 },
         rotation: { x: 0, y: Math.PI / 2, z: 0 }
     }],
     generators: [{
@@ -90,14 +90,14 @@ export const levels = [
     }],
     elements: [
       {
-        type: WOOD,
-        position: { x: 0.3, y: 0.7, z: 0 },
-        rotation: { x: -0.2, y: 0.5, z: -2 }
-      },
-      {
         type: RUBBER,
         position: { x: -0.5, y: 0.8, z: 0 },
         rotation: { x: 1.4, y: 1.4, z: -1.5 }
+      },
+      {
+        type: RUBBER,
+        position: { x: 0.5, y: 0.5, z: 0 },
+        rotation: { x: -1.4, y: 1.4, z: 1.1 }
       },
       {
         type: STATIC,
