@@ -1,6 +1,4 @@
 import { System } from "ecsy";
-import * as THREE from "three";
-import { Position, Text } from "ecsy-three";
 import { VRController, InputState } from "../Components/components.js";
 import { VRControllerBasicBehaviour } from "ecsy-three";
 

@@ -4,7 +4,6 @@ import { System } from "ecsy";
 import {
   Transform,
   Shape,
-  Ball,
   Colliding,
   CollisionStart,
   CollisionStop,
@@ -45,17 +44,10 @@ export class PhysicsSystem extends System {
     });
 
     this._physicsWorld.stepSimulation(delta, 4, 1 / 60);
-    /*
-    for (let k = 0; k < this.collisionKeys.length; k++) {
-      this.collisions.get(this.collisionKeys[k]).length = 0;
-    }
-    */
 
     this.queries.collisionsStart.results.forEach(entity => {
       entity.removeComponent(CollisionStart);
     });
-
-//    this.collisions.clear();
 
     const numManifolds = this.dispatcher.getNumManifolds();
     for (let i = 0; i < numManifolds; i++) {

@@ -114,16 +114,6 @@ export class GameStateSystem extends System {
   }
 
   execute() {
-    /*
-    this.queries.gameState.changed.forEach(entity => {
-      var gameState = entity.getComponent(GameState);
-      if (gameState.playing) {
-        this.world.getSystem(PhysicsSystem).play();
-      } else {
-        this.world.getSystem(PhysicsSystem).stop();
-      }
-    });
-*/
     var gameState = this.queries.gameState.results[0].getComponent(GameState);
     if (!gameState.playing) {
       return;

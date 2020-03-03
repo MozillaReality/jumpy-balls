@@ -40,7 +40,6 @@ import {
   CameraRigSystem,
   DissolveSystem,
   ElementSystem,
-  FloorCollisionSystem,
   AnimationSystem,
   GameStateSystem,
   LevelManager,
@@ -90,7 +89,6 @@ function initGame() {
     .registerSystem(PhysicsSystem)
     .registerSystem(SoundSystem)
     .registerSystem(VisibilitySystem)
-    .registerSystem(FloorCollisionSystem)
     .registerSystem(TargetSystem)
     .registerSystem(SDFTextSystem)
     .registerSystem(RotatingSystem)

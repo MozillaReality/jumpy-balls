@@ -11,11 +11,9 @@ environmentMap.flipY = false;
 
 // ui
 
-export const UIMaterial = new THREE.MeshBasicMaterial(
-  {
-    map : new THREE.TextureLoader().load("assets/textures/ui.png"),
-    transparent: true
-  }
-);
+export const UIMaterial = new THREE.MeshBasicMaterial({
+  map: new THREE.TextureLoader().load("assets/textures/ui.png"),
+  transparent: true
+});
 UIMaterial.map.encoding = THREE.sRGBEncoding;
 UIMaterial.map.flipY = false;

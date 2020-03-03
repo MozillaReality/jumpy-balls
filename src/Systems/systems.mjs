@@ -1,5 +1,4 @@
 export { TargetSystem } from "./TargetSystem.js";
-export { FloorCollisionSystem } from "./FloorCollisionSystem.js";
 export { GameStateSystem } from "./GameStateSystem.js";
 export { BallGeneratorSystem } from "./BallGeneratorSystem.js";
 export { DissolveSystem } from "./DissolveSystem.js";

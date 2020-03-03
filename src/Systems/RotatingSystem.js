@@ -2,7 +2,7 @@ import { System } from "ecsy";
 import { Rotating, Object3D } from "../Components/components.js";
 
 export class RotatingSystem extends System {
-  execute(delta, time) {
+  execute(delta) {
     this.queries.entities.results.forEach(entity => {
       var rotating = entity.getComponent(Rotating);
       var object = entity.getComponent(Object3D).value;

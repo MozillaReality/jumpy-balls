@@ -1,12 +1,6 @@
 import { System } from "ecsy";
 import * as THREE from "three";
-import {
-  Play,
-  Stop,
-  Active,
-  GLTFModel,
-  Animation
-} from "../Components/components.js";
+import { Play, Stop, GLTFModel, Animation } from "../Components/components.js";
 
 class AnimationMixerComponent {
   constructor() {}

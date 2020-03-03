@@ -4,7 +4,6 @@ import { System } from "ecsy";
 import {
   VRController,
   Draggable,
-  Parent,
   ParentObject3D,
   Dragging,
   Object3D,
@@ -96,11 +95,9 @@ export class VRControllerInteraction extends System {
     tempMatrix.getInverse(controller.matrixWorld);
 
     var object = intersection.object.parent;
-    //object.userData.entity.addComponent(Dragging);
     object.matrix.premultiply(tempMatrix);
     object.matrix.decompose(object.position, object.quaternion, object.scale);
     setEmisive(object, 1, "b");
-    //object.children[0].material.emissive.b = 1;
     object.userData.previousParent = object.parent;
     controller.add(object);
 
@@ -115,7 +112,6 @@ export class VRControllerInteraction extends System {
       object.matrix.premultiply(controller.matrixWorld);
       object.matrix.decompose(object.position, object.quaternion, object.scale);
       setEmisive(object, 0, "b");
-      //object.children[0].material.emissive.b = 0;
       object.userData.previousParent.add(object);
 
       controller.userData.selected = undefined;
@@ -137,8 +133,6 @@ export class VRControllerInteraction extends System {
 
       var wxform = object.userData.body.getWorldTransform();
       wxform.setIdentity();
-      var origin = wxform.getOrigin();
-      var quat = wxform.getRotation();
 
       const initialTransform = new Ammo.btTransform();
       initialTransform.setIdentity();
@@ -173,20 +167,6 @@ export class VRControllerInteraction extends System {
         )
       );
       object.userData.body.setWorldTransform(initialTransform);
-
-      /*
-      var wxform = object.userData.body.getWorldTransform();
-      wxform.setIdentity();
-      var origin = wxform.getOrigin();
-      var quat = wxform.getRotation();
-      origin.setValue(object.position.x, object.position.y, object.position.z);
-      quat.setValue(
-        object.quaternion.x,
-        object.quaternion.y,
-        object.quaternion.z,
-        object.quaternion.w
-      );
-      */
     }
   }
 
