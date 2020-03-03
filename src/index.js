@@ -104,7 +104,7 @@ function initGame() {
   var scene = data.entities.scene.getComponent(Object3D).value;
   window.entityScene = data.entities.scene;
 
-  let level = urlParams.has("level") ? parseInt(urlParams.get("level")) : 1;
+  let level = urlParams.has("level") ? parseInt(urlParams.get("level")) : 0;
 
   // Singleton entity
   world
