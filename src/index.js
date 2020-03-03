@@ -144,7 +144,7 @@ function initGame() {
 
     var audio = new THREE.Audio(listener);
 
-    var mediaElement = new Audio("assets/sounds/music.ogg");
+    var mediaElement = new Audio("assets/sounds/JosSs - Wehehey (Looped).ogg");
     mediaElement.loop = true;
     audio.setVolume(0.2);
 
