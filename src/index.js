@@ -174,7 +174,7 @@ function initGame() {
         }
       })
       .addComponent(Parent, { value: data.entities.scene })
-      .addComponent(Position, { value: new Vector3(0, 0.5, -1) })
+      .addComponent(Position, { value: new Vector3(0, 0.6, -1.5) })
       .addComponent(Sound, { url: "click.ogg" })
       .addComponent(Visible, { value: !urlParams.has("autostart") });
 
@@ -227,9 +227,11 @@ function initGame() {
         url: "assets/models/help.glb",
         onLoaded: model => {
           model.children[0].material.transparent = true;
+          model.children[0].material.map.magFilter = THREE.LinearFilter;
+          model.children[0].material.map.minFilter = THREE.LinearMipmapLinearFilter;
         }
       })
-      .addComponent(Position, { value: new THREE.Vector3(0, 1.5, -1.5) })
+      .addComponent(Position, { value: new THREE.Vector3(0, 1.6, -2) })
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Visible, { value: true });
 
