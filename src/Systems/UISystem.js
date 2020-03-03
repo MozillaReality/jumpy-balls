@@ -119,7 +119,7 @@ export class UISystem extends System {
           baseline: "center",
           maxWidth: 10,
           lineHeight: 0,
-          text: "START"
+          text: button.text
         })
         .addComponent(Position, { value: new THREE.Vector3(0, 0.05, 0.01) })
         .addComponent(Parent, { value: entity });

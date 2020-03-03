@@ -162,6 +162,7 @@ function initGame() {
         }
       })
       .addComponent(Button, {
+        text: "START",
         onClick: () => {
           mediaElement.play();
 
