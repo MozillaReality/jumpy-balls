@@ -436,173 +436,133 @@ export const levels = [
   // 9
   {
     targets: [{
-        position: { x: 1.2, y: 1.7, z: 0 },
-        rotation: { x: 0, y: Math.PI / 2, z: 0 }
+        position: { x: 0.8, y: 0.7, z: -0.7 },
+        rotation: { x: 2.6, y: 0.9, z: 3 }
     }],
     generators: [{
-        position: { x: -1.2, y: 0.8, z: 0 },
+        position: { x: -1, y: 1.4, z: -0.2 },
         linearVelocity: { x: 2, y: 2, z: 1.5 }
     }],
     elements: [
       {
         type: WOOD,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: -0.3, y: 0.8, z: 0.1 },
+        rotation: { x: -0.1, y: 0.3, z: -0.2 }
       },
       {
         type: METAL,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: 0.4, y: 1.3, z: 0 },
+        rotation: { x: 0, y: 0.6, z: 0.1 }
       },
       {
-        type: RUBBER,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: RUBBER,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        type: WOOD,
+        position: { x: 0, y: 0.9, z: 0 },
+        rotation: { x: -0.1, y: -0.1, z: -0.2 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: 0.3, y: 0.5, z: -0.4 },
+        rotation: { x: -0.1, y: -0.4, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: -0.6, y: 1, z: 0.1 },
+        rotation: { x: 0, y: 0.5, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: -0.3, y: 1, z: -0.4 },
+        rotation: { x: -0.1, y: 0.1, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: 0.1, y: 0.9, z: -0.6 },
+        rotation: { x: -0.1, y: -0.3, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: 0.3, y: 1.3, z: -0.3 },
+        rotation: { x: 0.1, y: -0.5, z: 0.1 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: 0.5, y: 0.9, z: 0 },
+        rotation: { x: 0, y: -0.7, z: -0.1 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: 0.5, y: 0.8, z: -0.5 },
+        rotation: { x: 0, y: 0.3, z: 0 }
       },
       {
         type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
+        position: { x: -0.3, y: 1.5, z: -0.2 },
+        rotation: { x: 0.1, y: 0.1, z: -0.1 }
       }
     ]
   },
   // 10
   {
     targets: [{
-        position: { x: 1.2, y: 0.8, z: 0 },
-        rotation: { x: 0, y: Math.PI / 2, z: 0 }
+      position: { x: 1.2, y: 0.8, z: 0 },
+      rotation: { x: 0, y: 1.5, z: 0 }
     }],
     generators: [{
-        position: { x: -1.2, y: 1.7, z: 0 },
-        linearVelocity: { x: 0.4, y: 1, z: -1.5 }
+      position: { x: -1.2, y: 1.7, z: 0 },
+      linearVelocity: { x: 0.4, y: 1, z: -1.5 }
     }],
     elements: [
-      {
-        type: WOOD,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: WOOD,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: METAL,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: RUBBER,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      },
-      {
-        type: STATIC,
-        position: { x: 0, y: 1, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 }
-      }
+      { type: 2,
+        position: { x: -0.4, y: 1.5, z: -0.4 },
+        rotation: { x: 0.3, y: 0.1, z: -0.5 } },
+      { type: 2,
+        position: { x: 0.1, y: 0.7, z: -0.4 },
+        rotation: { x: -0.2, y: -0.2, z: 0.2 } },
+      { type: 0,
+        position: { x: 0.6, y: 1.4, z: -0.4 },
+        rotation: { x: 0.6, y: -0.4, z: 0.2 } },
+      { type: 1,
+        position: { x: -0.3, y: 0.8, z: 0 },
+        rotation: { x: -0.1, y: 0.4, z: 0 } },
+      { type: 3,
+        position: { x: -0.3, y: 1.2, z: -0.4 },
+        rotation: { x: 0.1, y: -0.1, z: -0.1 } },
+      { type: 3,
+        position: { x: 0.8, y: 1, z: -0.4 },
+        rotation: { x: 0, y: -0.8, z: 0.1 } },
+      { type: 3,
+        position: { x: -0.5, y: 0.9, z: -0.2 },
+        rotation: { x: -0.1, y: 0.4, z: 0 } },
+      { type: 3,
+        position: { x: 0.6, y: 0.8, z: -0.1 },
+        rotation: { x: 0, y: -0.8, z: 0 } },
+      { type: 3,
+        position: { x: 0.1, y: 1, z: -0.8 },
+        rotation: { x: 0, y: -0.4, z: 0 } },
+      { type: 3,
+        position: { x: 0.3, y: 1, z: -0.4 },
+        rotation: { x: 0, y: -0.5, z: 0 } },
+      { type: 3,
+        position: { x: 0, y: 1.4, z: -0.6 },
+        rotation: { x: 0.2, y: -0.3, z: 0.1 } },
+      { type: 3,
+        position: { x: -0.6, y: 1.2, z: -0.2 },
+        rotation: { x: 0.1, y: 0.4, z: -0.2 } },
+      { type: 3,
+        position: { x: 0.4, y: 1.2, z: 0.1 },
+        rotation: { x: 0, y: -0.3, z: 0 } },
+      { type: 3,
+        position: { x: -0.9, y: 1.5, z: -0.7 },
+        rotation: { x: 0, y: 0.2, z: -0.1 } },
+      { type: 3,
+        position: { x: -0.5, y: 1.1, z: 0.2 },
+        rotation: { x: 0.1, y: 0.8, z: -0.2 } },
+      { type: 3,
+        position: { x: -0.5, y: 1.2, z: -0.8 },
+        rotation: { x: 0.1, y: -0.1, z: -0.1 } },
+      { type: 3,
+        position: { x: 0.7, y: 0.7, z: 0.3 },
+        rotation: { x: 0.1, y: -1.1, z: 0.2 } }
     ]
   }
-
 ];
