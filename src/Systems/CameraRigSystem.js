@@ -25,7 +25,7 @@ export class CameraRigSystem extends System {
       this.world
         .createEntity()
         .addComponent(Position, {
-          value: new THREE.Vector3(0, 1.6, 2)
+          value: new THREE.Vector3(0, 1.6, -0.6)
         })
         .addComponent(Camera, {
           fov: 90,
