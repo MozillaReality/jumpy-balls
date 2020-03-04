@@ -68,7 +68,7 @@ export class VRControllerInteraction extends System {
     this.queries.controllers.added.forEach(entity => {
       entity.addComponent(Raycaster, {
         value: raycaster,
-        layerMask: 6 /* 4 */
+        layerMask: 4
       });
 
       var geometry = new THREE.BufferGeometry().setFromPoints([
