@@ -1,5 +1,7 @@
 # Jumpy Balls
 
+![screenshot](assets/favicon/screenshot.png)
+
 A little physics game using:
 - ecsy https://ecsy.io
 - three.js https://threejs.org
