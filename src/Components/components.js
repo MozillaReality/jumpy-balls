@@ -217,7 +217,15 @@ export class InputState {
 }
 
 export class Animation {
-  reset() {}
+  constructor() {
+    this.animations = [];
+    this.duration = -1;
+  }
+
+  reset() {
+    this.animations.length = 0;
+    this.duration = -1;
+  }
 }
 
 export class Play extends TagComponent {}

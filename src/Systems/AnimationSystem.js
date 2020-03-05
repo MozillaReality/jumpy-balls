@@ -40,10 +40,12 @@ export class AnimationSystem extends System {
     });
 
     this.queries.playClips.results.forEach(entity => {
-      let animations = entity.getComponent(AnimationActionsComponent)
-        .animations;
-      animations.forEach(actionClip => {
-        actionClip.setDuration(2.35);
+      let component = entity.getComponent(AnimationActionsComponent);
+      component.animations.forEach(actionClip => {
+        if (component.duration !== 1) {
+          actionClip.setDuration(component.duration);
+        }
+
         actionClip.clampWhenFinished = true;
         actionClip.reset();
         actionClip.play();
