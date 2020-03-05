@@ -11,5 +11,4 @@ export { VRControllerInteraction } from "./VRControllerInteraction.js";
 export { PhysicsSystem } from "./PhysicsSystem.js";
 export { UISystem } from "./UISystem.js";
 export { RaycasterSystem } from "./RaycasterSystem.js";
-export { InputSystem } from "./InputSystem.js";
 export { SoundSystem } from "./SoundSystem.js";

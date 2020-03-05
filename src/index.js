@@ -49,7 +49,6 @@ import {
   RaycasterSystem,
   UISystem,
   SoundSystem,
-  InputSystem,
   VRControllerInteraction
 } from "./Systems/systems.mjs";
 
@@ -61,6 +60,7 @@ import {
   VisibilitySystem,
   SDFTextSystem,
   AnimationSystem,
+  InputSystem,
   Text,
   initializeDefault
 } from "ecsy-three";
