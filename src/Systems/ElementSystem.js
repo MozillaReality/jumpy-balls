@@ -92,7 +92,7 @@ export class ElementSystem extends System {
             });
 
             entity.addComponent(Sound, {
-              url: config.sound
+              url: "assets/sounds/" + config.sound
             });
           }
         })
