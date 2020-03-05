@@ -222,12 +222,12 @@ function initGame() {
       .addComponent(GLTFLoader, {
         url: "assets/models/set.glb",
         onLoaded: model => {
-          const cloudsMaterial = model.getChildByName("clouds").material;
+          const cloudsMaterial = model.getObjectByName("clouds").material;
           cloudsMaterial.transparent = true;
           cloudsMaterial.fog = false;
-          const skyMaterial = model.getChildByName("sky").material;
+          const skyMaterial = model.getObjectByName("sky").material;
           skyMaterial.fog = false;
-          //model.getChildByName('floor').receiveShadow = true;
+          //model.getObjectByName('floor').receiveShadow = true;
         }
       })
       .addComponent(Parent, { value: data.entities.scene });

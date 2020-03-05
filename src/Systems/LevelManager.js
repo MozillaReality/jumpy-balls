@@ -77,7 +77,7 @@ export class LevelManager extends System {
           onLoaded: (model, gltf) => {
             //model.scale.multiplyScalar(-1);
             model.lookAt(linearVelocity);
-            const material = model.getChildByName("cannon").material;
+            const material = model.getObjectByName("cannon").material;
             material.envMap = Materials.environmentMap;
 
             let mixer = (model.userData.mixer = new THREE.AnimationMixer(
