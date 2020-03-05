@@ -65,6 +65,10 @@ export class ElementSystem extends System {
           onLoaded: model => {
             let mesh = model.children[0];
             let geometry = mesh.geometry;
+            if (config.model === "static") {
+              mesh.material = new THREE.MeshBasicMaterial();
+            }
+
             if (config.scale) {
               geometry.scale(config.scale, config.scale, config.scale);
               geometry.computeBoundingBox();

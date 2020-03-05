@@ -27,14 +27,15 @@ export {
   RenderPass,
   VRController,
   Material,
-  TextGeometry
+  TextGeometry,
+  Colliding,
+  CollisionStart,
+  CollisionStop,
+  RigidBody,
+  Shape
 } from "ecsy-three";
 
 export class LevelItem {
-  reset() {}
-}
-
-export class Shape {
   reset() {}
 }
 
@@ -50,35 +51,6 @@ export class Level {
 
 export class FloorCollided extends TagComponent {}
 export class Cleared extends TagComponent {}
-
-export class Colliding {
-  constructor() {
-    this.collidingWith = [];
-    this.collidingFrame = 0;
-  }
-  reset() {
-    this.collidingWith.length = 0;
-    this.collidingFrame = 0;
-  }
-}
-
-export class CollisionStart {
-  constructor() {
-    this.collidingWith = [];
-  }
-  reset() {
-    this.collidingWith.length = 0;
-  }
-}
-
-export class CollisionStop {
-  constructor() {
-    this.collidingWith = [];
-  }
-  reset() {
-    this.collidingWith.length = 0;
-  }
-}
 
 export class Element {
   constructor() {}
@@ -154,19 +126,6 @@ export class Target {
     this.position = new THREE.Vector3();
   }
 
-  reset() {}
-}
-
-export class RigidBody {
-  constructor() {
-    this.object = null;
-    this.weight = 0;
-    this.restitution = 1;
-    this.friction = 1;
-    this.linearDamping = 0;
-    this.angularDamping = 0;
-    this.linearVelocity = { x: 0, y: 0, z: 0 };
-  }
   reset() {}
 }
 
