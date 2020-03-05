@@ -19,58 +19,57 @@ import * as Materials from "../materials.js";
 const urlParams = new URLSearchParams(window.location.search);
 var editMode = urlParams.has("edit");
 
+const elementTypes = [
+  {
+    model: "metal",
+    restitution: 1.7,
+    draggable: true,
+    scale: 1,
+    sound: "metal.ogg",
+    material: new THREE.MeshPhongMaterial({
+      map: Materials.textures["metal.jpg"],
+      envMap: Materials.environmentMap,
+      reflectivity: 0.2
+    })
+  },
+  {
+    model: "rubber",
+    restitution: 2.5,
+    draggable: true,
+    scale: 1,
+    sound: "rubber.ogg",
+    material: new THREE.MeshPhongMaterial({
+      map: Materials.textures["rubber.png"],
+      envMap: Materials.environmentMap,
+      reflectivity: 0.2
+    })
+  },
+  {
+    model: "wood",
+    restitution: 1,
+    draggable: true,
+    scale: 1,
+    sound: "wood.ogg",
+    material: new THREE.MeshPhongMaterial({
+      map: Materials.textures["wood.png"],
+      envMap: Materials.environmentMap,
+      reflectivity: 0.2
+    })
+  },
+  {
+    model: "static",
+    restitution: 0.05,
+    draggable: editMode,
+    scale: 0.2,
+    sound: "",
+    material: new THREE.MeshLambertMaterial({
+      map: Materials.textures["floor.png"]
+    })
+  }
+];
+
 export class ElementSystem extends System {
   execute() {
-    const elementTypes = [
-      {
-        model: "metal",
-        restitution: 1.7,
-        draggable: true,
-        scale: 1,
-        sound: "metal.ogg",
-        material: new THREE.MeshPhongMaterial({
-          map: Materials.textures['metal.jpg'],
-          envMap: Materials.environmentMap,
-          reflectivity: 0.2
-        })
-      },
-      {
-        model: "rubber",
-        restitution: 2.5,
-        draggable: true,
-        scale: 1,
-        sound: "rubber.ogg",
-        material: new THREE.MeshPhongMaterial({
-          map: Materials.textures['rubber.png'],
-          envMap: Materials.environmentMap,
-          reflectivity: 0.2
-        })
-      },
-      {
-        model: "wood",
-        restitution: 1,
-        draggable: true,
-        scale: 1,
-        sound: "wood.ogg",
-        material: new THREE.MeshPhongMaterial({
-          map: Materials.textures['wood.png'],
-          envMap: Materials.environmentMap,
-          reflectivity: 0.2
-        })
-      },
-      {
-        model: "static",
-        restitution: 0.05,
-        draggable: editMode,
-        scale: 0.2,
-        sound: "",
-        material: new THREE.MeshLambertMaterial({
-          map: Materials.textures['floor.png'],
-        })
-      }
-    ];
-
-
     var entitiesAdded = this.queries.entities.added;
     for (let i = 0; i < entitiesAdded.length; i++) {
       let entity = entitiesAdded[i];
