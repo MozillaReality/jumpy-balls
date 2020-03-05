@@ -2,6 +2,8 @@
 
 ![screenshot](assets/favicon/screenshot.jpg)
 
+More info on: https://blog.mozvr.com/jumpy-balls
+
 A little physics game using:
 - [ecsy](https://ecsy.io)
 - [three.js](https://threejs.org)
