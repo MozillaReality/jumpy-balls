@@ -81,7 +81,10 @@ export class LevelManager extends System {
               new THREE.MeshPhongMaterial({
                 map: Materials.textures['cannon.jpg'],
                 envMap: Materials.environmentMap,
-                reflectivity: 0.2
+                reflectivity: 0.2,
+                specularMap: Materials.textures['cannon_spec.jpg'],
+                shininess: 50,
+                specular: new THREE.Color(0x333333),
               });
 
             var yellowMat = new THREE.MeshBasicMaterial({color: 0xE7C223});

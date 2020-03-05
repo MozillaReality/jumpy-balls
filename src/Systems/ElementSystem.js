@@ -29,7 +29,10 @@ const elementTypes = [
     material: new THREE.MeshPhongMaterial({
       map: Materials.textures["metal.jpg"],
       envMap: Materials.environmentMap,
-      reflectivity: 0.2
+      specularMap: Materials.textures['metal_spec.jpg'],
+      shininess: 70,
+      specular: new THREE.Color(0x888888),
+      reflectivity: 0.7
     })
   },
   {
@@ -41,7 +44,9 @@ const elementTypes = [
     material: new THREE.MeshPhongMaterial({
       map: Materials.textures["rubber.png"],
       envMap: Materials.environmentMap,
-      reflectivity: 0.2
+      shininess: 10,
+      specular: new THREE.Color(0x061b1f),
+      reflectivity: 0.1
     })
   },
   {
@@ -51,9 +56,12 @@ const elementTypes = [
     scale: 1,
     sound: "wood.ogg",
     material: new THREE.MeshPhongMaterial({
-      map: Materials.textures["wood.png"],
+      map: Materials.textures['wood.png'],
       envMap: Materials.environmentMap,
-      reflectivity: 0.2
+      specularMap: Materials.textures['wood_spec.jpg'],
+      shininess: 20,
+      specular: new THREE.Color(0x666666),
+      reflectivity: 0.5
     })
   },
   {
