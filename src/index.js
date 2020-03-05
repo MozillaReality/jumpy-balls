@@ -25,7 +25,7 @@ import {
 
 import * as Materials from "./materials.js";
 
-import WebXRPolyfill from 'webxr-polyfill';
+import WebXRPolyfill from "webxr-polyfill";
 const polyfill = new WebXRPolyfill();
 
 // For debugging
@@ -71,18 +71,17 @@ var world;
 const urlParams = new URLSearchParams(window.location.search);
 
 function detectWebXR() {
-  if ('xr' in navigator) {
-    navigator.xr.isSessionSupported('immersive-vr').then( supported => {
-      if (!supported) document.getElementById('no-webxr').classList.remove('hidden');
-    } );
-
+  if ("xr" in navigator) {
+    navigator.xr.isSessionSupported("immersive-vr").then(supported => {
+      if (!supported)
+        document.getElementById("no-webxr").classList.remove("hidden");
+    });
   } else {
-    document.getElementById('no-webxr').classList.remove('hidden');
+    document.getElementById("no-webxr").classList.remove("hidden");
   }
 }
 
 function initGame() {
-
   detectWebXR();
 
   world = new World();
@@ -240,7 +239,8 @@ function initGame() {
         onLoaded: model => {
           model.children[0].material.transparent = true;
           model.children[0].material.map.magFilter = THREE.LinearFilter;
-          model.children[0].material.map.minFilter = THREE.LinearMipmapLinearFilter;
+          model.children[0].material.map.minFilter =
+            THREE.LinearMipmapLinearFilter;
         }
       })
       .addComponent(Position, { value: new THREE.Vector3(0, 1.6, -2) })
@@ -313,7 +313,7 @@ function initGame() {
             .createEntity("numberBalls")
             .addComponent(
               Text,
-              getTextParameters("0/0", "#f9258b", 0.2, "center")
+              getTextParameters("0", "#f9258b", 0.2, "center")
             )
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(-0.4, 0, 0.01) });
@@ -358,7 +358,7 @@ function initGame() {
         }
       })
       .addComponent(Parent, { value: data.entities.scene /*playingGroup*/ })
-      .addComponent(Animation)
+      .addComponent(Animation, { duration: 2.35 })
       .addComponent(Position, { value: new Vector3(0, 2, -6) })
       .addComponent(Visible, { value: false });
   }

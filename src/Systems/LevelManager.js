@@ -92,7 +92,7 @@ export class LevelManager extends System {
             model.userData.animationClip = action;
           }
         })
-        .addComponent(Animation)
+        .addComponent(Animation, { duration: 2.35 })
         .addComponent(Sound, { url: "cannon.ogg" })
         .addComponent(Position, {
           value: new THREE.Vector3().copy(g.position)

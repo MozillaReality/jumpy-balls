@@ -31,7 +31,8 @@ export class AnimationSystem extends System {
       });
 
       entity.addComponent(AnimationActionsComponent, {
-        animations: animations
+        animations: animations,
+        duration: entity.getComponent(Animation).duration
       });
     });
 
@@ -42,7 +43,7 @@ export class AnimationSystem extends System {
     this.queries.playClips.results.forEach(entity => {
       let component = entity.getComponent(AnimationActionsComponent);
       component.animations.forEach(actionClip => {
-        if (component.duration !== 1) {
+        if (component.duration !== -1) {
           actionClip.setDuration(component.duration);
         }
 

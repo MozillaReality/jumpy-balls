@@ -147,7 +147,7 @@ export class GameStateSystem extends System {
         .getEntityByName("numberBalls")
         .getMutableComponent(
           Text
-        ).text = `${gameState.numBallsFailed}/${gameState.numBallsTotal}`;
+        ).text = `${gameState.numBallsFailed}`;
 
       // @todo here we should just activate the collided ball's generator
       // Wait 2s before reactivating the ball generator
