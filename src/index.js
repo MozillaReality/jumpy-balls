@@ -186,7 +186,7 @@ function initGame() {
       })
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Position, { value: new Vector3(0, 0.6, -1.5) })
-      .addComponent(Sound, { url: "click.ogg" })
+      .addComponent(Sound, { url: "assets/sounds/click.ogg" })
       .addComponent(Visible, { value: !urlParams.has("autostart") });
 
     if (urlParams.has("autostart")) {
@@ -384,7 +384,7 @@ function initGame() {
         rotation: { x: 0, y: 0, z: 0 }
       })
       .addComponent(Floor)
-      .addComponent(Sound, { url: "miss.ogg" })
+      .addComponent(Sound, { url: "assets/sounds/miss.ogg" })
       .addComponent(RigidBody, {
         weight: 0.0,
         restitution: 0.5,

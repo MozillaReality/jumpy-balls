@@ -93,7 +93,7 @@ export class LevelManager extends System {
           }
         })
         .addComponent(Animation, { duration: 2.35 })
-        .addComponent(Sound, { url: "cannon.ogg" })
+        .addComponent(Sound, { url: "assets/sounds/cannon.ogg" })
         .addComponent(Position, {
           value: new THREE.Vector3().copy(g.position)
         })
@@ -133,7 +133,7 @@ export class LevelManager extends System {
         })
         .addComponent(LevelItem)
         .addComponent(Parent, { value: levelGroup })
-        .addComponent(Sound, { url: "target.ogg" });
+        .addComponent(Sound, { url: "assets/sounds/target.ogg" });
 
       if (editMode) {
         target.addComponent(Draggable);
