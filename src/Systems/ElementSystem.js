@@ -98,7 +98,7 @@ export class ElementSystem extends System {
             let h = Math.abs(max.y - min.y);
             let d = Math.abs(max.z - min.z);
 
-            mesh.material = config.material;
+            mesh.material = config.material.clone();
 
             entity.addComponent(Shape, {
               primitive: "box",
