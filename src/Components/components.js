@@ -2,37 +2,38 @@ import * as THREE from "three";
 import { TagComponent } from "ecsy";
 
 export {
-  Object3D,
-  Scale,
-  Parent,
-  ParentObject3D,
-  Environment,
-  Visible,
-  CameraRig,
-  Camera,
-  Position,
-  Draggable,
-  Scene,
-  Dragging,
   Active,
-  Transform,
-  WebGLRendererContext,
-  Geometry,
-  GLTFModel,
-  GLTFLoader,
-  InputState,
-  Play,
-  Stop,
   Animation,
-  RenderPass,
-  VRController,
-  Material,
-  TextGeometry,
+  Camera,
+  CameraRig,
   Colliding,
   CollisionStart,
   CollisionStop,
+  Draggable,
+  Dragging,
+  Environment,
+  Geometry,
+  GLTFLoader,
+  GLTFModel,
+  InputState,
+  Material,
+  Object3D,
+  Parent,
+  ParentObject3D,
+  Play,
+  Position,
+  RenderPass,
   RigidBody,
-  Shape
+  Scale,
+  Scene,
+  Shape,
+  Sound,
+  Stop,
+  TextGeometry,
+  Transform,
+  Visible,
+  VRController,
+  WebGLRendererContext
 } from "ecsy-three";
 
 export class LevelItem {
@@ -165,17 +166,6 @@ export class Raycaster {
     this.currentEntity = null;
 
     this.layerMask = 0;
-  }
-}
-
-export class Sound {
-  constructor() {
-    this.reset();
-  }
-
-  reset() {
-    this.sound = null;
-    this.url = "";
   }
 }
 

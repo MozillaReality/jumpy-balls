@@ -48,7 +48,6 @@ import {
   TargetSystem,
   RaycasterSystem,
   UISystem,
-  SoundSystem,
   VRControllerInteraction
 } from "./Systems/systems.mjs";
 
@@ -60,6 +59,7 @@ import {
   VisibilitySystem,
   SDFTextSystem,
   AnimationSystem,
+  SoundSystem,
   InputSystem,
   Text,
   initializeDefault

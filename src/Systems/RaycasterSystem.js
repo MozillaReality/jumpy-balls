@@ -1,11 +1,6 @@
 import { System } from "ecsy";
 import * as THREE from "three";
-import { Position, Text } from "ecsy-three";
 import {
-  UI,
-  Parent,
-  Geometry,
-  Button,
   Raycaster,
   RaycastReceiver,
   Object3D,
@@ -13,7 +8,7 @@ import {
 } from "../Components/components.js";
 
 export class RaycasterSystem extends System {
-  execute(delta, time) {
+  execute() {
     /*
     for (let i = 0; i < entities.length; i++) {
       const entity = entities[i];
