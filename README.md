@@ -1,6 +1,6 @@
 # Jumpy Balls
 
-![screenshot](assets/favicon/screenshot.png)
+![screenshot](assets/favicon/screenshot.jpg)
 
 A little physics game using:
 - [ecsy](https://ecsy.io)
