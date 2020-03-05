@@ -175,6 +175,7 @@ function initGame() {
       .addComponent(Button, {
         text: "START",
         onClick: () => {
+          //startButton.removeComponent(Button);
           mediaElement.play();
 
           world.getSystem(GameStateSystem).playGame();

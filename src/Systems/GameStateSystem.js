@@ -57,6 +57,14 @@ export class GameStateSystem extends System {
   }
 
   playGame() {
+    let gameState = this.queries.gameState.results[0].getMutableComponent(
+      GameState
+    );
+
+    if (gameState.playing) {
+      return;
+    }
+
     this.setVisibilityByName("help", false);
     this.setVisibilityByName("startbutton", false);
     this.setVisibilityByName("finished", false);
@@ -66,10 +74,6 @@ export class GameStateSystem extends System {
     this.queries.raycasters.results.forEach(entity => {
       entity.getMutableComponent(Raycaster).layerMask = 2;
     });
-
-    let gameState = this.queries.gameState.results[0].getMutableComponent(
-      GameState
-    );
 
     gameState.playing = true;
     gameState.numBallsFailed = 0;
