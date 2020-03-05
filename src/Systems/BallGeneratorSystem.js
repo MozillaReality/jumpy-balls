@@ -12,6 +12,7 @@ import {
   Transform,
   BallGenerator
 } from "../Components/components.js";
+import * as Materials from "../materials.js";
 
 const RADIUS = 0.03;
 
@@ -32,6 +33,12 @@ export class BallGeneratorSystem extends System {
           url: "assets/models/ball.glb",
           onLoaded: model => {
             ball.getMutableComponent(Object3D).value = model.children[0];
+
+            model.children[0].material = new THREE.MeshPhongMaterial({
+              map: Materials.textures['ball.png'],
+              envMap: Materials.environmentMap,
+              reflectivity: 0.2
+            });
           }
         })
         .addComponent(Transform, {

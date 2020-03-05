@@ -77,8 +77,17 @@ export class LevelManager extends System {
           onLoaded: (model, gltf) => {
             //model.scale.multiplyScalar(-1);
             model.lookAt(linearVelocity);
-            const material = model.getObjectByName("cannon").material;
-            material.envMap = Materials.environmentMap;
+            model.getObjectByName("cannon").material =
+              new THREE.MeshPhongMaterial({
+                map: Materials.textures['cannon.jpg'],
+                envMap: Materials.environmentMap,
+                reflectivity: 0.2
+              });
+
+            var yellowMat = new THREE.MeshBasicMaterial({color: 0xE7C223});
+
+            model.getObjectByName("explosion").material = yellowMat;
+            model.getObjectByName("sparks").material = yellowMat;
 
             let mixer = (model.userData.mixer = new THREE.AnimationMixer(
               model
@@ -124,7 +133,11 @@ export class LevelManager extends System {
         .addComponent(GLTFLoader, {
           url: "assets/models/target.glb",
           onLoaded: model => {
-            model.children[0].material.envMap = Materials.environmentMap;
+            model.children[0].material = new THREE.MeshPhongMaterial({
+              map: Materials.textures['target.png'],
+              envMap: Materials.environmentMap,
+              reflectivity: 0.2
+            });
           }
         })
         .addComponent(Transform, {
