@@ -20,6 +20,9 @@ export {
   Geometry,
   GLTFModel,
   GLTFLoader,
+  Play,
+  Stop,
+  Animation,
   RenderPass,
   VRController,
   Material,
@@ -215,22 +218,6 @@ export class InputState {
 
   reset() {}
 }
-
-export class Animation {
-  constructor() {
-    this.animations = [];
-    this.duration = -1;
-  }
-
-  reset() {
-    this.animations.length = 0;
-    this.duration = -1;
-  }
-}
-
-export class Play extends TagComponent {}
-
-export class Stop extends TagComponent {}
 
 export class Sound {
   constructor() {

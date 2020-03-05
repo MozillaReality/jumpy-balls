@@ -40,7 +40,6 @@ import {
   CameraRigSystem,
   DissolveSystem,
   ElementSystem,
-  AnimationSystem,
   GameStateSystem,
   LevelManager,
   OutputSystem,
@@ -61,6 +60,7 @@ import {
   VRControllerSystem,
   VisibilitySystem,
   SDFTextSystem,
+  AnimationSystem,
   Text,
   initializeDefault
 } from "ecsy-three";
