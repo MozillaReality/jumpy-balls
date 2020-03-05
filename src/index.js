@@ -62,7 +62,7 @@ import {
   SoundSystem,
   InputSystem,
   Text,
-  initializeDefault
+  initialize
 } from "ecsy-three";
 import { Vector3 } from "three";
 
@@ -110,7 +110,7 @@ function initGame() {
     .registerSystem(GLTFLoaderSystem)
     .registerSystem(GeometrySystem);
 
-  let data = initializeDefault(world, { vr: true });
+  let data = initialize(world, { vr: true });
 
   var scene = data.entities.scene.getComponent(Object3D).value;
   window.entityScene = data.entities.scene;
