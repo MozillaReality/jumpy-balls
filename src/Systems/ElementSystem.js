@@ -31,7 +31,7 @@ export class ElementSystem extends System {
         material: new THREE.MeshPhongMaterial({
           map: Materials.textures['metal.jpg'],
           envMap: Materials.environmentMap,
-          reflectivity: 0.6
+          reflectivity: 0.2
         })
       },
       {
