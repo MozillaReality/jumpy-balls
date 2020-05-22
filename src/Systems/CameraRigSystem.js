@@ -22,6 +22,15 @@ export class CameraRigSystem extends System {
         .addComponent(Object3D, { value: cameraRig })
         .addComponent(Position, { value: new THREE.Vector3(0, 0, 0.5) });
 
+      // Deactivate all the other cameras
+      let activeCams = this.world.entityManager.queryComponents([
+        Camera,
+        Active
+      ]).entities;
+      activeCams.forEach(entity => {
+        entity.removeComponent(Active);
+      })
+
       this.world
         .createEntity()
         .addComponent(Position, {
