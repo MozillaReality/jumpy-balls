@@ -29,7 +29,7 @@ export class CameraRigSystem extends System {
       ]).entities;
       activeCams.forEach(entity => {
         entity.removeComponent(Active);
-      })
+      });
 
       this.world
         .createEntity()
