@@ -1,9 +1,10 @@
 import * as THREE from "three";
 import { System } from "ecsy";
 import {
-  Object3D,
+  Object3DComponent,
   Parent,
   Active,
+  UpdateAspectOnResizeTag,
   Camera,
   CameraRig,
   VRController
@@ -19,7 +20,7 @@ export class CameraRigSystem extends System {
     this.queries.entities.added.forEach(entity => {
       var cameraRig = new THREE.Group();
       entity
-        .addComponent(Object3D, { value: cameraRig })
+        .addComponent(Object3DComponent, { value: cameraRig })
         .addComponent(Position, { value: new THREE.Vector3(0, 0, 0.5) });
 
       // Deactivate all the other cameras
@@ -36,16 +37,18 @@ export class CameraRigSystem extends System {
         .addComponent(Position, {
           value: new THREE.Vector3(0, 1.6, -0.6)
         })
-        .addComponent(Camera, {
-          fov: 90,
-          aspect: window.innerWidth / window.innerHeight,
-          near: 0.1,
-          far: 1000,
-          layers: 1,
-          handleResize: true
-        })
-        .addComponent(Active)
-        .addComponent(Parent, { value: entity });
+        .addObject3DComponent(
+          new THREE.PerspectiveCamera(
+            90,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            500
+          ),
+          entity
+        )
+        .addComponent(UpdateAspectOnResizeTag)
+        //.addComponent(Parent, { value: entity });
+        .addComponent(Active);
 
       // Controllers
       this.world
@@ -62,7 +65,7 @@ export class CameraRigSystem extends System {
   onWindowResize() {
     this.queries.entities.results.forEach(entity => {
       /*
-      var camera = entity.getComponent(Object3D).value.children[0];
+      var camera = entity.getObject3D().children[0];
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       */

@@ -1,5 +1,5 @@
 import { System } from "ecsy";
-import { Ball, Dissolve, Object3D } from "../Components/components.js";
+import { Ball, Dissolve, Object3DComponent } from "../Components/components.js";
 
 export class DissolveSystem extends System {
   execute(delta) {
@@ -9,7 +9,7 @@ export class DissolveSystem extends System {
     for (let i = 0; i < entities.length; i++) {
       var entity = entities[i];
       var dissolve = entity.getMutableComponent(Dissolve);
-      var object = entity.getComponent(Object3D).value;
+      var object = entity.getObject3D();
       if (!object.material) {
         continue;
       }
@@ -26,7 +26,7 @@ export class DissolveSystem extends System {
 
 DissolveSystem.queries = {
   entities: {
-    components: [Ball, Dissolve, Object3D],
+    components: [Ball, Dissolve, Object3DComponent],
     listen: {
       added: true
     }

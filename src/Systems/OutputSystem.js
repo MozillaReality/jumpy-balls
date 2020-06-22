@@ -1,6 +1,6 @@
 /* global THREE */
 import { System } from "ecsy";
-import { Element, BallGenerator, Target, Object3D } from "../Components/components.js";
+import { Element, BallGenerator, Target, Object3DComponent } from "../Components/components.js";
 
 export class OutputSystem extends System {
 
@@ -22,7 +22,7 @@ export class OutputSystem extends System {
       var element = entity.getComponent(Element);
       item.type = element.type;
 
-      var object = entity.getComponent(Object3D).value; // @todo Transform
+      var object = entity.getObject3D(); // @todo Transform
       item.position = JSON.parse(JSON.stringify(object.position));
       item.rotation = {
         x: object.rotation._x,
@@ -38,7 +38,7 @@ export class OutputSystem extends System {
 
     this.queries.targets.results.forEach(entity => {
       var item = {};
-      var object = entity.getComponent(Object3D).value; // @todo Transform
+      var object = entity.getObject3D(); // @todo Transform
       item.position = JSON.parse(JSON.stringify(object.position));
       item.rotation = {
         x: object.rotation._x,
@@ -55,7 +55,7 @@ export class OutputSystem extends System {
     this.queries.generators.results.forEach(entity => {
       var item = {};
       var generator = entity.getComponent(BallGenerator);
-      var object = entity.getComponent(Object3D).value; // @todo Transform
+      var object = entity.getObject3D(); // @todo Transform
       item.position = JSON.parse(JSON.stringify(object.position));
       item.linearVelocity = generator.linearVelocity;
 

@@ -6,7 +6,7 @@ import {
   Cleared,
   Active,
   Target,
-  Object3D
+  Object3DComponent
 } from "../Components/components.js";
 
 // Aux position
@@ -16,14 +16,18 @@ var worldPos = new THREE.Vector3();
  * Check if the [Active Ball] collides with the [Target] entities
  */
 export class TargetSystem extends System {
+  init() {
+    this.world.registerComponent(Rotating).registerComponent(Cleared);
+  }
+
   execute() {
     var balls = this.queries.balls.results;
     var targets = this.queries.targets.results;
 
     for (let i = 0; i < targets.length; i++) {
       var target = targets[i];
-      var object3D = target.getComponent(Object3D).value;
-      let targetObject = object3D.children[0];
+      var Object3DComponent = target.getObject3D();
+      let targetObject = Object3DComponent.children[0];
       targetObject.getWorldPosition(worldPos);
       if (!targetObject.geometry.boundingSphere) {
         targetObject.geometry.computeBoundingSphere();
@@ -33,7 +37,7 @@ export class TargetSystem extends System {
 
       for (let i = 0; i < balls.length; i++) {
         var ball = balls[i];
-        var ballObject = ball.getComponent(Object3D).value;
+        var ballObject = ball.getObject3D();
         if (!ballObject.geometry.boundingSphere) {
           ballObject.geometry.computeBoundingSphere();
         }
@@ -54,6 +58,6 @@ export class TargetSystem extends System {
 }
 
 TargetSystem.queries = {
-  targets: { components: [Target, Object3D] },
-  balls: { components: [Ball, Active, Object3D] }
+  targets: { components: [Target, Object3DComponent] },
+  balls: { components: [Ball, Active, Object3DComponent] }
 };

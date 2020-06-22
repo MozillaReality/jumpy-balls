@@ -1,20 +1,34 @@
 /* global Ammo */
 import * as THREE from "three";
-import { World } from "ecsy";
 import {
   GameState,
   Geometry,
   Sound,
   Level,
-  Object3D,
+  Object3DComponent,
   Parent,
-  ParentObject3D,
   RigidBody,
+  Dissolve,
+  Draggable,
+  Colliding,
+  CollisionStart,
+  ParentObject3D,
+  CollisionStop,
+  FloorCollided,
+  Stop,
   Animation,
   Floor,
   Scene,
+  OnObject3DAdded,
   Position,
   Shape,
+  LevelItem,
+  Target,
+  Play,
+  Ball,
+  Element,
+  RaycastReceiver,
+  BallGenerator,
   GLTFLoader,
   Transform,
   Visible,
@@ -25,8 +39,8 @@ import {
 
 import * as Materials from "./materials.js";
 
-import WebXRPolyfill from "webxr-polyfill";
-const polyfill = new WebXRPolyfill();
+//import WebXRPolyfill from "webxr-polyfill";
+//const polyfill = new WebXRPolyfill();
 
 // For debugging
 import * as Components from "./Components/components.js";
@@ -54,7 +68,6 @@ import {
 import {
   GeometrySystem,
   GLTFLoaderSystem,
-  TextGeometrySystem,
   VRControllerSystem,
   VisibilitySystem,
   SDFTextSystem,
@@ -62,9 +75,12 @@ import {
   SoundSystem,
   InputSystem,
   Text,
+  ECSYThreeWorld,
   initialize
 } from "ecsy-three";
 import { Vector3 } from "three";
+
+import * as COMPONENTS from "./Components/components";
 
 var world;
 
@@ -84,7 +100,39 @@ function detectWebXR() {
 function initGame() {
   detectWebXR();
 
-  world = new World();
+  world = new ECSYThreeWorld();
+
+  world
+    .registerComponent(BallGenerator)
+    .registerComponent(GameState)
+    .registerComponent(Geometry)
+    .registerComponent(FloorCollided)
+    .registerComponent(Dissolve)
+    .registerComponent(Sound)
+    .registerComponent(Level)
+    .registerComponent(LevelItem)
+    .registerComponent(Colliding)
+    .registerComponent(CollisionStart)
+    .registerComponent(CollisionStop)
+    .registerComponent(Ball)
+    .registerComponent(Stop)
+    .registerComponent(Play)
+    .registerComponent(Text)
+    .registerComponent(RaycastReceiver)
+    .registerComponent(Target)
+    .registerComponent(Element)
+    .registerComponent(ParentObject3D)
+    .registerComponent(RigidBody)
+    .registerComponent(Animation)
+    .registerComponent(Floor)
+    .registerComponent(Position)
+    .registerComponent(Shape)
+    .registerComponent(Draggable)
+    .registerComponent(GLTFLoader)
+    .registerComponent(Transform)
+    .registerComponent(Visible)
+    .registerComponent(UI)
+    .registerComponent(Button);
 
   world
     .registerSystem(InputSystem)
@@ -106,13 +154,12 @@ function initGame() {
     .registerSystem(SDFTextSystem)
     .registerSystem(RotatingSystem)
     .registerSystem(OutputSystem)
-    .registerSystem(TextGeometrySystem)
     .registerSystem(GLTFLoaderSystem)
     .registerSystem(GeometrySystem);
 
   let data = initialize(world, { vr: true });
 
-  var scene = data.entities.scene.getComponent(Object3D).value;
+  var scene = data.entities.scene.getObject3D();
   window.entityScene = data.entities.scene;
 
   let level = urlParams.has("level") ? parseInt(urlParams.get("level")) : 0;
@@ -207,14 +254,14 @@ function initGame() {
 
     let playingGroup = world
       .createEntity("playingGroup")
-      .addComponent(Object3D, { value: new THREE.Group() })
+      .addComponent(Object3DComponent, { value: new THREE.Group() })
       .addComponent(Parent, { value: data.entities.scene })
       .addComponent(Visible, { value: urlParams.has("autostart") });
 
     // Scene
     world
       .createEntity("levelGroup")
-      .addComponent(Object3D, { value: new THREE.Group() })
+      .addComponent(Object3DComponent, { value: new THREE.Group() })
       .addComponent(Parent, { value: playingGroup })
       .addComponent(Visible, { value: true });
 
@@ -270,10 +317,15 @@ function initGame() {
               Text,
               getTextParameters("1", "#90cdeb", 0.3, "center")
             )
+            .addComponent(OnObject3DAdded, {
+              callback: obj => {
+                model.children[0].add(obj);
+              }
+            })
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(0, 0, 0.01) });
 
-          //model.children[0].lookAt(data.entities.camera.getComponent(Object3D).value);
+          //model.children[0].lookAt(data.entities.camera.getObject3D());
         }
       })
       .addComponent(Parent, { value: playingGroup })
@@ -355,7 +407,7 @@ function initGame() {
             .addComponent(ParentObject3D, { value: model.children[0] })
             .addComponent(Position, { value: new Vector3(0.36, -0.13, 0.01) });
 
-          //model.children[0].lookAt(data.entities.camera.getComponent(Object3D).value);
+          //model.children[0].lookAt(data.entities.camera.getObject3D());
         }
       })
       .addComponent(Parent, { value: data.entities.scene /*playingGroup*/ })

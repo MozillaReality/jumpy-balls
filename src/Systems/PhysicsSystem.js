@@ -7,7 +7,7 @@ import {
   Colliding,
   CollisionStart,
   CollisionStop,
-  Object3D,
+  Object3DComponent,
   RigidBody
 } from "../Components/components.js";
 
@@ -32,13 +32,13 @@ export class PhysicsSystem extends System {
     this.frame++;
 
     this.queries.entities.added.forEach(entity => {
-      var object = entity.getComponent(Object3D).value;
+      var object = entity.getObject3D();
       const body = this._setupRigidBody(this._createRigidBody(entity), entity);
 
       body.setCcdMotionThreshold(0.01);
       body.setCcdSweptSphereRadius(0.01);
 
-      body.object3D = object;
+      body.Object3DComponent = object;
       object.userData.body = body;
       this._physicsWorld.addRigidBody(body);
     });
@@ -83,7 +83,7 @@ export class PhysicsSystem extends System {
 
       if (rigidBody.weight === 0.0) continue;
 
-      const object = entity.getComponent(Object3D).value;
+      const object = entity.getObject3D();
       const body = object.userData.body;
       if (body.isActive() && body.getMotionState()) {
         const transform = this._transform;
@@ -126,7 +126,7 @@ export class PhysicsSystem extends System {
   }
 
   _removeRigidBody(entity) {
-    var component = entity.getRemovedComponent(Object3D);
+    var component = entity.getRemovedComponent(Object3DComponent);
     if (component) {
       let object = component.value;
       var body = object.userData.body;
@@ -228,7 +228,7 @@ export class PhysicsSystem extends System {
 
 PhysicsSystem.queries = {
   entities: {
-    components: [RigidBody, Shape, Object3D],
+    components: [RigidBody, Shape, Object3DComponent],
     listen: {
       added: true,
       removed: true

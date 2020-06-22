@@ -6,7 +6,7 @@ import {
   Draggable,
   ParentObject3D,
   Dragging,
-  Object3D,
+  Object3DComponent,
   Raycaster,
   RaycastReceiver,
   WebGLRendererContext
@@ -32,15 +32,15 @@ function setEmisive(object, color, channel) {
 export class VRControllerInteraction extends System {
   execute() {
     this.queries.dragging.results.forEach(entity => {
-      this.reposition(entity.getComponent(Object3D).value, true);
+      this.reposition(entity.getObject3D(), true);
     });
 
     this.queries.objects.added.forEach(entity => {
-      let object = entity.getComponent(Object3D).value.children[0];
+      let object = entity.getObject3D().children[0];
       entity.addComponent(RaycastReceiver, {
         layerMask: 2,
         onHover: (intersection, raycasterEntity) => {
-          let lineParent = raycasterEntity.getComponent(Object3D).value;
+          let lineParent = raycasterEntity.getObject3D();
           let line = lineParent.getObjectByName("line");
           line.scale.z = intersection.distance;
         },
@@ -48,7 +48,7 @@ export class VRControllerInteraction extends System {
           setEmisive(object, 0x224455);
         },
         onLeave: raycasterEntity => {
-          let lineParent = raycasterEntity.getComponent(Object3D).value;
+          let lineParent = raycasterEntity.getObject3D();
           let line = lineParent.getObjectByName("line");
           line.scale.z = 10;
           setEmisive(object, 0x000000);
@@ -79,11 +79,11 @@ export class VRControllerInteraction extends System {
       line.name = "line";
       line.scale.z = 5;
 
-      let obj = entity.getComponent(Object3D).value.children[0];
+      let obj = entity.getObject3D().getObjectByName("controller");
 
       this.world
         .createEntity()
-        .addComponent(Object3D, { value: line })
+        .addComponent(Object3DComponent, { value: line })
         .addComponent(ParentObject3D, { value: obj });
     });
 
@@ -101,12 +101,19 @@ export class VRControllerInteraction extends System {
     object.userData.previousParent = object.parent;
     controller.add(object);
 
+    object.children[0].material.transparent = true;
+    object.children[0].renderOrder = 20;
+    object.children[0].material.opacity = 0.5;
+
     controller.userData.selected = object;
+    this.disablePhysics(object);
   }
 
   onSelectEnd(controller) {
     if (controller.userData.selected !== undefined) {
       var object = controller.userData.selected;
+      object.children[0].material.transparent = false;
+
       object.userData.entity.removeComponent(Dragging);
 
       object.matrix.premultiply(controller.matrixWorld);
@@ -117,6 +124,14 @@ export class VRControllerInteraction extends System {
       controller.userData.selected = undefined;
       this.reposition(object);
     }
+  }
+
+  disablePhysics(object) {
+    // Currently we just move it out from the play area O:)
+    const initialTransform = new Ammo.btTransform();
+    initialTransform.setIdentity();
+    initialTransform.setOrigin(new Ammo.btVector3(0, -10, 0));
+    object.userData.body.setWorldTransform(initialTransform);
   }
 
   reposition(object, world) {
@@ -186,7 +201,7 @@ VRControllerInteraction.queries = {
     }
   },
   objects: {
-    components: [Draggable, Object3D],
+    components: [Draggable, Object3DComponent],
     listen: {
       added: true
     }

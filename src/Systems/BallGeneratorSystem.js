@@ -1,7 +1,7 @@
 import { System } from "ecsy";
 import {
   Ball,
-  Object3D,
+  Object3DComponent,
   Active,
   LevelItem,
   GLTFLoader,
@@ -32,7 +32,7 @@ export class BallGeneratorSystem extends System {
         .addComponent(GLTFLoader, {
           url: "assets/models/ball.glb",
           onLoaded: model => {
-            ball.getMutableComponent(Object3D).value = model.children[0];
+            ball.getMutableComponent(Object3DComponent).value = model.children[0];
 
             model.children[0].material = new THREE.MeshPhongMaterial({
               map: Materials.textures['ball.png'],
