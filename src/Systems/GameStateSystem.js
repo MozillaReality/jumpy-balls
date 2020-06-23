@@ -7,7 +7,7 @@ import {
   Dissolve,
   Sound,
   Stop,
-  Object3D,
+  Object3DComponent,
   Raycaster,
   Play,
   Visible,
@@ -46,7 +46,7 @@ export class GameStateSystem extends System {
 
     let panelInfoEntity = this.world.entityManager.getEntityByName("panelInfo");
     panelInfoEntity.addComponent(Play);
-    let panel = panelInfoEntity.getComponent(Object3D).value.children[0];
+    let panel = panelInfoEntity.getObject3D().children[0];
 
     if (!panel.userData.oldPosition) {
       panel.userData.oldPosition = new THREE.Vector3();
@@ -89,7 +89,7 @@ export class GameStateSystem extends System {
 
     let panelInfoEntity = this.world.entityManager.getEntityByName("panelInfo");
     panelInfoEntity.addComponent(Stop);
-    let panel = panelInfoEntity.getComponent(Object3D);
+    let panel = panelInfoEntity.getComponent(Object3DComponent);
     if (panel) {
       panel = panel.value.children[0];
       if (panel.userData.oldPosition) {

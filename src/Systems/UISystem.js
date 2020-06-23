@@ -10,7 +10,7 @@ import {
   Geometry,
   Button,
   RaycastReceiver,
-  Object3D
+  Object3DComponent
 } from "../Components/components.js";
 
 function setColor(object, color) {
@@ -40,13 +40,13 @@ export class UISystem extends System {
       //let child = this.world.createEntity();
       let child2 = this.world.createEntity();
 
-      let group = new THREE.Object3D();
-      entity.addComponent(Object3D, { value: group });
+      let group = new THREE.Group();
+      entity.addComponent(Object3DComponent, { value: group });
       entity.addComponent(RaycastReceiver, {
         layerMask: 4,
         onHover: () => {},
         onEnter: () => {
-          let obj = entity.getComponent(Object3D).value;
+          let obj = entity.getObject3D();
           setColor(obj, 1);
           var tween = new TWEEN.Tween(obj.scale)
             .to(
@@ -62,7 +62,7 @@ export class UISystem extends System {
             .start();
         },
         onLeave: () => {
-          let obj = entity.getComponent(Object3D).value;
+          let obj = entity.getObject3D();
           setColor(obj, 0.7);
           var tween = new TWEEN.Tween(obj.scale)
             .to(
@@ -78,7 +78,7 @@ export class UISystem extends System {
             .start();
         },
         onSelectStart: () => {
-          let obj = entity.getComponent(Object3D).value;
+          let obj = entity.getObject3D();
           setColor(obj, 1);
 
           setTimeout(() => {

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export default class PositionalAudioPolyphonic extends THREE.Object3D {
+export default class PositionalAudioPolyphonic extends THREE.Object3DComponent {
   constructor(listener, poolSize) {
     super();
     this.listener = listener;

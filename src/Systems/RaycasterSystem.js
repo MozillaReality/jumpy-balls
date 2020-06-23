@@ -3,11 +3,15 @@ import * as THREE from "three";
 import {
   Raycaster,
   RaycastReceiver,
-  Object3D,
+  Object3DComponent,
   InputState
 } from "../Components/components.js";
 
 export class RaycasterSystem extends System {
+  init() {
+    this.world.registerComponent(Raycaster);
+  }
+
   execute() {
     /*
     for (let i = 0; i < entities.length; i++) {
@@ -37,7 +41,7 @@ export class RaycasterSystem extends System {
           return (mask & raycasterComponent.layerMask) !== 0;
         })
         .map(entity => {
-          var object = entity.getComponent(Object3D).value;
+          var object = entity.getObject3D();
           object.traverse(child => {
             child.userData.entity = entity;
           });
@@ -51,7 +55,7 @@ export class RaycasterSystem extends System {
       let raycast = raycasterComponent.value;
 
       var tempMatrix = new THREE.Matrix4();
-      var holder = raycaster.getComponent(Object3D).value.children[0];
+      var holder = raycaster.getObject3D().getObjectByName("controller");
       tempMatrix.identity().extractRotation(holder.matrixWorld);
 
       raycast.ray.origin.setFromMatrixPosition(holder.matrixWorld);
@@ -64,11 +68,13 @@ export class RaycasterSystem extends System {
       let intersections = raycast.intersectObjects(objects, true);
 
       //inputState.
-      let obj = raycaster.getComponent(Object3D).value;
+      let obj = raycaster.getObject3D();
       let vrcontrollerGroup = obj ? obj.children[0] : null; //@hack
       let controllerInputState = inputState.vrcontrollers.get(
         vrcontrollerGroup
       );
+
+      //console.log('>>>',);
 
       if (intersections.length > 0) {
         // @hack to fix on the sdf text mesh

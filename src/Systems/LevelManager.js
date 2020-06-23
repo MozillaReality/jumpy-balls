@@ -71,23 +71,23 @@ export class LevelManager extends System {
           position: g.position,
           linearVelocity: g.linearVelocity
         })
-        .addComponent(LevelItem)
         .addComponent(GLTFLoader, {
           url: "assets/models/cannon.glb",
           onLoaded: (model, gltf) => {
             //model.scale.multiplyScalar(-1);
             model.lookAt(linearVelocity);
-            model.getObjectByName("cannon").material =
-              new THREE.MeshPhongMaterial({
-                map: Materials.textures['cannon.jpg'],
-                envMap: Materials.environmentMap,
-                reflectivity: 0.2,
-                specularMap: Materials.textures['cannon_spec.jpg'],
-                shininess: 50,
-                specular: new THREE.Color(0x333333),
-              });
+            model.getObjectByName(
+              "cannon"
+            ).material = new THREE.MeshPhongMaterial({
+              map: Materials.textures["cannon.jpg"],
+              envMap: Materials.environmentMap,
+              reflectivity: 0.2,
+              specularMap: Materials.textures["cannon_spec.jpg"],
+              shininess: 50,
+              specular: new THREE.Color(0x333333)
+            });
 
-            var yellowMat = new THREE.MeshBasicMaterial({color: 0xE7C223});
+            var yellowMat = new THREE.MeshBasicMaterial({ color: 0xe7c223 });
 
             model.getObjectByName("explosion").material = yellowMat;
             model.getObjectByName("sparks").material = yellowMat;
@@ -137,7 +137,7 @@ export class LevelManager extends System {
           url: "assets/models/target.glb",
           onLoaded: model => {
             model.children[0].material = new THREE.MeshPhongMaterial({
-              map: Materials.textures['target.png'],
+              map: Materials.textures["target.png"],
               envMap: Materials.environmentMap,
               reflectivity: 0.2
             });
