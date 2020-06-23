@@ -2,7 +2,7 @@ import { System } from "ecsy";
 import * as THREE from "three";
 import TWEEN from "../vendor/tween.module.min.js";
 
-import { Position, Text } from "ecsy-three";
+import { Position, Text } from "ecsy-three/extras";
 import {
   UI,
   Sound,

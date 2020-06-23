@@ -1,6 +1,6 @@
 import { System } from "ecsy";
 import * as THREE from "three";
-import { Text, Position } from "ecsy-three";
+import { Text, Position } from "ecsy-three/extras";
 import {
   Level,
   Target,

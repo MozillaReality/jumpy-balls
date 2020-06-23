@@ -3,6 +3,7 @@ import { Component, TagComponent } from "ecsy";
 import { Types, ThreeTypes } from "ecsy-three";
 
 export * from "ecsy-three";
+export * from "ecsy-three/extras";
 
 export class LevelItem extends Component {}
 

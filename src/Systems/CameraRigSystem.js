@@ -9,7 +9,7 @@ import {
   CameraRig,
   VRController
 } from "../Components/components.js";
-import { Position } from "ecsy-three";
+import { Position } from "ecsy-three/extras";
 
 export class CameraRigSystem extends System {
   init() {

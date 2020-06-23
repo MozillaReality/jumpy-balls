@@ -75,9 +75,11 @@ import {
   SoundSystem,
   InputSystem,
   Text,
-  ECSYThreeWorld,
   initialize
-} from "ecsy-three";
+} from "ecsy-three/extras";
+
+import { ECSYThreeWorld } from "ecsy-three";
+
 import { Vector3 } from "three";
 
 import * as COMPONENTS from "./Components/components";

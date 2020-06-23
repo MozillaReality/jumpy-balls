@@ -1,6 +1,6 @@
 import { System } from "ecsy";
 import { levels } from "../levels.js";
-import { Text } from "ecsy-three";
+import { Text } from "ecsy-three/extras";
 import * as THREE from "three";
 import {
   BallGenerator,
